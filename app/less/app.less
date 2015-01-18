@@ -1,0 +1,62 @@
+@import "node_modules/material-ui/src/less/scaffolding.less";
+@import "node_modules/material-ui/src/less/components.less";
+@import 'app/less/spinner.less';
+@import 'app/less/code.less';
+
+.raw-code-area {
+  height: 80%;
+  width: 45%;
+  margin: 3%;
+  left:0;
+  position:absolute;
+  padding: 0;
+}
+
+.mui-input textarea[type='text'], .mui-input .codearea {
+  margin: 20px 20px;
+  width: 100%;
+  height: 100%;
+  font-family: 'Droid Sans Mono', monospace;
+  padding:10px;
+}
+
+.mui-input-placeholder {
+  //margin:20px;
+}
+
+.error:hover .tip {
+  display: block;
+}
+
+
+.tip {
+  display: none;
+  background: #eee;
+  opacity:0.8;
+  font-size: 0.7em;
+  margin-left: 15px;
+  margin-top: 15px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1000;
+  //width:200px;
+  //height:100px;
+}
+
+.couponcode {
+  margin:100px;
+}
+
+.error {
+  border-bottom: 2px dotted rgb(255, 64, 129);
+  cursor: pointer;
+}
+
+.output-area {
+  height: 80%;
+  width: 45%;
+  margin: 3%;
+  float: right;
+  right: 0;
+  position:absolute;
+}
