@@ -14,21 +14,10 @@ React.render(React.createElement(Main, null), document.body);
 var React = require('react');
 
 var CodeEditor = React.createClass({displayName: "CodeEditor",
-  // getInitialState: function() {
-  //   return {
-  //     value: this.props.html
-  //   };
-  // },
-
   render: function(){
     var inputIsNotEmpty = !this.isEmpty();
-    console.log(inputIsNotEmpty);
     var classes = ['textarea', 'mui-input', 'mui-input-textarea'];
     var codeareaClasses = ['codearea', 'mui-is-not-empty'];
-    // if (inputIsNotEmpty) {
-    //   classes.push('mui-is-not-empty');
-    //   codeareaClasses.push('mui-is-not-empty');
-    // }
     classes = classes.join(' ');
     codeareaClasses = codeareaClasses.join(' ');
     var html = inputIsNotEmpty ? this.props.html : '';
@@ -56,7 +45,6 @@ var CodeEditor = React.createClass({displayName: "CodeEditor",
   },
 
   isEmpty: function() {
-    console.log(this.getHtml());
     if(!this.getHtml() || this.getHtml() === '<br>') {
       return true;
     } else
@@ -104,9 +92,7 @@ var CodeEditor = React.createClass({displayName: "CodeEditor",
 
   emitChange: function(){
     var html = this.getHtml();
-    //this.setState({value: html});
     if (html !== this.lastHtml) {
-      //this.forceUpdate();
       if (this.props.onChange) {
         this.props.onChange({
           target: {
@@ -134,6 +120,7 @@ var Paper = mui.Paper;
 var DropDownMenu = mui.DropDownMenu;
 var IconButton = mui.IconButton;
 var Icon = mui.Icon;
+var FlatButton = mui.FlatButton;
 var RaisedButton = mui.RaisedButton;
 var Toolbar = mui.Toolbar;
 var ToolbarGroup = mui.ToolbarGroup;
@@ -142,31 +129,35 @@ var Toggle = mui.Toggle;
 var Main = React.createClass({displayName: "Main",
 
   getInitialState: function() {
-    return { source: '', loading: false, target: ''};
+    return { source: 'function length (a) {\n  return a.length;\n}\na(1);', loading: false, target: ''};
   },
 
   updateOutput: function(sourceCode) {
     this.setState ({ loading: true, target: this.state.target});
     request.post('/flow_check', {source: sourceCode }, function(err, res)  {
       this.setState ({ loading: false, target: res});
-      console.log(err);
     }.bind(this));
   },
 
   render: function() {
+    console.log('a');
     var filterOptions = [
       { payload: '1', text: 'Strict mode' },
       { payload: '2', text: 'Weak mode' },
       { payload: '3', text: 'Typescript converter' }];
 
-    var defaultValue = "function length (a) {\n  return a.length;\n}\na(1);"
+    var examples = [
+      { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '01 - Hello world' },
+      { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '02 - Typed' },
+    { payload: '3', text: 'Typed Request' }];
 
     return (
       React.createElement("div", null, 
 
         React.createElement(Toolbar, null, 
           React.createElement(ToolbarGroup, {key: 0, float: "left"}, 
-            React.createElement(DropDownMenu, {menuItems: filterOptions})
+            React.createElement(DropDownMenu, {menuItems: filterOptions}), 
+            React.createElement(DropDownMenu, {menuItems: examples, onChange: this._handleExamples})
           ), 
 
           React.createElement(ToolbarGroup, {key: 1, float: "right"}, 
@@ -180,7 +171,7 @@ var Main = React.createClass({displayName: "Main",
           React.createElement(Paper, {zDepth: 5}, 
             React.createElement(Input, {className: "textarea", ref: "source", multiline: true, 
               type: "text", name: "source", placeholder: "Javascript", onChange: this._onChange, 
-              onKeyDown: this._onKeyDown, defaultValue: defaultValue, description: "start writing javascript code here"})
+              onKeyDown: this._onKeyDown, defaultValue: this.state.source, description: "start writing javascript code here"})
           )
         ), 
         React.createElement("div", {className: "output-area"}, 
@@ -195,16 +186,27 @@ var Main = React.createClass({displayName: "Main",
     );
   },
 
+  componentDidMount: function() {
+    this.updateOutput(this.refs.source.getValue());
+  },
+
   _onChange: function(event) {
     var value = event.target.value;
     clearTimeout(this.timeout);
     this.timeout = setTimeout(function()  {
       this.updateOutput(value);
-    }.bind(this), 3000);
+    }.bind(this), 2000);
   },
 
   _handleTouchTap: function() {
     this.updateOutput(this.refs.source.getValue());
+  },
+
+  _handleExamples: function(e, key, payload) {
+    //this.setState({source: payload});
+    // THIS IS ANTIPATTERN
+    this.refs.source.setValue(payload.payload);
+    this.updateOutput(payload.payload);
   }
 
 });

@@ -10,6 +10,7 @@ var Paper = mui.Paper;
 var DropDownMenu = mui.DropDownMenu;
 var IconButton = mui.IconButton;
 var Icon = mui.Icon;
+var FlatButton = mui.FlatButton;
 var RaisedButton = mui.RaisedButton;
 var Toolbar = mui.Toolbar;
 var ToolbarGroup = mui.ToolbarGroup;
@@ -18,24 +19,27 @@ var Toggle = mui.Toggle;
 var Main = React.createClass({
 
   getInitialState: function() {
-    return { source: '', loading: false, target: ''};
+    return { source: 'function length (a) {\n  return a.length;\n}\na(1);', loading: false, target: ''};
   },
 
   updateOutput: function(sourceCode) {
     this.setState ({ loading: true, target: this.state.target});
     request.post('/flow_check', {source: sourceCode }, (err, res) => {
       this.setState ({ loading: false, target: res});
-      console.log(err);
     });
   },
 
   render: function() {
+    console.log('a');
     var filterOptions = [
       { payload: '1', text: 'Strict mode' },
       { payload: '2', text: 'Weak mode' },
       { payload: '3', text: 'Typescript converter' }];
 
-    var defaultValue = "function length (a) {\n  return a.length;\n}\na(1);"
+    var examples = [
+      { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '01 - Hello world' },
+      { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '02 - Typed' },
+    { payload: '3', text: 'Typed Request' }];
 
     return (
       <div>
@@ -43,6 +47,7 @@ var Main = React.createClass({
         <Toolbar>
           <ToolbarGroup key={0} float="left">
             <DropDownMenu menuItems={filterOptions} />
+            <DropDownMenu menuItems={examples} onChange={this._handleExamples}/>
           </ToolbarGroup>
 
           <ToolbarGroup key={1} float="right">
@@ -56,7 +61,7 @@ var Main = React.createClass({
           <Paper zDepth={5} >
             <Input className="textarea" ref="source" multiline={true}
               type="text" name="source" placeholder="Javascript" onChange={this._onChange}
-              onKeyDown={this._onKeyDown} defaultValue={defaultValue} description="start writing javascript code here" />
+              onKeyDown={this._onKeyDown} defaultValue={this.state.source} description="start writing javascript code here" />
           </Paper>
         </div>
         <div className="output-area">
@@ -71,16 +76,27 @@ var Main = React.createClass({
     );
   },
 
+  componentDidMount: function() {
+    this.updateOutput(this.refs.source.getValue());
+  },
+
   _onChange: function(event) {
     var value = event.target.value;
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       this.updateOutput(value);
-    }, 3000);
+    }, 2000);
   },
 
   _handleTouchTap: function() {
     this.updateOutput(this.refs.source.getValue());
+  },
+
+  _handleExamples: function(e, key, payload) {
+    //this.setState({source: payload});
+    // THIS IS ANTIPATTERN
+    this.refs.source.setValue(payload.payload);
+    this.updateOutput(payload.payload);
   }
 
 });

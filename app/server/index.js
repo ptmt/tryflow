@@ -27,6 +27,9 @@ app.post('/flow_check', function (req, res) {
   });
 });
 
+var exec = require('child_process').exec;
+exec('flow server');
+
 var server = app.listen(process.env.PORT || 3000, function () {
 
   var host = server.address().address

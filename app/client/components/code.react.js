@@ -2,21 +2,10 @@
 var React = require('react');
 
 var CodeEditor = React.createClass({
-  // getInitialState: function() {
-  //   return {
-  //     value: this.props.html
-  //   };
-  // },
-
   render: function(){
     var inputIsNotEmpty = !this.isEmpty();
-    console.log(inputIsNotEmpty);
     var classes = ['textarea', 'mui-input', 'mui-input-textarea'];
     var codeareaClasses = ['codearea', 'mui-is-not-empty'];
-    // if (inputIsNotEmpty) {
-    //   classes.push('mui-is-not-empty');
-    //   codeareaClasses.push('mui-is-not-empty');
-    // }
     classes = classes.join(' ');
     codeareaClasses = codeareaClasses.join(' ');
     var html = inputIsNotEmpty ? this.props.html : '';
@@ -44,7 +33,6 @@ var CodeEditor = React.createClass({
   },
 
   isEmpty: function() {
-    console.log(this.getHtml());
     if(!this.getHtml() || this.getHtml() === '<br>') {
       return true;
     } else
@@ -92,9 +80,7 @@ var CodeEditor = React.createClass({
 
   emitChange: function(){
     var html = this.getHtml();
-    //this.setState({value: html});
     if (html !== this.lastHtml) {
-      //this.forceUpdate();
       if (this.props.onChange) {
         this.props.onChange({
           target: {

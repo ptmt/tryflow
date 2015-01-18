@@ -2,7 +2,7 @@ var spawn = require('child_process').spawn;
 var exec = require('child_process').exec;
 
 module.exports = function(sourceCode, cb) {
-  child = spawn('flow', ['check-contents', ['--json']]);
+  child = spawn('flow', ['check-contents', '--json']); //'--no-auto-start'
   var output = '';
   child.stdout.on('data', function (data) {
     output += data;
