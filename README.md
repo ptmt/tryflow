@@ -4,7 +4,8 @@
 
 ## Roadmap
 
-- Js_to_Ocaml
-- Show signatures;
+- Js_to_Ocaml;
+- Save&Share code;
+- Show type signatures;
 - Add ability to strip types and harmony converter.
 - Syntax highlighting? Rich code editor?
