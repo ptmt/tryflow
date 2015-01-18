@@ -45,12 +45,6 @@ module.exports.wrap = function(sourceCode, errorsJson) {
   var endings = {};
 
   errorsJson.errors.forEach(function(error) {
-    // error.message.forEach(function(message) {
-    //   console.log(message);
-    //   if (message.path !== '-') return;
-    //   console.log(sourceLines[message.line - 1][message.start - 1]);
-    //
-    // });
     var message1 = error.message[0];
     var message2 = error.message[1];
     var description = message2 ? message1.descr + '\n<strong>' + message2.descr + '</strong>': message1.descr;
@@ -75,8 +69,8 @@ module.exports.wrap = function(sourceCode, errorsJson) {
     //     , message1.start - 1
     //     , '<span class="error"><span class="tip">' + description + '</span>')
   });
-  console.log(openings);
-  console.log(endings);
+  //console.log(openings);
+  //console.log(endings);
   for (var i=0; i<sourceLines.length; i++) {
     var line = '';
     for(var j=0; j<sourceLines[i].length; j++) {

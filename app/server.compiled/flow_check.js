@@ -75,8 +75,8 @@ module.exports.wrap = function(sourceCode, errorsJson) {
     //     , message1.start - 1
     //     , '<span class="error"><span class="tip">' + description + '</span>')
   });
-  console.log(openings);
-  console.log(endings);
+  //console.log(openings);
+  //console.log(endings);
   for (var i=0; i<sourceLines.length; i++) {
     var line = '';
     for(var j=0; j<sourceLines[i].length; j++) {
