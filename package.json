@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "./node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
   "devDependencies": {
     "browserify": "^7.0.0",
     "gulp": "*",
+    "mocha": "*",
     "gulp-autoprefixer": "~0.0.6",
     "gulp-cache": "~0.1.1",
     "gulp-clean": "~0.2.4",
