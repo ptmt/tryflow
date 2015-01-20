@@ -114,6 +114,7 @@ var mui = require('material-ui');
 var request = require('../request');
 var Spinner = require('./spinner.react');
 var Code = require('./code.react');
+var utils = require('../utils');
 
 var Input = mui.Input;
 var Paper = mui.Paper;
@@ -134,7 +135,7 @@ var Main = React.createClass({displayName: "Main",
 
   updateOutput: function(sourceCode) {
     this.setState ({ loading: true, target: this.state.target});
-    request.post('/flow_check', {source: sourceCode }, function(err, res)  {
+    request.post('/flow_check', {source: utils.escape(sourceCode) }, function(err, res)  {
       this.setState ({ loading: false, target: res});
     }.bind(this));
   },
@@ -146,10 +147,7 @@ var Main = React.createClass({displayName: "Main",
       { payload: '2', text: 'Weak mode' },
       { payload: '3', text: 'Typescript converter' }];
 
-    var examples = [
-      { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '01 - Hello world' },
-      { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '02 - Typed' },
-    { payload: '3', text: 'Typed Request' }];
+    var examples = require('../examples.js');
 
     return (
       React.createElement("div", null, 
@@ -213,7 +211,7 @@ var Main = React.createClass({displayName: "Main",
 
 module.exports = Main;
 
-},{"../request":"/Users/potomushto/Projects/tryflow/app/client/request.js","./code.react":"/Users/potomushto/Projects/tryflow/app/client/components/code.react.js","./spinner.react":"/Users/potomushto/Projects/tryflow/app/client/components/spinner.react.js","material-ui":"/Users/potomushto/Projects/tryflow/node_modules/material-ui/src/index.js","react":"/Users/potomushto/Projects/tryflow/node_modules/react/react.js"}],"/Users/potomushto/Projects/tryflow/app/client/components/spinner.react.js":[function(require,module,exports){
+},{"../examples.js":"/Users/potomushto/Projects/tryflow/app/client/examples.js","../request":"/Users/potomushto/Projects/tryflow/app/client/request.js","../utils":"/Users/potomushto/Projects/tryflow/app/client/utils.js","./code.react":"/Users/potomushto/Projects/tryflow/app/client/components/code.react.js","./spinner.react":"/Users/potomushto/Projects/tryflow/app/client/components/spinner.react.js","material-ui":"/Users/potomushto/Projects/tryflow/node_modules/material-ui/src/index.js","react":"/Users/potomushto/Projects/tryflow/node_modules/react/react.js"}],"/Users/potomushto/Projects/tryflow/app/client/components/spinner.react.js":[function(require,module,exports){
 /* @flow */
 var React = require('react');
 
@@ -235,7 +233,68 @@ var Spinner = React.createClass({displayName: "Spinner",
 });
 module.exports = Spinner;
 
-},{"react":"/Users/potomushto/Projects/tryflow/node_modules/react/react.js"}],"/Users/potomushto/Projects/tryflow/app/client/request.js":[function(require,module,exports){
+},{"react":"/Users/potomushto/Projects/tryflow/node_modules/react/react.js"}],"/Users/potomushto/Projects/tryflow/app/client/examples.js":[function(require,module,exports){
+// TODO: add caching, add storing in keyvalue storage
+module.exports = [
+  { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '01 - Hello world' },
+{ payload:
+'function length(x) {\n\
+  if (x) {\n\
+    if (typeof x === \'string\')\n\
+    {\n\
+      return x.length;\n\
+    }\n\
+    return x\n\
+  } else {\n\
+    return 0;\n\
+  }\n\
+}\n\
+  \n\
+var a, b = 10;\n\
+var total = length("Hello") + length(a) + length(b);', text: '02 - Dynamic' },
+  { payload:
+'function withNumber(a: number) {\n\
+  return a;\n\
+}\n\
+\n\
+withNumber(new Date());\n\
+function withMaybeNumber(a: ?number) {\n\
+  return a;\n\
+}\n\
+\n\
+var b = null;\n\
+withMaybeNumber(b); // no errors\n\
+withMaybeNumber(); // error\n\
+\n\
+function withOptionalNumber(a?: number) {\n\
+  return a\n\
+}\n\
+withOptionalNumber();\n\
+withOptionalNumber(1);\n\
+\n\
+type typeExample = {\n\
+  a: string;\n\
+  b: number;\n\
+  c(arg: number): string;\n\
+}\n\
+// ECMAScript 6 Destructing assigment\n\
+function destructing({a, b, c}: typeExample) {\n\
+  c(b);\n\
+}\n\
+\n\
+destructing({a: \'string\', b: \'1\', c: () => \'callback here\' });\n\
+', text: '03 - Type Annotations' },
+{ payload:
+'var exec = require(\'child_process\').exec;\n\
+exec(1);\n\
+exec(\'command\');\n\
+exec(\'command\', {}, (err, stdout, stderr) => {\n\
+  stdout.read();\n\
+});', text: '04 - Modules'
+}
+]
+
+},{}],"/Users/potomushto/Projects/tryflow/app/client/request.js":[function(require,module,exports){
 /* @flow */
                                                       
 
@@ -263,6 +322,20 @@ module.exports.post = function   (url        , data        , callback           
   };
 
   request.send(JSON.stringify(data));
+}
+
+},{}],"/Users/potomushto/Projects/tryflow/app/client/utils.js":[function(require,module,exports){
+var entityMap = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': '&quot;',
+  "'": '&#39;',
+  "/": '&#x2F;'
+};
+
+module.exports.escape = function(string) {
+  return string;
 }
 
 },{}],"/Users/potomushto/Projects/tryflow/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){

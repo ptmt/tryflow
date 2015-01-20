@@ -4,6 +4,7 @@ var mui = require('material-ui');
 var request = require('../request');
 var Spinner = require('./spinner.react');
 var Code = require('./code.react');
+var utils = require('../utils');
 
 var Input = mui.Input;
 var Paper = mui.Paper;
@@ -24,7 +25,7 @@ var Main = React.createClass({
 
   updateOutput: function(sourceCode) {
     this.setState ({ loading: true, target: this.state.target});
-    request.post('/flow_check', {source: sourceCode }, (err, res) => {
+    request.post('/flow_check', {source: utils.escape(sourceCode) }, (err, res) => {
       this.setState ({ loading: false, target: res});
     });
   },
@@ -36,10 +37,7 @@ var Main = React.createClass({
       { payload: '2', text: 'Weak mode' },
       { payload: '3', text: 'Typescript converter' }];
 
-    var examples = [
-      { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '01 - Hello world' },
-      { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '02 - Typed' },
-    { payload: '3', text: 'Typed Request' }];
+    var examples = require('../examples.js');
 
     return (
       <div>

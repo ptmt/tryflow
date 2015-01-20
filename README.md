@@ -4,7 +4,8 @@
 
 ## Roadmap
 
-- [ ] Add predefined examples;
+- [ ] Add more predefined examples;
+- [ ] Store compiled result by hash (code);
 - [ ] Obtain and display Flow checker version (currently 0.1.2 because of flow-bin)
 - [ ] Js_of_ocaml;
 - [ ] Save&Share code;
