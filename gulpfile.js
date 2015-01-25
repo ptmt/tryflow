@@ -74,7 +74,7 @@ function scripts(watch) {
 				loadMaps: true
 			}))
 			//.pipe($.uglify())
-			//  .pipe($.sourcemaps.write('./'))
+			.pipe($.sourcemaps.write('./'))
 			.pipe(gulp.dest('./dist/scripts/'))
 			.pipe($.livereload())
 			.on('error', function(error) {

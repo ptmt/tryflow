@@ -6,9 +6,9 @@
 
 - [ ] Add more predefined examples;
 - [ ] Store compiled result by hash (code);
-- [ ] Obtain and display Flow checker version (currently 0.1.2 because of flow-bin)
+- [ ] Obtain and display Flow checker version
 - [ ] Js_of_ocaml;
 - [ ] Save&Share code;
 - [ ] Show type signatures;
 - [ ] Add ability to strip types and harmony converter.
-- [ ] Syntax highlighting? Rich code editor?
+- [ ] Syntax highlighting? Rich code editor? (like http://jshint.com/)

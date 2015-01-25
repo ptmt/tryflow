@@ -16,7 +16,7 @@ var RaisedButton = mui.RaisedButton;
 var Toolbar = mui.Toolbar;
 var ToolbarGroup = mui.ToolbarGroup;
 var Toggle = mui.Toggle;
-
+var Ace = require('brace');
 var Main = React.createClass({
 
   getInitialState: function() {
@@ -31,7 +31,7 @@ var Main = React.createClass({
   },
 
   render: function() {
-    console.log('a');
+
     var filterOptions = [
       { payload: '1', text: 'Strict mode' },
       { payload: '2', text: 'Weak mode' },
@@ -57,14 +57,12 @@ var Main = React.createClass({
 
         <div className="raw-code-area">
           <Paper zDepth={5} >
-            <Input className="textarea" ref="source" multiline={true}
-              type="text" name="source" placeholder="Javascript" onChange={this._onChange}
-              onKeyDown={this._onKeyDown} defaultValue={this.state.source} description="start writing javascript code here" />
+            <Code ref="source" source={this.state.source} name="source-editor"/>
           </Paper>
         </div>
         <div className="output-area">
           <Paper zDepth={5} >
-            <Code html={this.state.target} placeholder="Compiled Javascript"/>
+
           </Paper>
         </div>
 
@@ -75,7 +73,7 @@ var Main = React.createClass({
   },
 
   componentDidMount: function() {
-    this.updateOutput(this.refs.source.getValue());
+    //this.updateOutput(this.refs.source.getValue());
   },
 
   _onChange: function(event) {
@@ -91,10 +89,10 @@ var Main = React.createClass({
   },
 
   _handleExamples: function(e, key, payload) {
-    //this.setState({source: payload});
+    this.setState({source: payload.payload});
     // THIS IS ANTIPATTERN
-    this.refs.source.setValue(payload.payload);
-    this.updateOutput(payload.payload);
+  //  this.refs.source.setValue(payload.payload);
+  //  this.updateOutput(payload.payload);
   }
 
 });

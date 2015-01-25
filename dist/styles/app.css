@@ -5004,12 +5004,10 @@ hr {
   line-height: 56px;
 }
 .mui-input textarea[type='text'],
-.mui-input .codearea {
-  margin: 10px 0px;
+.codearea {
   width: 90%;
   height: 100%;
   font-family: 'Droid Sans Mono', monospace;
-  padding: 10px;
 }
 .error:hover .tip {
   display: block;
