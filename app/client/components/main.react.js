@@ -19,32 +19,27 @@ var Toggle = mui.Toggle;
 var Ace = require('brace');
 var Main = React.createClass({
 
-  getInitialState: function() {
-    return { source: 'function length (a) {\n  return a.length;\n}\na(1);', loading: false, target: ''};
+  getInitialState() {
+    return { source: 'function length (a) {\n  return a.length;\n}\na(1);', loading: false, errors: [], target: ''};
   },
 
-  updateOutput: function(sourceCode) {
-    this.setState ({ loading: true, target: this.state.target});
-    request.post('/flow_check', {source: utils.escape(sourceCode) }, (err, res) => {
-      this.setState ({ loading: false, target: res});
+  updateOutput(sourceCode) {
+    var startTime = new Date();
+    this.setState ({ loading: true});
+    request.post('/flow_check', {source: sourceCode }, (err, res) => {
+      console.log((new Date() - startTime), ' ms ');
+      this.setState ({ loading: false, source: this.state.source, errors: res, target: this.state.target});
     });
   },
 
-  render: function() {
-
-    var filterOptions = [
-      { payload: '1', text: 'Strict mode' },
-      { payload: '2', text: 'Weak mode' },
-      { payload: '3', text: 'Typescript converter' }];
+  render() {
 
     var examples = require('../examples.js');
-
     return (
       <div>
 
         <Toolbar>
           <ToolbarGroup key={0} float="left">
-            <DropDownMenu menuItems={filterOptions} />
             <DropDownMenu menuItems={examples} onChange={this._handleExamples}/>
           </ToolbarGroup>
 
@@ -57,12 +52,12 @@ var Main = React.createClass({
 
         <div className="raw-code-area">
           <Paper zDepth={5} >
-            <Code ref="source" source={this.state.source} name="source-editor"/>
+            <Code ref="sourceEditor" source={this.state.source} name="source-editor" onChange={this._onChange} errors={this.state.errors}/>
           </Paper>
         </div>
         <div className="output-area">
           <Paper zDepth={5} >
-
+            <Code ref="target" source={this.state.target} name="target-editor" readOnly="true" />
           </Paper>
         </div>
 
@@ -72,12 +67,11 @@ var Main = React.createClass({
     );
   },
 
-  componentDidMount: function() {
-    //this.updateOutput(this.refs.source.getValue());
+  componentDidMount() {
+    this.updateOutput(this.state.source);
   },
 
-  _onChange: function(event) {
-    var value = event.target.value;
+  _onChange(value) {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       this.updateOutput(value);
@@ -85,11 +79,11 @@ var Main = React.createClass({
   },
 
   _handleTouchTap: function() {
-    this.updateOutput(this.refs.source.getValue());
+    //this.updateOutput(this.refs.sourceEditor.source);
   },
 
   _handleExamples: function(e, key, payload) {
-    this.setState({source: payload.payload});
+    this.setState({source: payload.payload, loading: true});
     // THIS IS ANTIPATTERN
   //  this.refs.source.setValue(payload.payload);
   //  this.updateOutput(payload.payload);

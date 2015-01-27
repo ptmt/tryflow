@@ -7,8 +7,7 @@
 - [ ] Add more predefined examples;
 - [ ] Store compiled result by hash (code);
 - [ ] Obtain and display Flow checker version
-- [ ] Js_of_ocaml;
+- [ ] Js_of_ocaml inside web worker;
 - [ ] Save&Share code;
 - [ ] Show type signatures;
 - [ ] Add ability to strip types and harmony converter.
-- [ ] Syntax highlighting? Rich code editor? (like http://jshint.com/)

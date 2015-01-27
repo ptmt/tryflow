@@ -5000,6 +5000,9 @@ hr {
   position: absolute;
   padding: 0;
 }
+.mui-menu.mui-menu-hideable {
+  z-index: 10;
+}
 .mui-toolbar .mui-toolbar-group .mui-flat-button {
   line-height: 56px;
 }

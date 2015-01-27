@@ -16,18 +16,36 @@ require('brace/theme/github');
 require('brace/mode/typescript');
 
 module.exports = React.createClass({displayName: "exports",
-  componentDidMount: function() {
+  componentDidMount:function() {
     this.editor = ace.edit(this.props.name);
     this.editor.getSession().setMode('ace/mode/typescript');
     this.editor.setTheme('ace/theme/github');
     this.editor.setValue(this.props.source);
     this.editor.clearSelection();
+    this.editor.on('change', function(e)  {
+      if (this.editor.curOp && this.editor.curOp.command.name) {
+        this.props.onChange(this.editor.getValue());
+        console.log(e, "user change");
+      }
+    }.bind(this));
+    this.editor.setReadOnly(this.props.readOnly);
+
+    window.editor = this.editor;
   },
-  render: function() {
+  render:function() {
     return (React.createElement("div", {id: this.props.name, className: "codearea"}));
   },
-  componentWillReceiveProps: function (p) {
-    this.editor.setValue(p.source);
+  componentWillReceiveProps:function(p) {
+    if (p.source != this.props.source) {
+      this.editor.setValue(p.source);
+      this.props.onChange(p.source);
+    }
+    this.setErrors(p.errors);
+  },
+
+  setErrors:function(errors) {
+    // tupes = info, warning, error
+    this.editor.getSession().setAnnotations(errors);
   }
 });
 
@@ -53,32 +71,27 @@ var Toggle = mui.Toggle;
 var Ace = require('brace');
 var Main = React.createClass({displayName: "Main",
 
-  getInitialState: function() {
-    return { source: 'function length (a) {\n  return a.length;\n}\na(1);', loading: false, target: ''};
+  getInitialState:function() {
+    return { source: 'function length (a) {\n  return a.length;\n}\na(1);', loading: false, errors: [], target: ''};
   },
 
-  updateOutput: function(sourceCode) {
-    this.setState ({ loading: true, target: this.state.target});
-    request.post('/flow_check', {source: utils.escape(sourceCode) }, function(err, res)  {
-      this.setState ({ loading: false, target: res});
+  updateOutput:function(sourceCode) {
+    var startTime = new Date();
+    this.setState ({ loading: true});
+    request.post('/flow_check', {source: sourceCode }, function(err, res)  {
+      console.log((new Date() - startTime), ' ms ');
+      this.setState ({ loading: false, source: this.state.source, errors: res, target: this.state.target});
     }.bind(this));
   },
 
-  render: function() {
-
-    var filterOptions = [
-      { payload: '1', text: 'Strict mode' },
-      { payload: '2', text: 'Weak mode' },
-      { payload: '3', text: 'Typescript converter' }];
+  render:function() {
 
     var examples = require('../examples.js');
-
     return (
       React.createElement("div", null, 
 
         React.createElement(Toolbar, null, 
           React.createElement(ToolbarGroup, {key: 0, float: "left"}, 
-            React.createElement(DropDownMenu, {menuItems: filterOptions}), 
             React.createElement(DropDownMenu, {menuItems: examples, onChange: this._handleExamples})
           ), 
 
@@ -91,12 +104,12 @@ var Main = React.createClass({displayName: "Main",
 
         React.createElement("div", {className: "raw-code-area"}, 
           React.createElement(Paper, {zDepth: 5}, 
-            React.createElement(Code, {ref: "source", source: this.state.source, name: "source-editor"})
+            React.createElement(Code, {ref: "sourceEditor", source: this.state.source, name: "source-editor", onChange: this._onChange, errors: this.state.errors})
           )
         ), 
         React.createElement("div", {className: "output-area"}, 
-          React.createElement(Paper, {zDepth: 5}
-
+          React.createElement(Paper, {zDepth: 5}, 
+            React.createElement(Code, {ref: "target", source: this.state.target, name: "target-editor", readOnly: "true"})
           )
         ), 
 
@@ -106,12 +119,11 @@ var Main = React.createClass({displayName: "Main",
     );
   },
 
-  componentDidMount: function() {
-    //this.updateOutput(this.refs.source.getValue());
+  componentDidMount:function() {
+    this.updateOutput(this.state.source);
   },
 
-  _onChange: function(event) {
-    var value = event.target.value;
+  _onChange:function(value) {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(function()  {
       this.updateOutput(value);
@@ -119,11 +131,11 @@ var Main = React.createClass({displayName: "Main",
   },
 
   _handleTouchTap: function() {
-    this.updateOutput(this.refs.source.getValue());
+    //this.updateOutput(this.refs.sourceEditor.source);
   },
 
   _handleExamples: function(e, key, payload) {
-    this.setState({source: payload.payload});
+    this.setState({source: payload.payload, loading: true});
     // THIS IS ANTIPATTERN
   //  this.refs.source.setValue(payload.payload);
   //  this.updateOutput(payload.payload);
@@ -160,7 +172,8 @@ module.exports = Spinner;
 module.exports = [
   { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '01 - Hello world' },
 { payload:
-'function length(x) {\n\
+'// dynamic type analyse, no errors\n\
+function length(x) {\n\
   if (x) {\n\
     if (typeof x === \'string\')\n\
     {\n\
@@ -21585,7 +21598,8 @@ var DropDownMenu = React.createClass({displayName: "DropDownMenu",
           menuItems: this.props.menuItems, 
           hideable: true, 
           visible: this.state.open, 
-          onItemClick: this._onMenuItemClick})
+          onItemClick: this._onMenuItemClick, 
+          zDepth: this.props.zDepth})
       )
     );
   },
@@ -21612,6 +21626,7 @@ var DropDownMenu = React.createClass({displayName: "DropDownMenu",
 });
 
 module.exports = DropDownMenu;
+
 },{"./icon.jsx":"/Users/potomushto/Projects/tryflow/node_modules/material-ui/src/js/icon.jsx","./menu.jsx":"/Users/potomushto/Projects/tryflow/node_modules/material-ui/src/js/menu.jsx","./mixins/classable.js":"/Users/potomushto/Projects/tryflow/node_modules/material-ui/src/js/mixins/classable.js","./mixins/click-awayable":"/Users/potomushto/Projects/tryflow/node_modules/material-ui/src/js/mixins/click-awayable.js","./paper.jsx":"/Users/potomushto/Projects/tryflow/node_modules/material-ui/src/js/paper.jsx","./utils/key-line.js":"/Users/potomushto/Projects/tryflow/node_modules/material-ui/src/js/utils/key-line.js","react":"/Users/potomushto/Projects/tryflow/node_modules/react/react.js"}],"/Users/potomushto/Projects/tryflow/node_modules/material-ui/src/js/enhanced-button.jsx":[function(require,module,exports){
 var React = require('react');
 var KeyCode = require('./utils/key-code.js');

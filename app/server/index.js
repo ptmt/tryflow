@@ -23,7 +23,7 @@ app.use(errorHandler);
 
 app.post('/flow_check', function (req, res) {
   check(req.body.source, (errors) => {
-    res.json(check.wrap(req.body.source, errors));
+    res.json(check.transformErrors(errors));
   });
 });
 
