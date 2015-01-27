@@ -1,96 +1,38 @@
-/* @flow */
+var ace = require('brace');
 var React = require('react');
+require('brace/theme/github');
+require('brace/mode/typescript');
 
-var CodeEditor = React.createClass({
-  render: function(){
-    var inputIsNotEmpty = !this.isEmpty();
-    var classes = ['textarea', 'mui-input', 'mui-input-textarea'];
-    var codeareaClasses = ['codearea', 'mui-is-not-empty'];
-    classes = classes.join(' ');
-    codeareaClasses = codeareaClasses.join(' ');
-    var html = inputIsNotEmpty ? this.props.html : '';
-
-    return <div className={classes}>
-      <pre ref="input" className={codeareaClasses} onInput={this.emitChange} onBlur={this.emitChange} dangerouslySetInnerHTML={{__html: html}}></pre>
-      <span className="mui-input-placeholder" onClick={this._onPlaceholderClick}>
-      {this.props.placeholder}
-      </span>
-      <span className="mui-input-highlight"></span>
-      <span className="mui-input-bar"></span>
-      <span className="mui-input-description">{this.props.description}</span>
-      </div>;
-  },
-
-  // shouldComponentUpdate: function(nextProps){
-  //   console.log('shouldComponentUpdate', nextProps.html, this.getHtml(), this.isEmpty());
-  //   return nextProps.html !== this.getHtml() || this.isEmpty();
-  // },
-
-  componentDidUpdate: function() {
-    if ( this.props.html !== this.getHtml() ) {
-      this.refs.input.getDOMNode().innerHTML = this.props.html;
-    }
-  },
-
-  isEmpty: function() {
-    if(!this.getHtml() || this.getHtml() === '<br>') {
-      return true;
-    } else
-      return false;
-  },
-
-  blur: function() {
-    if(this.isMounted()) this.refs.input.getDOMNode().blur();
-  },
-
-  focus: function() {
-    if (this.isMounted()) this.refs.input.getDOMNode().focus();
-  },
-
-  _onPlaceholderClick: function(e) {
-    this.focus();
-  },
-
-  getHtml() {
-    // TODO: rewrite with state
-    return this.refs.input ? this.refs.input.getDOMNode().innerHTML : this.props.html;
-  },
-
-  getText() {
-    function extractTextWithWhitespace( elems ) {
-      var ret = "", elem;
-
-      for ( var i = 0; elems[i]; i++ ) {
-        elem = elems[i];
-        console.log(elem);
-        // Get the text from text nodes and CDATA nodes
-        if ( elem.nodeType === 3 || elem.nodeType === 4 ) {
-          ret += elem.nodeValue + "\n";
-
-          // Traverse everything else, except comment nodes
-        } else if ( elem.nodeType !== 8 ) {
-          ret += extractTextWithWhitespace( elem.childNodes );
-        }
+module.exports = React.createClass({
+  componentDidMount() {
+    this.editor = ace.edit(this.props.name);
+    this.editor.getSession().setMode('ace/mode/typescript');
+    this.editor.setTheme('ace/theme/github');
+    this.editor.setValue(this.props.source);
+    this.editor.clearSelection();
+    this.editor.on('change', (e) => {
+      if (this.editor.curOp && this.editor.curOp.command.name) {
+        this.props.onChange(this.editor.getValue());
+        console.log(e, "user change");
       }
+    });
+    this.editor.setReadOnly(this.props.readOnly);
 
-      return ret;
+    window.editor = this.editor;
+  },
+  render() {
+    return (<div id={this.props.name} className="codearea"></div>);
+  },
+  componentWillReceiveProps(p) {
+    if (p.source != this.props.source) {
+      this.editor.setValue(p.source);
+      this.props.onChange(p.source);
     }
-    return this.refs.input ? extractTextWithWhitespace([this.refs.input.getDOMNode()]) : '';
+    this.setErrors(p.errors);
   },
 
-  emitChange: function(){
-    var html = this.getHtml();
-    if (html !== this.lastHtml) {
-      if (this.props.onChange) {
-        this.props.onChange({
-          target: {
-            value: this.getText()
-          }
-        });
-      }
-    }
-    this.lastHtml = html;
+  setErrors(errors) {
+    // tupes = info, warning, error
+    this.editor.getSession().setAnnotations(errors);
   }
 });
-
-module.exports = CodeEditor;

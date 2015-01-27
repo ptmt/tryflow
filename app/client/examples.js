@@ -2,7 +2,8 @@
 module.exports = [
   { payload: 'function length (a) {\n  return a.length;\n}\na(1);', text: '01 - Hello world' },
 { payload:
-'function length(x) {\n\
+'// dynamic type analyse, no errors\n\
+function length(x) {\n\
   if (x) {\n\
     if (typeof x === \'string\')\n\
     {\n\

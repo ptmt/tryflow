@@ -32,56 +32,25 @@ function insert(str, index, value) {
   return str.substr(0, index) + value + str.substr(index);
 }
 
-module.exports.wrap = function(sourceCode, errorsJson) {
+module.exports.transformErrors = function(errorsJson) {
   if (errorsJson.passed) {
-    return sourceCode;
+    return [];
   }
   if (errorsJson.fatalError) {
     return "Fatal Error, please try again";
   }
-  // TODO: make it in functional programming way
-  var sourceLines = sourceCode.split('\n');
-  var compiledLines = [];
-  var openings = {};
-  var endings = {};
-
-  errorsJson.errors.forEach(function(error) {
+  return errorsJson.errors.map(function(error) {
     var message1 = error.message[0];
     var message2 = error.message[1];
-    var description = message2 ? message1.descr + '\n<strong>' + message2.descr + '</strong>': message1.descr;
+    var description = message2 ? message1.descr + '\n  ' + message2.descr + '': message1.descr;
 
-  //  if (endings[(message1.endline - 1) + '_' + (message1.end)]) {
-  //    endings[(message1.endline - 1) + '_' + (message1.end)].push('</span>');
-//    } else
-//    {
-      endings[(message1.endline - 1) + '_' + (message1.end)] = ['</span>'];
-//      }
-    if (  openings[(message1.line - 1) + '_' + (message1.start - 1)]) {
-      openings[(message1.line - 1) + '_' + (message1.start - 1)].push(description );
-
-    } else {
-      openings[(message1.line - 1) + '_' + (message1.start - 1)] = [description ];
+    return {
+      row: message1.line - 1,
+      column: message1.start - 1,
+      text: description,
+      type: 'error'
     }
-
-    // sourceLines[message1.endline - 1] = insert(sourceLines[message1.endline - 1]
-    //   , message1.end
-    //   , '</span>')
-    //   sourceLines[message1.line - 1] = insert(sourceLines[message1.line - 1]
-    //     , message1.start - 1
-    //     , '<span class="error"><span class="tip">' + description + '</span>')
   });
-  //console.log(openings);
-  //console.log(endings);
-  for (var i=0; i<sourceLines.length; i++) {
-    var line = '';
-    for(var j=0; j<sourceLines[i].length; j++) {
-      var open = openings[i + '_' + j] ? '<span class="error"><span class="tip">' + openings[i + '_' + j].join('\n') + '</span>' : '';
-      var close = endings[i + '_' + j] ? endings[i + '_' + j].join('') : '';
-      line+= close + open + sourceLines[i][j];
-    }
-    compiledLines.push(line);
-  }
-  return compiledLines.join("\n");
 }
 
 module.exports.version = function(sourceCode) {
