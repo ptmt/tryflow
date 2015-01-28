@@ -9,6 +9,7 @@ module.exports = React.createClass({
     this.editor.getSession().setMode('ace/mode/typescript');
     this.editor.setTheme('ace/theme/github');
     this.editor.setValue(this.props.source);
+    this.editor.blur()
     this.editor.clearSelection();
     this.editor.on('change', (e) => {
       if (this.editor.curOp && this.editor.curOp.command.name) {
@@ -16,7 +17,10 @@ module.exports = React.createClass({
         console.log(e, "user change");
       }
     });
-    this.editor.setReadOnly(this.props.readOnly);
+    if (this.props.readOnly) {
+      this.editor.setReadOnly(true);
+      this.editor.setHighlightActiveLine(false);
+    }
 
     window.editor = this.editor;
   },
@@ -25,7 +29,8 @@ module.exports = React.createClass({
   },
   componentWillReceiveProps(p) {
     if (p.source != this.props.source) {
-      this.editor.setValue(p.source);
+      this.editor.setValue(p.source, 1);
+      this.editor.blur();
       if (this.props.onChange) {
         this.props.onChange(p.source);
       }
