@@ -28,7 +28,7 @@ var Main = React.createClass({
     this.setState ({ loading: true});
     request.post('/flow_check', {source: sourceCode }, (err, res) => {
       console.log((new Date() - startTime), ' ms ');
-      this.setState ({ loading: false, source: this.state.source, errors: res, target: this.state.target});
+      this.setState ({ loading: false, source: this.state.source, errors: res.errors, target: res.target});
     });
   },
 

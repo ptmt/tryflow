@@ -1,7 +1,9 @@
 var express = require('express');
 var app = express();
 var check = require('./flow_check');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var beautify = require('js-beautify').js_beautify;
+var reactTools = require('react-tools');
 
 function errorHandler(err, req, res, next) {
   res.status(500);
@@ -16,6 +18,16 @@ function clientErrorHandler(err, req, res, next) {
   }
 }
 
+function flowES6toES5 (code) {
+  return beautify(
+    reactTools.transform(code, {
+      harmony: true,
+      stripTypes: true
+    }), {
+      indent_size: 4
+  });
+}
+
 app.use(express.static('./dist', {}));
 app.use(bodyParser.json());
 app.use(clientErrorHandler);
@@ -23,7 +35,10 @@ app.use(errorHandler);
 
 app.post('/flow_check', function (req, res) {
   check(req.body.source, function(errors)  {
-    res.json(check.transformErrors(errors));
+    res.json({
+      target: flowES6toES5(req.body.source),
+      errors: check.transformErrors(errors)
+    });
   });
 });
 

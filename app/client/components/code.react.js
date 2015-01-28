@@ -26,7 +26,9 @@ module.exports = React.createClass({
   componentWillReceiveProps(p) {
     if (p.source != this.props.source) {
       this.editor.setValue(p.source);
-      this.props.onChange(p.source);
+      if (this.props.onChange) {
+        this.props.onChange(p.source);
+      }
     }
     this.setErrors(p.errors);
   },

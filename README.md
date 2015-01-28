@@ -4,10 +4,11 @@
 
 ## Roadmap
 
+- [x] Add ACE editor or simular instead of <Input> React component
 - [ ] Add more predefined examples;
 - [ ] Store compiled result by hash (code);
 - [ ] Obtain and display Flow checker version
 - [ ] Js_of_ocaml inside web worker;
 - [ ] Save&Share code;
 - [ ] Show type signatures;
-- [ ] Add ability to strip types and harmony converter.
+- [x] Strip types and harmony converter.

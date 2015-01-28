@@ -38,7 +38,9 @@ module.exports = React.createClass({displayName: "exports",
   componentWillReceiveProps:function(p) {
     if (p.source != this.props.source) {
       this.editor.setValue(p.source);
-      this.props.onChange(p.source);
+      if (this.props.onChange) {
+        this.props.onChange(p.source);
+      }
     }
     this.setErrors(p.errors);
   },
@@ -80,7 +82,7 @@ var Main = React.createClass({displayName: "Main",
     this.setState ({ loading: true});
     request.post('/flow_check', {source: sourceCode }, function(err, res)  {
       console.log((new Date() - startTime), ' ms ');
-      this.setState ({ loading: false, source: this.state.source, errors: res, target: this.state.target});
+      this.setState ({ loading: false, source: this.state.source, errors: res.errors, target: res.target});
     }.bind(this));
   },
 
