@@ -8,7 +8,7 @@ cache.hash = function(sourceCode) {
 }
 
 cache.init = function(cb) {
-  var connectionString = process.env.MONGO_CONNECTION || require('../config').mongo;
+  var connectionString = process.env.MONGOLAB_URI || require('../config').mongo;
   MongoClient.connect(connectionString, function(err, db) {
     if (err) {
       console.error('cannot estabilish connection to mongodb');
