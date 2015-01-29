@@ -6,6 +6,7 @@ var Spinner = require('./spinner.react');
 var Code = require('./code.react');
 var utils = require('../utils');
 
+/// WOW, that's a lot of stuff!
 var Input = mui.Input;
 var Paper = mui.Paper;
 var DropDownMenu = mui.DropDownMenu;
@@ -17,6 +18,8 @@ var Toolbar = mui.Toolbar;
 var ToolbarGroup = mui.ToolbarGroup;
 var Toggle = mui.Toggle;
 var Ace = require('brace');
+
+
 var Main = React.createClass({
 
   getInitialState() {
@@ -27,8 +30,11 @@ var Main = React.createClass({
     var startTime = new Date();
     this.setState ({ loading: true});
     request.post('/flow_check', {source: sourceCode }, (err, res) => {
-      console.log((new Date() - startTime), ' ms ');
-      this.setState ({ loading: false, source: this.state.source, errors: res.errors, target: res.target});
+      if (err) {
+        this.setState ({ loading: false, target: err});
+      } else {
+        this.setState ({ loading: false, source: this.state.source, errors: res.errors, target: res.target});
+      }
     });
   },
 
@@ -78,15 +84,12 @@ var Main = React.createClass({
     }, 2000);
   },
 
-  _handleTouchTap: function() {
-    //this.updateOutput(this.refs.sourceEditor.source);
+  _handleTouchTap() {
+    this.updateOutput(this.state.source);
   },
 
-  _handleExamples: function(e, key, payload) {
+  _handleExamples(e, key, payload) {
     this.setState({source: payload.payload, loading: true});
-    // THIS IS ANTIPATTERN
-  //  this.refs.source.setValue(payload.payload);
-  //  this.updateOutput(payload.payload);
   }
 
 });

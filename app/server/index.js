@@ -1,24 +1,17 @@
 var express = require('express');
 var app = express();
-var check = require('./flow_check');
+var flowCheck = require('./flow_check');
+var cache = require('./cache');
 var bodyParser = require('body-parser');
 var beautify = require('js-beautify').js_beautify;
 var reactTools = require('react-tools');
 
 function errorHandler(err, req, res, next) {
-  res.status(500);
-  res.render('error', { error: err });
+  console.log(err);
+  res.status(500).json('Unexpected error, please try again');
 }
 
-function clientErrorHandler(err, req, res, next) {
-  if (req.xhr) {
-    res.status(500).send({ error: 'Something blew up!' });
-  } else {
-    next(err);
-  }
-}
-
-function flowES6toES5 (code) {
+function flowES6toES5(code) {
   return beautify(
     reactTools.transform(code, {
       harmony: true,
@@ -28,28 +21,38 @@ function flowES6toES5 (code) {
   });
 }
 
+function fillCache(code) {
+  return flowCheck(code)
+    .then((gotErrors) => {
+      return {
+        source: code,
+        target: flowES6toES5(code),
+        errors: flowCheck.transformErrors(gotErrors),
+        created_at: new Date(),
+        updated_at: new Date()
+      }
+  });
+}
+
 app.use(express.static('./dist', {}));
 app.use(bodyParser.json());
-app.use(clientErrorHandler);
-app.use(errorHandler);
 
 app.post('/flow_check', function (req, res) {
-  check(req.body.source, (errors) => {
-    res.json({
-      target: flowES6toES5(req.body.source),
-      errors: check.transformErrors(errors)
-    });
-  });
+  cache
+    .get(app.db, cache.hash(req.body.source), () => fillCache (req.body.source))
+    .then((fromCache) => res.json(fromCache));
 });
 
-// var exec = require('child_process').exec;
-// exec('flow server');
+app.get('*', function (req, res) {
+  res.sendFile('../index.html', {root: __dirname });
+});
+
+app.use(errorHandler);
 
 var server = app.listen(process.env.PORT || 3000, function () {
 
   var host = server.address().address
   var port = server.address().port
-
+  cache.init((db) => app.db = db);
   console.log('app listening at http://%s:%s', host, port)
-
 });

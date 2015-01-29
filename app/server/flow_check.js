@@ -1,31 +1,33 @@
 var spawn = require('child_process').spawn;
 var exec = require('child_process').exec;
+var Promise = require("bluebird");
 
 module.exports = function(sourceCode, cb) {
-  process.env.USER = 'user';
-  child = spawn('flow', ['check-contents', '--json']); //'--no-auto-start'
-  var output = '';
-  child.stdout.on('data', function (data) {
-    output += data;
-  });
+  return new Promise(function (resolve, reject) {
+    process.env.USER = 'user';
+    child = spawn('flow', ['check-contents', '--json']); //'--no-auto-start'
+    var output = '';
+    child.stdout.on('data', function (data) {
+      output += data;
+    });
 
-  child.stderr.on('data', function (data) {
-    console.log('flow check stderr: ' + data);
-  });
+    child.stderr.on('data', function (data) {
+      console.log('flow check stderr: ' + data);
+    });
 
-  child.on('close', function (code) {
-    try {
-      console.log(output);
-      cb(JSON.parse(output));
-    } catch(e) {
-      console.log(e);
-      cb({fatalError: true});
-    }
+    child.on('close', function (code) {
+      try {
+        resolve(JSON.parse(output));
+      } catch(e) {
+        console.log(e);
+        reject(new Error('Fatal Error'));
+      }
 
+    });
+    child.stdin.setEncoding = 'utf-8';
+    child.stdin.write(sourceCode + '\n');
+    child.stdin.end();
   });
-  child.stdin.setEncoding = 'utf-8';
-  child.stdin.write(sourceCode + '\n');
-  child.stdin.end();
 }
 
 function insert(str, index, value) {
@@ -35,9 +37,6 @@ function insert(str, index, value) {
 module.exports.transformErrors = function(errorsJson) {
   if (errorsJson.passed) {
     return [];
-  }
-  if (errorsJson.fatalError) {
-    return "Fatal Error, please try again";
   }
   return errorsJson.errors.map(function(error) {
     var message1 = error.message[0];

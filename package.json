@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/unknownexception/flow-declarations",
   "dependencies": {
+    "bluebird": "^2.9.3",
     "body-parser": "^1.10.1",
     "brace": "^0.4.0",
     "cli": "^0.6.5",
@@ -30,6 +31,7 @@
     "flow-bin": "*",
     "js-beautify": "^1.5.4",
     "material-ui": "^0.5.0",
+    "mongodb": "^1.4.29",
     "react-tools": "^0.12.2",
     "webidl2": "^2.0.7"
   },

@@ -14,7 +14,7 @@ module.exports = React.createClass({
     this.editor.on('change', (e) => {
       if (this.editor.curOp && this.editor.curOp.command.name) {
         this.props.onChange(this.editor.getValue());
-        console.log(e, "user change");
+        //console.log(e, "user change");
       }
     });
     if (this.props.readOnly) {

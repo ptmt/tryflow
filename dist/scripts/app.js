@@ -26,7 +26,7 @@ module.exports = React.createClass({displayName: "exports",
     this.editor.on('change', function(e)  {
       if (this.editor.curOp && this.editor.curOp.command.name) {
         this.props.onChange(this.editor.getValue());
-        console.log(e, "user change");
+        //console.log(e, "user change");
       }
     }.bind(this));
     if (this.props.readOnly) {
@@ -65,6 +65,7 @@ var Spinner = require('./spinner.react');
 var Code = require('./code.react');
 var utils = require('../utils');
 
+/// WOW, that's a lot of stuff!
 var Input = mui.Input;
 var Paper = mui.Paper;
 var DropDownMenu = mui.DropDownMenu;
@@ -76,6 +77,8 @@ var Toolbar = mui.Toolbar;
 var ToolbarGroup = mui.ToolbarGroup;
 var Toggle = mui.Toggle;
 var Ace = require('brace');
+
+
 var Main = React.createClass({displayName: "Main",
 
   getInitialState:function() {
@@ -86,8 +89,11 @@ var Main = React.createClass({displayName: "Main",
     var startTime = new Date();
     this.setState ({ loading: true});
     request.post('/flow_check', {source: sourceCode }, function(err, res)  {
-      console.log((new Date() - startTime), ' ms ');
-      this.setState ({ loading: false, source: this.state.source, errors: res.errors, target: res.target});
+      if (err) {
+        this.setState ({ loading: false, target: err});
+      } else {
+        this.setState ({ loading: false, source: this.state.source, errors: res.errors, target: res.target});
+      }
     }.bind(this));
   },
 
@@ -137,15 +143,12 @@ var Main = React.createClass({displayName: "Main",
     }.bind(this), 2000);
   },
 
-  _handleTouchTap: function() {
-    //this.updateOutput(this.refs.sourceEditor.source);
+  _handleTouchTap:function() {
+    this.updateOutput(this.state.source);
   },
 
-  _handleExamples: function(e, key, payload) {
+  _handleExamples:function(e, key, payload) {
     this.setState({source: payload.payload, loading: true});
-    // THIS IS ANTIPATTERN
-  //  this.refs.source.setValue(payload.payload);
-  //  this.updateOutput(payload.payload);
   }
 
 });
