@@ -67,13 +67,13 @@ function scripts(watch) {
 
 	var rebundle = function() {
 		return fixPipe(bundler
-				.bundle()
-				.pipe(source('app.js')))
+			.bundle()
+			.pipe(source('app.js')))
 			.pipe(buffer())
 			.pipe($.sourcemaps.init({
-				loadMaps: true
+				loadMaps: true // TODO: use ES6 as a sitemaps
 			}))
-			//.pipe($.uglify())
+			.pipe($.uglify())
 			.pipe($.sourcemaps.write('./'))
 			.pipe(gulp.dest('./dist/scripts/'))
 			.pipe($.livereload())

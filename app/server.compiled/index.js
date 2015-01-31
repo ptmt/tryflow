@@ -37,6 +37,12 @@ function fillCache(code) {
 app.use(express.static('./dist', {}));
 app.use(bodyParser.json());
 
+app.post('/load_code', function (req, res) {
+  cache
+  .get(app.db, req.body.hash, function()  {return res.json('Not found');})
+  .then(function(fromCache)  {return res.json(fromCache);});
+});
+
 app.post('/flow_check', function (req, res) {
   cache
     .get(app.db, cache.hash(req.body.source), function()  {return fillCache (req.body.source);})

@@ -31,9 +31,13 @@ cache.get = function (db     , key        , funcToBeCached          ) {
         if(result) {
           resolve(result);
         } else {
-          funcToBeCached()
-            .then(function(toCache)  {return cache.put(db, key, toCache);})
-            .then(resolve);
+          if (funcToBeCached) {
+            funcToBeCached()
+              .then(function(toCache)  {return cache.put(db, key, toCache);})
+              .then(resolve);
+          } else {
+            resolve ({source: 'Not found'});
+          }
         }
       }
     });

@@ -1,10 +1,11 @@
 /* @flow */
 var React = require('react');
 var mui = require('material-ui');
-var request = require('../request');
+
 var Spinner = require('./spinner.react');
 var Code = require('./code.react');
 var utils = require('../utils');
+var service = require('../service'); // REWRITE WITH FLUX
 
 /// WOW, that's a lot of stuff!
 var Input = mui.Input;
@@ -26,26 +27,35 @@ type MainState = {
   target: string;
 }
 
-type CheckResult = {
-  errors: Array<any>;
-  target: string;
-}
-
 var Main = React.createClass({
+
   getInitialState(): MainState {
-    return { source: 'function length (a) {\n  return a.length;\n}\na(1);', loading: false, errors: [], target: ''};
+    return { source: '', loading: false, errors: [], target: ''};
   },
 
-  updateOutput(sourceCode: string) {
-    var startTime = new Date();
-    this.setState ({ loading: true});
-    request.post<CheckResult>('/flow_check', {source: sourceCode }, (err, res) => {
+  componentDidMount() {
+    console.log(this.props.hash);
+    service.loadByHash(this.props.hash , (err, res) => {
       if (err) {
         this.setState ({ loading: false, target: err});
       } else {
-        this.setState ({ loading: false, source: this.state.source, errors: res.errors, target: res.target});
+        this.setState ({ loading: false, source: res.source, errors: res.errors, target: res.target});
       }
     });
+  },
+
+  updateOutput(sourceCode: string) {
+    if (sourceCode && sourceCode.length > 0) {
+      this.setState ({ loading: true});
+      service.flowCheck(sourceCode , (err, res) => {
+        if (err) {
+          this.setState ({ loading: false, target: err});
+        } else {
+          this.setState ({ loading: false, source: this.state.source, errors: res.errors, target: res.target});
+          window.location.hash = res.hash;
+        }
+      });
+    }
   },
 
   render(): any {
@@ -68,7 +78,7 @@ var Main = React.createClass({
 
         <div className="raw-code-area">
           <Paper zDepth={5} >
-            <Code ref="sourceEditor" source={this.state.source} name="source-editor" onChange={this._onChange} errors={this.state.errors}/>
+            <Code ref="sourceEditor" source={this.state.source} name="source-editor" onChange={this._onSourceChange} errors={this.state.errors}/>
           </Paper>
         </div>
         <div className="output-area">
@@ -83,12 +93,9 @@ var Main = React.createClass({
     );
   },
 
-  componentDidMount() {
-    this.updateOutput(this.state.source);
-  },
-
-  _onChange(value: string) {
-    setTimeout(() => {
+  _onSourceChange(value: string) {
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
       this.updateOutput(value);
     }, 2000);
   },
