@@ -12,10 +12,8 @@ module.exports = React.createClass({
     this.editor.blur()
     this.editor.clearSelection();
     this.editor.on('change', (e) => {
-      //console.log(e, this.editor.curOp.command);
       if (this.editor.getValue() != this.props.source && this.props.onChange) {
         this.props.onChange(this.editor.getValue());
-        //console.log(e, "user change");
       }
     });
     if (this.props.readOnly) {
@@ -30,18 +28,14 @@ module.exports = React.createClass({
   },
   componentWillReceiveProps(p) {
     if (p.source != this.editor.getValue()) {
-      console.log('set source', p.source, this.props.source);
       this.editor.setValue(p.source, 1);
       this.editor.blur();
-      // if (this.props.onChange) {
-      //   this.props.onChange(p.source);
-      // }
     }
     this.setErrors(p.errors);
   },
 
   setErrors(errors) {
-    // tupes = info, warning, error
+    // types = info, warning, error
     this.editor.getSession().setAnnotations(errors);
   }
 });

@@ -73,6 +73,7 @@ var Main = React.createClass({
         <Toolbar>
           <ToolbarGroup key={0} float="left">
             <DropDownMenu menuItems={examples} onChange={this._handleExamples}/>
+            <DropDownMenu menuItems={examples} />
           </ToolbarGroup>
 
           <ToolbarGroup key={1} float="right">
