@@ -72,9 +72,9 @@ function scripts(watch) {
 			.pipe(source('app.js'))
 			.pipe(buffer())
 			.pipe($.sourcemaps.init({
-				loadMaps: true // TODO: use ES6 as a sitemaps
+				loadMaps: true // TODO: typed sourcemaps
 			}))
-			.pipe($.uglify())
+			//.pipe($.uglify())
 			.pipe($.sourcemaps.write('./'))
 			.pipe(gulp.dest('./dist/scripts/'))
 			.pipe($.livereload());
