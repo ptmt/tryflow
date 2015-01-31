@@ -19,17 +19,27 @@ var ToolbarGroup = mui.ToolbarGroup;
 var Toggle = mui.Toggle;
 var Ace = require('brace');
 
+type MainState = {
+  source: string;
+  loading: boolean;
+  errors: Array<any>;
+  target: string;
+}
+
+type CheckResult = {
+  errors: Array<any>;
+  target: string;
+}
 
 var Main = React.createClass({
-
-  getInitialState() {
+  getInitialState(): MainState {
     return { source: 'function length (a) {\n  return a.length;\n}\na(1);', loading: false, errors: [], target: ''};
   },
 
-  updateOutput(sourceCode) {
+  updateOutput(sourceCode: string) {
     var startTime = new Date();
     this.setState ({ loading: true});
-    request.post('/flow_check', {source: sourceCode }, (err, res) => {
+    request.post<CheckResult>('/flow_check', {source: sourceCode }, (err, res) => {
       if (err) {
         this.setState ({ loading: false, target: err});
       } else {
@@ -38,7 +48,7 @@ var Main = React.createClass({
     });
   },
 
-  render() {
+  render(): any {
 
     var examples = require('../examples.js');
     return (
@@ -77,9 +87,8 @@ var Main = React.createClass({
     this.updateOutput(this.state.source);
   },
 
-  _onChange(value) {
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
+  _onChange(value: string) {
+    setTimeout(() => {
       this.updateOutput(value);
     }, 2000);
   },
@@ -88,7 +97,7 @@ var Main = React.createClass({
     this.updateOutput(this.state.source);
   },
 
-  _handleExamples(e, key, payload) {
+  _handleExamples(e: any, key: any, payload: any) {
     this.setState({source: payload.payload, loading: true});
   }
 

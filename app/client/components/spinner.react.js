@@ -2,7 +2,7 @@
 var React = require('react');
 
 var Spinner = React.createClass({
-  render: function() {
+  render(): any {
     var style = {};
     if (!this.props.visible) {
       style.display = 'none'

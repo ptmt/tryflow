@@ -1,7 +1,7 @@
 /* @flow */
 type Callback <T> = (err: ?string, data? : T) => void;
 
-module.exports.post = function<T>(url: string, data: string, callback: Callback<T> ) {
+module.exports.post = function<T>(url: string, data: any, callback: Callback<T> ) {
   var request = new XMLHttpRequest();
   request.open('POST', url, true);
   request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');

@@ -1,7 +1,11 @@
 [ignore]
-
+.*/node_modules
+.*/dist/*
+.*/test
+.*/app/server.compiled
 [include]
-
+app/client
+app/server
 [libs]
-
+app/interfaces
 [options]
