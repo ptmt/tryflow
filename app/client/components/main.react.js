@@ -34,7 +34,6 @@ var Main = React.createClass({
   },
 
   componentDidMount() {
-    console.log(this.props.hash);
     service.loadByHash(this.props.hash , (err, res) => {
       if (err) {
         this.setState ({ loading: false, target: err});
@@ -60,7 +59,14 @@ var Main = React.createClass({
 
   render(): any {
 
-    var examples = require('../examples.js');
+    //var examples = require('../examples.js');
+    var examples = [
+      {payload: '53f7b9797427a8d193b08565780fbb96', text: '01 - Hello world'},
+      {payload: 'cc51170c03145c61ee2e4b21130dcc63', text: '02 - Dynamic'},
+      {payload: '53f7b9797427a8d193b08565780fbb96', text: '03 - Type annotations'},
+      {payload: '53f7b9797427a8d193b08565780fbb96', text: '04 - Modules'},
+      {payload: '53f7b9797427a8d193b08565780fbb96', text: '05 - React.js'},
+    ];
     return (
       <div>
 
@@ -94,10 +100,12 @@ var Main = React.createClass({
   },
 
   _onSourceChange(value: string) {
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.updateOutput(value);
-    }, 2000);
+    this.setState({source: value});
+    // clearTimeout(this.timeout);
+    // this.timeout = setTimeout(() => {
+    //   console.log('update');
+    //   this.updateOutput(value);
+    // }, 2000);
   },
 
   _handleTouchTap() {
@@ -105,7 +113,7 @@ var Main = React.createClass({
   },
 
   _handleExamples(e: any, key: any, payload: any) {
-    this.setState({source: payload.payload, loading: true});
+    this.setState({source: payload.payload});
   }
 
 });

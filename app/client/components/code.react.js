@@ -17,6 +17,9 @@ module.exports = React.createClass({
         //console.log(e, "user change");
       }
     });
+    this.editor.on('paste', (e) => {
+      this.props.onChange(e.text);
+    });
     if (this.props.readOnly) {
       this.editor.setReadOnly(true);
       this.editor.setHighlightActiveLine(false);
@@ -31,9 +34,9 @@ module.exports = React.createClass({
     if (p.source != this.props.source) {
       this.editor.setValue(p.source, 1);
       this.editor.blur();
-      if (this.props.onChange) {
-        this.props.onChange(p.source);
-      }
+      // if (this.props.onChange) {
+      //   this.props.onChange(p.source);
+      // }
     }
     this.setErrors(p.errors);
   },

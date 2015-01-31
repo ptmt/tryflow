@@ -66,9 +66,10 @@ function scripts(watch) {
 	})
 
 	var rebundle = function() {
-		return fixPipe(bundler
+		return bundler
 			.bundle()
-			.pipe(source('app.js')))
+			.on('error', console.log)
+			.pipe(source('app.js'))
 			.pipe(buffer())
 			.pipe($.sourcemaps.init({
 				loadMaps: true // TODO: use ES6 as a sitemaps
@@ -76,10 +77,7 @@ function scripts(watch) {
 			.pipe($.uglify())
 			.pipe($.sourcemaps.write('./'))
 			.pipe(gulp.dest('./dist/scripts/'))
-			.pipe($.livereload())
-			.on('error', function(error) {
-				console.error('' + error);
-			});
+			.pipe($.livereload());
 	};
 
 	bundler.on('update', rebundle);

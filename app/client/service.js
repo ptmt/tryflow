@@ -16,5 +16,5 @@ module.exports.flowCheck = function(sourceCode, callback) {
 }
 
 module.exports.loadByHash = function(hash, callback) {
-  FlowRequest.post('/load_code', { hash: hash }, callback);
+  FlowRequest.post('/load_code', { hash: hash.replace('#','') }, callback);
 }

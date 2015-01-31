@@ -39,7 +39,7 @@ app.use(bodyParser.json());
 
 app.post('/load_code', function (req, res) {
   cache
-  .get(app.db, req.body.hash, () => res.json('Not found'))
+  .get(app.db, req.body.hash)
   .then((fromCache) => res.json(fromCache));
 });
 
@@ -49,9 +49,9 @@ app.post('/flow_check', function (req, res) {
     .then((fromCache) => res.json(fromCache));
 });
 
-app.get('*', function (req, res) {
-  res.sendFile('../index.html', {root: __dirname });
-});
+// app.get('*', function (req, res) {
+//   res.sendFile('../index.html', {root: __dirname });
+// });
 
 app.use(errorHandler);
 
