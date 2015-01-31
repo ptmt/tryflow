@@ -12,13 +12,11 @@ module.exports = React.createClass({
     this.editor.blur()
     this.editor.clearSelection();
     this.editor.on('change', (e) => {
-      if (this.editor.curOp && this.editor.curOp.command.name) {
+      //console.log(e, this.editor.curOp.command);
+      if (this.editor.getValue() != this.props.source && this.props.onChange) {
         this.props.onChange(this.editor.getValue());
         //console.log(e, "user change");
       }
-    });
-    this.editor.on('paste', (e) => {
-      this.props.onChange(e.text);
     });
     if (this.props.readOnly) {
       this.editor.setReadOnly(true);
@@ -31,7 +29,8 @@ module.exports = React.createClass({
     return (<div id={this.props.name} className="codearea"></div>);
   },
   componentWillReceiveProps(p) {
-    if (p.source != this.props.source) {
+    if (p.source != this.editor.getValue()) {
+      console.log('set source', p.source, this.props.source);
       this.editor.setValue(p.source, 1);
       this.editor.blur();
       // if (this.props.onChange) {

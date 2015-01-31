@@ -15,6 +15,7 @@ cache.init = function(cb) {
       process.exit();
     } else {
       console.log('connection to mongo was estabilished');
+      db.checks = db.collection('checks');
       cb(db);
     }
   });
@@ -22,13 +23,13 @@ cache.init = function(cb) {
 
 cache.get = function (db     , key        , funcToBeCached          ) {
   return new Promise(function (resolve, reject) {
-    var collection = db.collection('checks');
-    collection.findOne({hash: key}, function(err, result)  {
+    db.checks.findOne({hash: key}, function(err, result)  {
       console.log(err, result);
       if (err) {
         reject(err);
       } else {
         if(result) {
+          cache.addView(db, key);
           resolve(result);
         } else {
           if (funcToBeCached) {
@@ -46,9 +47,8 @@ cache.get = function (db     , key        , funcToBeCached          ) {
 
 cache.put = function(db, key, toCache) {
   return new Promise(function (resolve, reject) {
-    var collection = db.collection('checks');
     toCache.hash = key;
-    collection.insert(toCache, function(err)  {
+    db.checks.insert(toCache, function(err)  {
       if (err) {
         reject(err);
       } else {
@@ -56,4 +56,8 @@ cache.put = function(db, key, toCache) {
       }
     });
   });
+}
+
+cache.addView = function(db, key) {
+  db.checks.update({ hash: key}, {$inc: {views: 1}}, function() {});
 }

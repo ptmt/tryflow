@@ -25,6 +25,7 @@ function fillCache(code) {
   return flowCheck(code)
     .then((gotErrors) => {
       return {
+        views: 1,
         source: code,
         target: flowES6toES5(code),
         errors: flowCheck.transformErrors(gotErrors),
@@ -48,10 +49,6 @@ app.post('/flow_check', function (req, res) {
     .get(app.db, cache.hash(req.body.source), () => fillCache (req.body.source))
     .then((fromCache) => res.json(fromCache));
 });
-
-// app.get('*', function (req, res) {
-//   res.sendFile('../index.html', {root: __dirname });
-// });
 
 app.use(errorHandler);
 

@@ -6,5 +6,5 @@ var Main = require('./components/main.react.js');
 //Needed for React Developer Tools
 window.React = React;
 
-var hash = window.location.hash || '53f7b9797427a8d193b08565780fbb96';
+var hash = window.location.hash || '325911623be1511317876918418feab6';
 React.render(<Main hash={hash}/>, document.body);
