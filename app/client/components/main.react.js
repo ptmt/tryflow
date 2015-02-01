@@ -70,9 +70,9 @@ var Main = React.createClass({
     var examples = [
       {payload: '325911623be1511317876918418feab6', text: '01 - Hello world'},
       {payload: 'cc51170c03145c61ee2e4b21130dcc63', text: '02 - Dynamic'},
-      {payload: '53f7b9797427a8d193b08565780fbb96', text: '03 - Type annotations'},
-      {payload: '53f7b9797427a8d193b08565780fbb96', text: '04 - Modules'},
-      {payload: '53f7b9797427a8d193b08565780fbb96', text: '05 - React.js'},
+      {payload: 'f8cd7d297507b36d9632fc1c16a929de', text: '03 - Type annotations'},
+      {payload: '0dedce6865f03a82a7d9e7220046a324', text: '04 - Modules'},
+      {payload: '3dd29c7a927e6e8133ed6923afefc977', text: '05 - React.js'},
     ];
     return (
       <div>
@@ -106,7 +106,7 @@ var Main = React.createClass({
 
         <Footer />
 
-        <Snackbar ref="snackbar" message={this.state.error} action="Got it" />
+        <Snackbar ref="snackbar" message={this.state.error} action="Got it"  onActionTouchTap={this._handleSnackbarAction} />
 
       </div>
     );
@@ -130,8 +130,8 @@ var Main = React.createClass({
     this.loadByHash(payload.payload);
   },
 
-  _handleTest() {
-    console.log('test');
+  _handleSnackbarAction() {
+    this.ref.snackbar.hide();
   }
 
 });

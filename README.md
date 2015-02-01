@@ -4,7 +4,7 @@
 
 Flow is a [static type checker for Javascript](http://flowtype.org/) written in [Ocaml by Facebook team](https://github.com/facebook/flow).
 
-It fits both server and client: [Trying to heal Node.js app with Facebook Flow](http://potomushto.com/2015/01/26/facebook-flow-on-server-and-client.html)
+The idea behind Flow perfectly fits both server and client, the implementation is sort of alpha quality though: [Trying to heal Node.js app with Facebook Flow](http://potomushto.com/2015/01/26/facebook-flow-on-server-and-client.html)
 
 `tryflow` transforms ES6 typed javascript into ready-to-use ES5.
 

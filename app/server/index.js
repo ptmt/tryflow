@@ -12,13 +12,18 @@ function errorHandler(err, req, res, next) {
 }
 
 function flowES6toES5(code) {
-  return beautify(
-    reactTools.transform(code, {
-      harmony: true,
-      stripTypes: true
-    }), {
-      indent_size: 4
-  });
+  try {
+    return beautify(
+      reactTools.transform(code, {
+        harmony: true,
+        stripTypes: true
+      }), {
+        indent_size: 4
+    });
+  } catch (e) {
+    console.log(e);
+    return JSON.stringify(e);
+  }
 }
 
 function fillCache(code) {

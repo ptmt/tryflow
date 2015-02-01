@@ -8,7 +8,7 @@ cache.hash = function(sourceCode) {
 }
 
 cache.init = function(cb) {
-  var connectionString = process.env.MONGOLAB_URI || require('../config').mongo;
+  var connectionString = process.env.MONGOLAB_URI ? process.env.MONGOLAB_URI : require('../config').mongo;
   MongoClient.connect(connectionString, function(err, db) {
     if (err) {
       console.error('cannot estabilish connection to mongodb');
@@ -24,7 +24,6 @@ cache.init = function(cb) {
 cache.get = function (db: any, key: string, funcToBeCached: Function) {
   return new Promise(function (resolve, reject) {
     db.checks.findOne({hash: key}, (err, result) => {
-      console.log(err, result);
       if (err) {
         reject(err);
       } else {
