@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
-    "postinstall": "sudo apt-get install -y libelf-dev && gulp build"
+    "postinstall": "gulp build"
 
   },
   "repository": {
