@@ -29,3 +29,5 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 dist/scripts/app.js.map
+dist
+app/server.compiled

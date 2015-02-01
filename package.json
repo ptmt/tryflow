@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "postinstall": "apt-get install -y libelf-dev && gulp build"
+
   },
   "repository": {
     "type": "git",

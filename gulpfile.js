@@ -66,7 +66,7 @@ function scripts(watch) {
 	})
 
 	var rebundle = function() {
-		return bundler
+		var t = bundler
 			.bundle()
 			.on('error', console.log)
 			.pipe(source('app.js'))
@@ -74,7 +74,11 @@ function scripts(watch) {
 			.pipe($.sourcemaps.init({
 				loadMaps: true // TODO: typed sourcemaps
 			}))
-			//.pipe($.uglify())
+		if (!watch) {
+			console.log('uglify');
+			t = t.pipe($.uglify());
+		}
+		return t
 			.pipe($.sourcemaps.write('./'))
 			.pipe(gulp.dest('./dist/scripts/'))
 			.pipe($.livereload());
@@ -97,7 +101,6 @@ gulp.task('scripts:watch', function() {
 // HTML
 gulp.task('html', function() {
 	return gulp.src('app/*.html')
-		//.pipe($.useref())
 		.pipe(gulp.dest('dist'))
 		.pipe($.size())
 		.pipe($.livereload());
@@ -116,10 +119,6 @@ gulp.task('images', function() {
 		.pipe($.livereload());
 });
 
-gulp.task('test', function() {
-	//require('common-node').run('./node_modules/.bin/_mocha');
-});
-
 // Clean
 gulp.task('clean', function() {
 	return gulp.src(['dist/styles', 'dist/scripts', 'dist/images'], {
@@ -128,13 +127,13 @@ gulp.task('clean', function() {
 });
 
 // Bundle
-gulp.task('bundle', ['scripts:watch', 'images', 'less', 'fonts', 'bower']);
+gulp.task('bundle', ['images', 'less', 'fonts', 'bower']);
 
 // Build
-gulp.task('build', ['html', 'bundle', 'images']);
+gulp.task('build', ['html', 'scripts', 'bundle', 'flow']);
 
 // Default task
-gulp.task('default', ['watch']);
+gulp.task('default', ['watch', 'scripts:watch']);
 
 gulp.task('flow', function() {
 	return gulp.src([
@@ -147,7 +146,6 @@ gulp.task('flow', function() {
 			stripTypes: true,
 			harmony: true
 		}))
-		// Output each file into the ./build/javascript/ directory
 		.pipe(gulp.dest('./app/server.compiled/'))
 		.on('error', function(error) {
 			console.error('' + error);
@@ -199,14 +197,8 @@ gulp.task('watch', ['html', 'bundle', 'server:start'], function() {
 	// Watch .html files
 	gulp.watch('app/*.html', ['html']);
 
-	// Watch .jade files
-	//gulp.watch('app/template/**/*.jade', ['jade', 'html']);
-
 	// Watch .css files
 	gulp.watch('app/less/*.less', ['less']);
-
-	// Watch client .js files
-	//dgulp.watch('app/client/**/*.js', ['client-flow']);
 
 	// Watch image files
 	gulp.watch('app/images/**/*', ['images']);
