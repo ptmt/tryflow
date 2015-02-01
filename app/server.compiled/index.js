@@ -50,6 +50,10 @@ app.post('/flow_check', function (req, res) {
     .then(function(fromCache)  {return res.json(fromCache);});
 });
 
+app.get('/flow_version', function (req, res) {
+  flowCheck.version(function(err, version)  {return res.json({err: err, version: version});});
+});
+
 app.use(errorHandler);
 
 var server = app.listen(process.env.PORT || 3000, function () {

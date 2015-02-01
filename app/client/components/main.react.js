@@ -4,6 +4,7 @@ var mui = require('material-ui');
 
 var Spinner = require('./spinner.react');
 var Code = require('./code.react');
+var Footer = require('./footer.react');
 var utils = require('../utils');
 var service = require('../service'); // REWRITE WITH FLUX
 
@@ -17,7 +18,7 @@ var FlatButton = mui.FlatButton;
 var RaisedButton = mui.RaisedButton;
 var Toolbar = mui.Toolbar;
 var ToolbarGroup = mui.ToolbarGroup;
-var Toggle = mui.Toggle;
+var Snackbar = mui.Snackbar;
 var Ace = require('brace');
 
 type MainState = {
@@ -30,13 +31,18 @@ type MainState = {
 var Main = React.createClass({
 
   getInitialState(): MainState {
-    return { source: '', loading: false, errors: [], target: ''};
+    return { source: '', loading: false, errors: [], target: '', error: ''};
   },
 
   componentDidMount() {
-    service.loadByHash(this.props.hash , (err, res) => {
+    this.loadByHash(this.props.hash);
+  },
+
+  loadByHash(hash) {
+    service.loadByHash(hash, (err, res) => {
       if (err) {
-        this.setState ({ loading: false, target: err});
+        this.setState ({ loading: false, error: err});
+        this.refs.snackbar.show();
       } else {
         this.setState ({ loading: false, source: res.source, errors: res.errors, target: res.target});
       }
@@ -48,7 +54,8 @@ var Main = React.createClass({
       this.setState ({ loading: true});
       service.flowCheck(sourceCode , (err, res) => {
         if (err) {
-          this.setState ({ loading: false, target: err});
+          this.setState ({ loading: false, error: err});
+          this.refs.snackbar.show();
         } else {
           this.setState ({ loading: false, source: this.state.source, errors: res.errors, target: res.target});
           window.location.hash = res.hash;
@@ -72,12 +79,13 @@ var Main = React.createClass({
 
         <Toolbar>
           <ToolbarGroup key={0} float="left">
-            <DropDownMenu menuItems={examples} onChange={this._handleExamples}/>
-            <DropDownMenu menuItems={examples} />
+            <DropDownMenu menuItems={examples} onChange={this._handleExamples} />
           </ToolbarGroup>
 
           <ToolbarGroup key={1} float="right">
+            <a href="http://flowtype.org/docs/getting-started.html"><Icon icon="social-school" /></a>
             <a href="https://github.com/unknownexception/tryflow"><Icon icon="mui-icon-github" /></a>
+
             <span className="mui-toolbar-separator">&nbsp;</span>
             <RaisedButton label="flow check" primary={true} onClick={this._handleTouchTap} />
           </ToolbarGroup>
@@ -95,6 +103,10 @@ var Main = React.createClass({
         </div>
 
         <Spinner visible={this.state.loading} />
+
+        <Footer />
+
+        <Snackbar ref="snackbar" message={this.state.error} action="Got it" />
 
       </div>
     );
@@ -114,7 +126,12 @@ var Main = React.createClass({
   },
 
   _handleExamples(e: any, key: any, payload: any) {
-    this.setState({source: payload.payload});
+    window.location.hash = payload.payload;
+    this.loadByHash(payload.payload);
+  },
+
+  _handleTest() {
+    console.log('test');
   }
 
 });

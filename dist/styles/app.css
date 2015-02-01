@@ -5263,3 +5263,9 @@ hr {
   right: 0;
   position: absolute;
 }
+.footer {
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
+  text-align: center;
+}

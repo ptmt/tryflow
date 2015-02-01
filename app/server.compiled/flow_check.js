@@ -52,13 +52,9 @@ module.exports.transformErrors = function(errorsJson) {
   });
 }
 
-module.exports.version = function(sourceCode) {
+module.exports.version = function(callback) {
   child = exec('flow --version',
   function (error, stdout, stderr) {
-    console.log('stdout: ' + stdout);
-    console.log('stderr: ' + stderr);
-    if (error !== null) {
-      console.log('exec error: ' + error);
-    }
+    callback(error || stderr, stdout.split(',')[2].trim());
   });
 }
