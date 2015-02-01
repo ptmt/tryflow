@@ -1,19 +1,19 @@
 {
   "name": "tryflow",
   "version": "1.0.0",
-  "description": "try flow online",
+  "description": "try Flow online",
   "main": "app/server.compiled/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
-    "postinstall": "apt-get install -y libelf-dev && gulp build"
+    "postinstall": "sudo apt-get install -y libelf-dev && gulp build"
 
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/unknownexception/flow-declarations.git"
+    "url": "https://github.com/unknownexception/tryflow.git"
   },
   "keywords": [
     "flowtype"
@@ -21,9 +21,9 @@
   "author": "Dmitriy Loktev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/unknownexception/flow-declarations/issues"
+    "url": "https://github.com/unknownexception/tryflow/issues"
   },
-  "homepage": "https://github.com/unknownexception/flow-declarations",
+  "homepage": "http://tryflow.org",
   "dependencies": {
     "bluebird": "^2.9.3",
     "body-parser": "^1.10.1",
