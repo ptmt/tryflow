@@ -8,7 +8,15 @@ cache.hash = function(sourceCode) {
 }
 
 cache.init = function(cb) {
-  var connectionString = process.env.MONGOLAB_URI ? process.env.MONGOLAB_URI : require('../config').mongo;
+  var connectionString;
+  if (process.env.MONGOLAB_URI) {
+    connectionString = process.env.MONGOLAB_URI;
+  } else {
+    try {
+      connectionString = require('../config').mongo
+    }
+    catch(e) {};
+  }
   MongoClient.connect(connectionString, function(err, db) {
     if (err) {
       console.error('cannot estabilish connection to mongodb');
