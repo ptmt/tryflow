@@ -106,19 +106,6 @@ gulp.task('html', function() {
 		.pipe($.livereload());
 });
 
-// Images
-gulp.task('images', function() {
-	return gulp.src('app/images/**/*')
-		.pipe($.imagemin({
-			optimizationLevel: 3,
-			progressive: true,
-			interlaced: true
-		}))
-		.pipe(gulp.dest('dist/images'))
-		.pipe($.size())
-		.pipe($.livereload());
-});
-
 // Clean
 gulp.task('clean', function() {
 	return gulp.src(['dist/styles', 'dist/scripts', 'dist/images'], {
@@ -127,7 +114,7 @@ gulp.task('clean', function() {
 });
 
 // Bundle
-gulp.task('bundle', ['images', 'less', 'fonts', 'bower']);
+gulp.task('bundle', ['less', 'fonts', 'bower']);
 
 // Build
 gulp.task('build', ['html', 'scripts', 'bundle', 'flow']);

@@ -47,7 +47,6 @@
     "gulp-clean": "~0.2.4",
     "gulp-develop-server": "^0.2.5",
     "gulp-flowtype": "*",
-    "gulp-imagemin": "~2.1.0",
     "gulp-jade": "~0.4.2",
     "gulp-jshint": "~1.4.0",
     "gulp-less": "^1.3.6",
