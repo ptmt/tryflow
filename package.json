@@ -28,16 +28,14 @@
     "bluebird": "^2.9.3",
     "body-parser": "^1.10.1",
     "brace": "^0.4.0",
-    "cli": "^0.6.5",
     "express": "^4.11.0",
     "flow-bin": "*",
     "js-beautify": "^1.5.4",
     "material-ui": "^0.6.1",
     "mongodb": "^1.4.29",
-    "react": "0.13.0-beta.1",
-    "react-tools": "0.13.0-beta.1",
-    "react-tap-event-plugin": "*",
-    "webidl2": "^2.0.7"
+    "react": "*",
+    "react-tools": "*",
+    "react-tap-event-plugin": "*"
   },
   "devDependencies": {
     "browserify": "^7.0.0",
