@@ -36,6 +36,7 @@
     "mongodb": "^1.4.29",
     "react": "0.13.0-beta.1",
     "react-tools": "0.13.0-beta.1",
+    "react-tap-event-plugin": "*",
     "webidl2": "^2.0.7"
   },
   "devDependencies": {
