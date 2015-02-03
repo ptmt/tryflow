@@ -1,5 +1,7 @@
 # tryflow
 
+[![Join the chat at https://gitter.im/unknownexception/tryflow](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/unknownexception/tryflow?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/unknownexception/tryflow.svg)](https://travis-ci.org/unknownexception/tryflow)
 
 Flow is a [static type checker for Javascript](http://flowtype.org/) written in [Ocaml by Facebook team](https://github.com/facebook/flow).
