@@ -68,11 +68,11 @@ var Main = React.createClass({
 
     //var examples = require('../examples.js');
     var examples = [
-      {payload: '325911623be1511317876918418feab6', text: '01 - Hello world'},
-      {payload: 'cc51170c03145c61ee2e4b21130dcc63', text: '02 - Dynamic'},
-      {payload: 'f8cd7d297507b36d9632fc1c16a929de', text: '03 - Type annotations'},
-      {payload: '0dedce6865f03a82a7d9e7220046a324', text: '04 - Modules'},
-      {payload: '8f48568126e8883c64ef40df0419ccbf', text: '05 - React.js'},
+      {payload: '0101751fa7c5741792c292e31fa8de32', text: '01 - Hello world'},
+      {payload: '16703f86fe7507a5145d9e87006eeddd', text: '02 - Dynamic'},
+      {payload: '3b135a42a7710d2ee0135885ebcab752', text: '03 - Type annotations'},
+      {payload: '524323e2bf98148b667b0f8e72e28f2c', text: '04 - Modules'},
+      {payload: 'bc1f559bbf4cf06ad317673e3f39dea1', text: '05 - React.js'},
     ];
     return (
       <div>
