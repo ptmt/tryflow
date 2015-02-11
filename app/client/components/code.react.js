@@ -1,5 +1,6 @@
 var ace = require('brace');
 var React = require('react');
+var service = require('../service');
 require('brace/theme/github');
 require('brace/mode/typescript');
 
@@ -37,5 +38,23 @@ module.exports = React.createClass({
   setErrors(errors) {
     // types = info, warning, error
     this.editor.getSession().setAnnotations(errors);
+  },
+
+  autocompleteEnable() {
+    var langTools = require("brace/ext/language_tools");
+    this.editor.setOptions({enableBasicAutocompletion: true});
+
+    var flowCompleter = {
+        getCompletions: function(editor, session, pos, prefix, callback) {
+            if (prefix.length === 0) { callback(null, []); return }
+            service.getAutocompletions(prefix)
+              .then(function() {
+                callback(null, wordList.map(function(ea) {
+                    return {name: ea.word, value: ea.word, score: ea.score, meta: "rhyme"}
+                }));
+              });
+        }
+    }
+    langTools.addCompleter(flowCompleter);
   }
 });

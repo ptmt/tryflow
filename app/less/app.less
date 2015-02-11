@@ -15,9 +15,6 @@
 .mui-menu.mui-menu-hideable {
   z-index: 10;
 }
-.mui-toolbar .mui-toolbar-group .mui-flat-button {
-  line-height:56px;
-}
 
 .mui-input textarea[type='text'], .codearea {
   width: 90%;
@@ -68,4 +65,19 @@
   bottom: 5%;
   width: 100%;
   text-align: center;
+}
+
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 800px) {
+/* Styles */
+  .mui-toolbar {
+    height: 160px;
+  }
+  .output-area, .raw-code-area {
+    height: 60%;
+  }
+  .mui-flat-button-label {
+    font-size: 0.8em;
+  }
 }

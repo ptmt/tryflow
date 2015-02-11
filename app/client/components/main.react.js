@@ -8,19 +8,6 @@ var Footer = require('./footer.react');
 var utils = require('../utils');
 var service = require('../service'); // REWRITE WITH FLUX
 
-/// WOW, that's a lot of stuff!
-var Input = mui.Input;
-var Paper = mui.Paper;
-var DropDownMenu = mui.DropDownMenu;
-var IconButton = mui.IconButton;
-var Icon = mui.Icon;
-var FlatButton = mui.FlatButton;
-var RaisedButton = mui.RaisedButton;
-var Toolbar = mui.Toolbar;
-var ToolbarGroup = mui.ToolbarGroup;
-var Snackbar = mui.Snackbar;
-var Ace = require('brace');
-
 type MainState = {
   source: string;
   loading: boolean;
@@ -51,12 +38,14 @@ var Main = React.createClass({
 
   updateOutput(sourceCode: string) {
     if (sourceCode && sourceCode.length > 0) {
+      this.refs.snackbar.show();
       this.setState ({ loading: true});
       service.flowCheck(sourceCode , (err, res) => {
         if (err) {
           this.setState ({ loading: false, error: err});
           this.refs.snackbar.show();
         } else {
+          this.refs.snackbar.dismiss();
           this.setState ({ loading: false, source: this.state.source, errors: res.errors, target: res.target});
           window.location.hash = res.hash;
         }
@@ -68,7 +57,7 @@ var Main = React.createClass({
 
     //var examples = require('../examples.js');
     var examples = [
-      {payload: '0101751fa7c5741792c292e31fa8de32', text: '01 - Hello world'},
+      {payload: 'fa7d16b9ce86fa42c8cb7a89d01ce9fb', text: '01 - Hello world'},
       {payload: '16703f86fe7507a5145d9e87006eeddd', text: '02 - Dynamic'},
       {payload: '3b135a42a7710d2ee0135885ebcab752', text: '03 - Type annotations'},
       {payload: '524323e2bf98148b667b0f8e72e28f2c', text: '04 - Modules'},
@@ -77,36 +66,33 @@ var Main = React.createClass({
     return (
       <div>
 
-        <Toolbar>
-          <ToolbarGroup key={0} float="left">
-            <DropDownMenu menuItems={examples} onChange={this._handleExamples} />
-          </ToolbarGroup>
+        <mui.Toolbar>
+          <mui.ToolbarGroup key={0} float="left">
+            <mui.DropDownMenu menuItems={examples} onChange={this._handleExamples} />
+            <mui.FlatButton label="Ctrl-Space to Autocomplete" disabled={true} />
 
-          <ToolbarGroup key={1} float="right">
-            <a href="http://flowtype.org/docs/getting-started.html"><Icon icon="social-school" /></a>
-            <a href="https://github.com/unknownexception/tryflow"><Icon icon="mui-icon-github" /></a>
+            <a href="http://flowtype.org/docs/getting-started.html"><mui.Icon icon="social-school" /></a>
+            <a href="https://github.com/unknownexception/tryflow"><mui.Icon icon="mui-icon-github" /></a>
 
             <span className="mui-toolbar-separator">&nbsp;</span>
-            <RaisedButton label="flow check" primary={true} onClick={this._handleTouchTap} />
-          </ToolbarGroup>
-        </Toolbar>
+            <mui.RaisedButton label="run flow check" tip="tip" primary={true} onClick={this._handleTouchTap} />
+          </mui.ToolbarGroup>
+        </mui.Toolbar>
 
         <div className="raw-code-area">
-          <Paper zDepth={5} >
+          <mui.Paper zDepth={5} >
             <Code ref="sourceEditor" source={this.state.source} name="source-editor" onChange={this._onSourceChange} errors={this.state.errors}/>
-          </Paper>
+          </mui.Paper>
         </div>
         <div className="output-area">
-          <Paper zDepth={5} >
+          <mui.Paper zDepth={5} >
             <Code ref="target" source={this.state.target} name="target-editor" readOnly="true" />
-          </Paper>
+          </mui.Paper>
         </div>
-
-        <Spinner visible={this.state.loading} />
 
         <Footer />
 
-        <Snackbar ref="snackbar" message={this.state.error} action="Got it"  onActionTouchTap={this._handleSnackbarAction} />
+        <mui.Snackbar ref="snackbar" message={this.state.loading ? 'Loading.. ' : this.state.error} action={this.state.loading ? '' : 'Got it'}  onActionTouchTap={this._handleSnackbarAction} />
 
       </div>
     );
@@ -114,11 +100,11 @@ var Main = React.createClass({
 
   _onSourceChange(value: string) {
     this.setState({source: value});
-    // clearTimeout(this.timeout);
-    // this.timeout = setTimeout(() => {
-    //   console.log('update');
-    //   this.updateOutput(value);
-    // }, 2000);
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      console.log('update');
+      this.updateOutput(value);
+    }, 2000);
   },
 
   _handleTouchTap() {
