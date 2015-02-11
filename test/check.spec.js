@@ -1,5 +1,6 @@
 var assert = require('assert');
 var check = require('../app/server/flow_check');
+var fs = require('fs');
 
 // TODO: replace with files
 
@@ -47,6 +48,21 @@ describe('Error transformer', function(){
             text: 'property length\nProperty not found in\n  Number',
             type: 'error' } ]);
     })
-})
+});
+
+describe('autocomplete', function() {
+  this.timeout(10000);
+  it('should return empty array if no errors occured', function(done){
+    var errors = check.autocompleteFor(fs.readFileSync(__dirname + '/autocomplete.js'), 14, 3)
+      .then(function(data) {
+        console.log(data);
+        assert.equal(data.length > 1, true);
+        done();
+      }).catch(function(err) {
+        done(err);
+      });
+
+  })
+});
 
 var sourceCode = "function length (a) {\n return a.length;\n}\nlength(1);\nvar c;\nlength(c);"

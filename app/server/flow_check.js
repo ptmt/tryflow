@@ -2,7 +2,7 @@ var spawn = require('child_process').spawn;
 var exec = require('child_process').exec;
 var Promise = require("bluebird");
 
-module.exports = function(sourceCode, cb) {
+module.exports = function(sourceCode) {
   return new Promise(function (resolve, reject) {
     process.env.USER = 'user';
     child = spawn('flow', ['check-contents', '--json']); //'--no-auto-start'
@@ -20,6 +20,34 @@ module.exports = function(sourceCode, cb) {
         resolve(JSON.parse(output));
       } catch(e) {
         console.log(e);
+        reject(new Error('Fatal Error'));
+      }
+
+    });
+    child.stdin.setEncoding = 'utf-8';
+    child.stdin.write(sourceCode + '\n');
+    child.stdin.end();
+  });
+}
+
+module.exports.autocompleteFor = function(sourceCode, row, column) {
+  return new Promise(function (resolve, reject) {
+    process.env.USER = 'user';
+    child = spawn('flow', ['autocomplete', row, column, '--json']); //'--no-auto-start'
+    var output = '';
+    child.stdout.on('data', function (data) {
+      output += data;
+    });
+
+    child.stderr.on('data', function (data) {
+      console.log('flow check stderr: ' + data);
+    });
+
+    child.on('close', function (code) {
+      try {
+        resolve(JSON.parse(output));
+      } catch(e) {
+        console.log(output);
         reject(new Error('Fatal Error'));
       }
 
