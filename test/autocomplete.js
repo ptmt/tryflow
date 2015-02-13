@@ -10,5 +10,3 @@ function length(x) {
     return 0;
   }
 }
-
-le
