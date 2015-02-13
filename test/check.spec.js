@@ -7,7 +7,7 @@ var fs = require('fs');
 describe('Error transformer', function(){
     it('should return empty array if no errors occured', function(){
       var errors = check.transformErrors({ passed: true});
-      assert.equal(errors.length, 0);
+      assert.deepEqual(errors, []);
     })
     it('should wrap source code with 1 error', function(){
       var oneErrorJson = {"passed":false,"errors":
@@ -52,8 +52,8 @@ describe('Error transformer', function(){
 
 describe('autocomplete', function() {
   this.timeout(10000);
-  it('should return empty array if no errors occured', function(done){
-    var errors = check.autocompleteFor(fs.readFileSync(__dirname + '/autocomplete.js'), 14, 3)
+  it('should return suggestions', function(done){
+    var errors = check.autocompleteFor(fs.readFileSync(__dirname + '/mock/autocomplete.js'), 14, 3)
       .then(function(data) {
         console.log(data);
         assert.equal(data.length > 1, true);
