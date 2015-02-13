@@ -10,6 +10,13 @@ The idea behind Flow perfectly fits both server and client, the implementation i
 
 `tryflow` transforms ES6 typed javascript into ready-to-use ES5.
 
+## Changelog
+
+### 0.2.0
+
+live autocompletion:
+  ![image](https://cloud.githubusercontent.com/assets/1004115/6182078/f999fd26-b35e-11e4-8a1a-e5e2376df316.png)
+
 ## Roadmap
 
 - [x] ~~Add ACE editor or simular instead of Input React component~~;

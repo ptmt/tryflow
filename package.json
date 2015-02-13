@@ -1,6 +1,6 @@
 {
   "name": "tryflow",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "try Flow online",
   "main": "app/server.compiled/index.js",
   "directories": {
