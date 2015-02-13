@@ -69,8 +69,6 @@ var Main = React.createClass({
         <mui.Toolbar>
           <mui.ToolbarGroup key={0} float="left">
             <mui.DropDownMenu menuItems={examples} onChange={this._handleExamples} />
-            <mui.FlatButton label="Ctrl-Space to Autocomplete" disabled={true} />
-
             <a href="http://flowtype.org/docs/getting-started.html"><mui.Icon icon="social-school" /></a>
             <a href="https://github.com/unknownexception/tryflow"><mui.Icon icon="mui-icon-github" /></a>
 
