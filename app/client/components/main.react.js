@@ -102,7 +102,6 @@ var Main = React.createClass({
     this.setState({source: value});
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      console.log('update');
       this.updateOutput(value);
     }, 2000);
   },

@@ -31,6 +31,7 @@ module.exports = function(sourceCode) {
 }
 
 module.exports.autocompleteFor = function(sourceCode, row, column) {
+  //console.log(sourceCode, row, column);
   return new Promise(function (resolve, reject) {
     process.env.USER = 'user';
     child = spawn('flow', ['autocomplete', row, column, '--json']); //'--no-auto-start'
@@ -47,7 +48,7 @@ module.exports.autocompleteFor = function(sourceCode, row, column) {
       try {
         resolve(JSON.parse(output));
       } catch(e) {
-        console.log(output);
+        console.log(e, output);
         reject(new Error('Fatal Error'));
       }
 

@@ -55,6 +55,13 @@ app.post('/flow_check', function (req, res) {
     .then((fromCache) => res.json(fromCache));
 });
 
+app.post('/autocomplete', function (req, res) {
+  flowCheck
+    .autocompleteFor(req.body.source, req.body.row, req.body.col)
+    .then(suggestions => res.json(suggestions))
+    .catch(err => res.status(500).json('no result, error'));
+});
+
 app.get('/flow_version', function (req, res) {
   flowCheck.version((err, version) => res.json({err: err, version: version}));
 });
