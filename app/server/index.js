@@ -34,6 +34,7 @@ function fillCache(code) {
         source: code,
         target: flowES6toES5(code),
         errors: flowCheck.transformErrors(gotErrors),
+        version: gotErrors.version,
         created_at: new Date(),
         updated_at: new Date()
       }
@@ -46,7 +47,14 @@ app.use(bodyParser.json());
 app.post('/load_code', function (req, res) {
   cache
   .get(app.db, req.body.hash)
-  .then((fromCache) => res.json(fromCache));
+  .then((fromCache) => {
+    if (fromCache.source !== 'Not found') {
+      cache.get(app.db, req.body.hash, () => fillCache(fromCache.source))
+      .then((fromCache) => res.json(fromCache));
+    } else {
+      res.json(fromCache)
+    }
+  });
 });
 
 app.post('/flow_check', function (req, res) {
@@ -63,7 +71,19 @@ app.post('/autocomplete', function (req, res) {
 });
 
 app.get('/flow_version', function (req, res) {
-  flowCheck.version((err, version) => res.json({err: err, version: version}));
+  flowCheck.version((err, version) => {
+    flowCheck.availableVersion().then((availableVersion) => {
+      if (availableVersion !== version) {
+        res.json({err: err, version: version + ' (installing ' + availableVersion + ' in background...)'})
+        flowCheck.installNewVersion();
+      } else {
+        res.json({err: err, version: version})
+      }
+    }).catch((err) => {
+      res.json({err: err, version: version});
+    });
+  });
+
 });
 
 app.use(errorHandler);

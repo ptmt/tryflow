@@ -57,9 +57,9 @@ var Main = React.createClass({
 
     //var examples = require('../examples.js');
     var examples = [
-      {payload: 'fa7d16b9ce86fa42c8cb7a89d01ce9fb', text: '01 - Hello world'},
+      {payload: '0101751fa7c5741792c292e31fa8de32', text: '01 - Hello world'},
       {payload: '16703f86fe7507a5145d9e87006eeddd', text: '02 - Dynamic'},
-      {payload: '3b135a42a7710d2ee0135885ebcab752', text: '03 - Type annotations'},
+      {payload: '6fc031c53b2eb1b5cb5c6f95a9ba0d38', text: '03 - Type annotations'},
       {payload: '524323e2bf98148b667b0f8e72e28f2c', text: '04 - Modules'},
       {payload: 'bc1f559bbf4cf06ad317673e3f39dea1', text: '05 - React.js'},
     ];
@@ -114,7 +114,7 @@ var Main = React.createClass({
   },
 
   _handleSnackbarAction() {
-    this.ref.snackbar.hide();
+    this.ref.snackbar.dismiss();
   }
 
 });

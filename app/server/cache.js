@@ -2,6 +2,7 @@ var crypto = require('crypto');
 var MongoClient = require('mongodb').MongoClient
 var cache = module.exports;
 var Promise = require("bluebird");
+var moment = require('moment');
 
 cache.hash = function(sourceCode) {
   return crypto.createHash('md5').update(sourceCode).digest('hex');
@@ -31,13 +32,20 @@ cache.init = function(cb) {
 
 cache.get = function (db: any, key: string, funcToBeCached: Function) {
   return new Promise(function (resolve, reject) {
-    db.checks.findOne({hash: key}, (err, result) => {
+    db.checks.findOne({hash: key}, (err, foundResult) => {
       if (err) {
         reject(err);
       } else {
-        if(result) {
+        console.log('foundResult for:', key, (foundResult && foundResult.version ? foundResult.version : 'without version'));
+        //console.log('version', moment(foundResult.version), moment(foundResult.version).isBetween(moment().subtract('1', 'weeks'), moment()));
+        if(foundResult &&
+            (
+              (funcToBeCached && foundResult.version && moment(foundResult.version).isBetween(moment().subtract('1', 'weeks'), moment()))
+              || !funcToBeCached
+            )
+          ) {
           cache.addView(db, key);
-          resolve(result);
+          resolve(foundResult);
         } else {
           if (funcToBeCached) {
             funcToBeCached()
@@ -54,8 +62,13 @@ cache.get = function (db: any, key: string, funcToBeCached: Function) {
 
 cache.put = function(db, key, toCache) {
   return new Promise(function (resolve, reject) {
+    console.log('cache.put', toCache);
     toCache.hash = key;
-    db.checks.insert(toCache, (err) => {
+    db.checks.update(
+      { hash: key },
+      toCache,
+      { upsert: true},
+      (err) => {
       if (err) {
         reject(err);
       } else {

@@ -84,6 +84,32 @@ module.exports.transformErrors = function(errorsJson) {
 module.exports.version = function(callback) {
   child = exec('flow --version',
   function (error, stdout, stderr) {
-    callback(error || stderr, stdout.split(',')[2].trim());
+    callback(error || stderr, stdout.split(',')[2].trim().split(' ')[1]);
   });
+}
+
+module.exports.availableVersion = function() {
+  return new Promise(function (resolve, reject) {
+    child = exec('npm show flow-bin version',
+      function (error, stdout, stderr) {
+        if (error || stderr) {
+          reject(error || stderr);
+        } else {
+          resolve(stdout.trim());
+        }
+      });
+  });
+}
+
+module.exports.installNewVersion = function() {
+  console.log('install new version of flow-bin');
+  child = exec('npm install flow-bin',
+    function (error, stdout, stderr) {
+      if (error || stderr) {
+        console.error(error || stderr);
+      } else {
+        console.log('successfully installed');
+        child = exec('flow stop');
+      }
+    });
 }

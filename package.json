@@ -9,7 +9,6 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
     "postinstall": "./node_modules/.bin/gulp build"
-
   },
   "repository": {
     "type": "git",
@@ -32,10 +31,11 @@
     "flow-bin": "*",
     "js-beautify": "^1.5.4",
     "material-ui": "^0.6.1",
+    "moment": "^2.9.0",
     "mongodb": "^1.4.29",
     "react": "*",
-    "react-tools": "*",
-    "react-tap-event-plugin": "*"
+    "react-tap-event-plugin": "*",
+    "react-tools": "*"
   },
   "devDependencies": {
     "browserify": "^7.0.0",
