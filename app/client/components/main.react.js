@@ -59,7 +59,7 @@ var Main = React.createClass({
     var examples = [
       {payload: '0101751fa7c5741792c292e31fa8de32', text: '01 - Hello world'},
       {payload: '16703f86fe7507a5145d9e87006eeddd', text: '02 - Dynamic'},
-      {payload: '6fc031c53b2eb1b5cb5c6f95a9ba0d38', text: '03 - Type annotations'},
+      {payload: '18393dfcb824119d4e35beb9bcc7a48b', text: '03 - Type annotations'},
       {payload: '524323e2bf98148b667b0f8e72e28f2c', text: '04 - Modules'},
       {payload: 'bc1f559bbf4cf06ad317673e3f39dea1', text: '05 - React.js'},
     ];
