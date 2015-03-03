@@ -24,6 +24,7 @@ Since 0.2.0 you could use live autocompletion to see type signatures:
 - [x] ~~Allow to share code~~;
 - [ ] Show type signatures for functions and variables;
 - [x] ~~Strip types and harmony converter~~.
+- [ ] Get rid of Heroku (because of money), replace with Docker on DigitalOcean
 
 
 2015, MIT License
