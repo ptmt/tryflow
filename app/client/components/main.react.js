@@ -114,7 +114,7 @@ var Main = React.createClass({
   },
 
   _handleSnackbarAction() {
-    this.ref.snackbar.dismiss();
+    this.refs.snackbar.dismiss();
   }
 
 });
