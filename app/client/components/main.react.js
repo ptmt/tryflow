@@ -42,7 +42,7 @@ var Main = React.createClass({
       this.setState ({ loading: true});
       service.flowCheck(sourceCode , (err, res) => {
         if (err) {
-          this.setState ({ loading: false, error: err});
+          this.setState ({ loading: false, error: 'Cannot perform flow check, please report'});
           this.refs.snackbar.show();
         } else {
           this.refs.snackbar.dismiss();
