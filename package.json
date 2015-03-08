@@ -30,7 +30,7 @@
     "express": "^4.11.0",
     "flow-bin": "*",
     "js-beautify": "^1.5.4",
-    "material-ui": "^0.6.1",
+    "material-ui": "*",
     "moment": "^2.9.0",
     "mongodb": "^1.4.29",
     "react": "*",
