@@ -69,8 +69,8 @@ var Main = React.createClass({
         <mui.Toolbar>
           <mui.ToolbarGroup key={0} float="left">
             <mui.DropDownMenu menuItems={examples} onChange={this._handleExamples} />
-            <a href="http://flowtype.org/docs/getting-started.html"><mui.Icon icon="social-school" /></a>
-            <a href="https://github.com/unknownexception/tryflow"><mui.Icon icon="mui-icon-github" /></a>
+            <a href="http://flowtype.org/docs/getting-started.html"><mui.Icon tooltip="Learn more about Flow" icon="social-school" /></a>
+            <a href="https://github.com/unknownexception/tryflow"><mui.Icon tooltip="Source code" icon="mui-icon-github" /></a>
 
             <span className="mui-toolbar-separator">&nbsp;</span>
             <mui.RaisedButton label="run flow check" tip="tip" primary={true} onClick={this._handleTouchTap} />
