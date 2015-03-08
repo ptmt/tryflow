@@ -37,7 +37,6 @@ cache.get = function (db: any, key: string, funcToBeCached: Function) {
         reject(err);
       } else {
         console.log('foundResult for:', key, (foundResult && foundResult.version ? foundResult.version : 'without version'));
-        //console.log('version', moment(foundResult.version), moment(foundResult.version).isBetween(moment().subtract('1', 'weeks'), moment()));
         if(foundResult &&
             (
               (funcToBeCached && foundResult.version && moment(foundResult.version).isBetween(moment().subtract('1', 'weeks'), moment()))
