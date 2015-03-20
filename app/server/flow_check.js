@@ -82,7 +82,7 @@ module.exports.transformErrors = function(errorsJson) {
 	});
 }
 
-module.exports.version = function(callback) {
+module.exports.version = function() {
 	return new Promise(function(resolve, reject) {
 		child = exec('flow --version',
 			function(error, stdout, stderr) {

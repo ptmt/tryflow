@@ -161,7 +161,7 @@ gulp.task('bower', function() {
 });
 
 gulp.task('fonts', function() {
-  gulp.src('./app/fonts/*.*')
+  gulp.src('./node_modules/font-awesome/fonts/*.*')
     .pipe(gulp.dest('./dist/fonts'));
 });
 

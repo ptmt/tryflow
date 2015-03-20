@@ -77,7 +77,7 @@ app.get('/flow_version', function (req, res) {
     flowCheck.availableVersion().then((availableVersion) => {
       if (availableVersion !== versions[1]) {
         flowCheck.installNewVersion();
-        res.json({version: version[1] + ' (installing ' + availableVersion + ' in background...)', react: versions[0]})
+        res.json({version: versions[1] + ' (installing ' + availableVersion + ' in background...)', react: versions[0]})
       } else {
         res.json({version: versions[1], react: versions[0]})
       }
