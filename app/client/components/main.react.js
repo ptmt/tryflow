@@ -75,7 +75,7 @@ var Main = React.createClass({
             <a href="http://flowtype.org/docs/getting-started.html"><i className="fa fa-2x fa-book mui-font-icon" /></a>
             <a href="https://github.com/unknownexception/tryflow"><i className="fa fa-2x fa-github mui-font-icon" /></a>
 
-            <span className="news"><strong>News:</strong> Check out <a href="?#9b415a58cae0f6b47b79fd2a28313724">Bounded polymorphism</a> and <a href="?#088c0e5b336e2941f081fd7387e2b048">Flow comments</a> examples</span>
+            <span className="news"><strong>News:</strong> Check out <a href="?ex=1#9b415a58cae0f6b47b79fd2a28313724">Bounded polymorphism</a> and <a href="?ex=2#088c0e5b336e2941f081fd7387e2b048">Flow comments</a> examples</span>
             <mui.RaisedButton label="run flow check" tip="tip" primary={true} onClick={this._handleTouchTap} />
 
           </mui.ToolbarGroup>
