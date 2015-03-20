@@ -83,10 +83,16 @@ module.exports.transformErrors = function(errorsJson) {
 }
 
 module.exports.version = function(callback) {
-	child = exec('flow --version',
-		function(error, stdout, stderr) {
-			callback(error || stderr, stdout.split(',')[2].trim().split(' ')[1]);
-		});
+	return new Promise(function(resolve, reject) {
+		child = exec('flow --version',
+			function(error, stdout, stderr) {
+				if (error || stderr) {
+					reject(error || stderr);
+				} else {
+					resolve(stdout.split(',')[2].trim().split(' ')[1]);
+				}
+			});
+	});
 }
 
 module.exports.availableVersion = function() {
@@ -97,6 +103,19 @@ module.exports.availableVersion = function() {
 					reject(error || stderr);
 				} else {
 					resolve(stdout.trim());
+				}
+			});
+	});
+}
+
+module.exports.reactVersion = function(version) {
+	return new Promise(function(resolve, reject) {
+		child = exec('npm view react-tools version',
+			function(error, stdout, stderr) {
+				if (error || stderr) {
+					reject(error || stderr);
+				} else {
+					resolve([stdout.trim(), version]);
 				}
 			});
 	});

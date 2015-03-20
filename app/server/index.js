@@ -71,18 +71,20 @@ app.post('/autocomplete', function (req, res) {
 });
 
 app.get('/flow_version', function (req, res) {
-  flowCheck.version((err, version) => {
+  flowCheck.version()
+  .then(version => flowCheck.reactVersion(version))
+  .then((versions) => {
     flowCheck.availableVersion().then((availableVersion) => {
-      if (availableVersion !== version) {
+      if (availableVersion !== versions[1]) {
         flowCheck.installNewVersion();
-        res.json({err: err, version: version + ' (installing ' + availableVersion + ' in background...)'})
+        res.json({version: version[1] + ' (installing ' + availableVersion + ' in background...)', react: versions[0]})
       } else {
-        res.json({err: err, version: version})
+        res.json({version: versions[1], react: versions[0]})
       }
-    }).catch((err) => {
-      res.json({err: err, version: version});
-    });
-  });
+    })
+  }).catch((err) => {
+    res.json({err: err});
+  });;
 
 });
 

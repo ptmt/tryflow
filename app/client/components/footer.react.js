@@ -4,7 +4,7 @@ var service = require('../service');
 
 var Footer: React.Class<any, any, {version:string}> = React.createClass({
   getInitialState() {
-    return { version: 'version: unknown'};
+    return { version: '', react: ''};
   },
   componentDidMount() {
     // ANTI-PATTERN
@@ -17,7 +17,8 @@ var Footer: React.Class<any, any, {version:string}> = React.createClass({
   render(): any {
     return(
       <div className="footer">
-        Flow {this.state.version}
+        Flow v{this.state.version}, 
+        React v{this.state.react}
       </div>
     );
   }
