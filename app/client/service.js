@@ -16,16 +16,16 @@ class AutocompletionRequest extends Request<Array<any>> {};
 
 // TODO: rewrite with promises?
 module.exports = {
-  flowCheck: function(sourceCode, callback) {
+  flowCheck: function(sourceCode: string, callback: Function) {
     FlowRequest.post('/flow_check', { source: sourceCode }, callback);
   },
-  loadByHash: function(hash, callback) {
+  loadByHash: function(hash: string, callback: Function) {
     FlowRequest.post('/load_code', { hash: hash.replace('#','') }, callback);
   },
-  getVersion: function(callback) {
+  getVersion: function(callback: Function) {
     VersionRequest.getJson('/flow_version', callback);
   },
-  getAutocompletion: function(source, row, col, callback) {
+  getAutocompletion: function(source:string, row:number, col:number, callback:Function) {
     AutocompletionRequest.post('/autocomplete', { source: source, row: row, col: col}, callback)
   }
 }

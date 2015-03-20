@@ -62,6 +62,8 @@ var Main = React.createClass({
       {payload: '18393dfcb824119d4e35beb9bcc7a48b', text: '03 - Type annotations'},
       {payload: '524323e2bf98148b667b0f8e72e28f2c', text: '04 - Modules'},
       {payload: 'bc1f559bbf4cf06ad317673e3f39dea1', text: '05 - React.js'},
+      {payload: '088c0e5b336e2941f081fd7387e2b048', text: '06 - Flow comments'},
+      {payload: '9b415a58cae0f6b47b79fd2a28313724', text: '07 - Bounded polymorphism'},
     ];
     return (
       <div>
@@ -71,9 +73,9 @@ var Main = React.createClass({
             <mui.DropDownMenu menuItems={examples} onChange={this._handleExamples} />
             <a href="http://flowtype.org/docs/getting-started.html"><mui.Icon tooltip="Learn more about Flow" icon="social-school" /></a>
             <a href="https://github.com/unknownexception/tryflow"><mui.Icon tooltip="Source code" icon="mui-icon-github" /></a>
-
-            <span className="mui-toolbar-separator">&nbsp;</span>
+            <span className="news"><strong>News:</strong> Check out <a href="?#9b415a58cae0f6b47b79fd2a28313724">Bounded polymorphism</a> and <a href="?#088c0e5b336e2941f081fd7387e2b048">Flow comments</a> examples</span>
             <mui.RaisedButton label="run flow check" tip="tip" primary={true} onClick={this._handleTouchTap} />
+
           </mui.ToolbarGroup>
         </mui.Toolbar>
 
@@ -98,10 +100,10 @@ var Main = React.createClass({
 
   _onSourceChange(value: string) {
     this.setState({source: value});
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.updateOutput(value);
-    }, 2000);
+    // clearTimeout(this.timeout);
+    // this.timeout = setTimeout(() => {
+    //   this.updateOutput(value);
+    // }, 2000);
   },
 
   _handleTouchTap() {

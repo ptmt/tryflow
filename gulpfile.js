@@ -78,9 +78,9 @@ function scripts(watch) {
         loadMaps: true // TODO: typed sourcemaps
       }))
     }
-    if (!watch || (process.env && process.env.NODE_ENV && process.env.NODE_ENV ===
+    if ((process.env && process.env.NODE_ENV && process.env.NODE_ENV ===
         'production')) {
-      console.log('uglify');
+      console.log('uglify', process.env.NODE_ENV);
       t = t.pipe($.uglify());
     }
     return t
@@ -100,6 +100,7 @@ gulp.task('scripts', function() {
 
 // Scripts
 gulp.task('scripts:watch', function() {
+  console.log('scripts:watch');
   return scripts(true);
 });
 

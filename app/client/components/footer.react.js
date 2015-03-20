@@ -2,8 +2,8 @@
 var React = require('react');
 var service = require('../service');
 
-var Footer = React.createClass({
-  getInitialState(): MainState {
+var Footer: React.Class<any, any, {version:string}> = React.createClass({
+  getInitialState() {
     return { version: 'version: unknown'};
   },
   componentDidMount() {

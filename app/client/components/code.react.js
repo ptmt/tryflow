@@ -62,8 +62,7 @@ module.exports = React.createClass({
                   if (ea.func_details) {
                     ea.func_details.p = ea.func_details.params.map(p => p.name + ' : ' + (p.type || 'any')).join(', ');
                   }
-                  var typeSignature = ea.type || '(' + ea.func_details.p + ') => ' + (ea.func_details.return_type || 'any');
-                  console.log(ea.name, typeSignature);
+                  var typeSignature = ea.type ? ea.type : (ea.func_details ? '(' + ea.func_details.p + ') => ' + (ea.func_details.return_type || 'any') : '');
                   return {caption: ea.name, value: ea.name, meta: typeSignature}
                 }));
               });
