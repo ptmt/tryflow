@@ -1,1 +1,1 @@
-web: node app/server.compiled/index.js
+web: babel-node --stage 0 app/server/index.js

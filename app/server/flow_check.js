@@ -5,7 +5,7 @@ var Promise = require("bluebird");
 module.exports = function(sourceCode) {
 	return new Promise(function(resolve, reject) {
 		process.env.USER = 'user';
-		child = spawn('flow', ['check-contents', '--json']); //'--no-auto-start'
+		var child = spawn('flow', ['check-contents', '--json']); //'--no-auto-start'
 		var output = '';
 		child.stdout.on('data', function(data) {
 			output += data;

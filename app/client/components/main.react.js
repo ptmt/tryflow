@@ -6,6 +6,8 @@ var Spinner = require('./spinner.react');
 var Code = require('./code.react');
 var Footer = require('./footer.react');
 var utils = require('../utils');
+var ThemeManager = new mui.Styles.ThemeManager();
+var Colors = mui.Styles.Colors;
 var service = require('../service'); // REWRITE WITH FLUX
 
 type MainState = {
@@ -18,11 +20,22 @@ type MainState = {
 
 var Main = React.createClass({
 
+  childContextTypes: {
+    muiTheme: React.PropTypes.object
+  },
+
+  getChildContext() {
+    return {
+      muiTheme: ThemeManager.getCurrentTheme()
+    };
+  },
+
   getInitialState(): MainState {
     return { source: '', loading: false, errors: [], target: '', error: ''};
   },
 
   componentDidMount() {
+    console.log('mounted')
     this.loadByHash(this.props.hash);
   },
 
@@ -66,20 +79,25 @@ var Main = React.createClass({
       {payload: '088c0e5b336e2941f081fd7387e2b048', text: '06 - Flow comments'},
       {payload: '9b415a58cae0f6b47b79fd2a28313724', text: '07 - Bounded polymorphism'},
     ];
+    // <mui.DropDownMenu menuItems={examples} onChange={this._handleExamples} />
     return (
       <div>
 
-        <mui.Toolbar>
-          <mui.ToolbarGroup key={0} float="left">
-            <mui.DropDownMenu menuItems={examples} onChange={this._handleExamples} />
+        <mui.Card initiallyExpanded={true}>
+          <mui.CardHeader
+            title="Gradual typing in Javascript"
+            avatar={<mui.Avatar onClick={this._handleTouchTap}>F</mui.Avatar>} showExpandableButton={true}/>
+          <mui.CardActions >
             <a href="http://flowtype.org/docs/getting-started.html"><i className="fa fa-2x fa-book mui-font-icon" /></a>
             <a href="https://github.com/unknownexception/tryflow"><i className="fa fa-2x fa-github mui-font-icon" /></a>
-
-            <span className="news"><strong>News:</strong> Check out <a href="?ex=1#9b415a58cae0f6b47b79fd2a28313724">Bounded polymorphism</a> and <a href="?ex=2#088c0e5b336e2941f081fd7387e2b048">Flow comments</a> examples</span>
-            <mui.RaisedButton label="run flow check" tip="tip" primary={true} onClick={this._handleTouchTap} />
-
-          </mui.ToolbarGroup>
-        </mui.Toolbar>
+          </mui.CardActions>
+           <mui.CardText expandable={true}>
+             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+             Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+             Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+             Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+           </mui.CardText>
+        </mui.Card>
 
         <div className="raw-code-area">
           <mui.Paper zDepth={5} >

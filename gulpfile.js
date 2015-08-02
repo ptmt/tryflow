@@ -72,6 +72,12 @@ function scripts(watch) {
       .on('error', console.log)
       .pipe(source('app.js'))
       .pipe(buffer())
+    //   return gulp.src("src/**/*.js")
+    // .pipe(sourcemaps.init())
+    // .pipe(babel())
+    // .pipe(concat("all.js"))
+    // .pipe(sourcemaps.write("."))
+    // .pipe(gulp.dest("dist"));
     if (!(process.env && process.env.NODE_ENV && process.env.NODE_ENV ===
         'production')) {
       t.pipe($.sourcemaps.init({
@@ -83,8 +89,14 @@ function scripts(watch) {
       console.log('uglify', process.env.NODE_ENV);
       t = t.pipe($.uglify());
     }
+    t = t.pipe($.babel());
+    //     .pipe(concat("all.js"));
+
+    if (!(process.env && process.env.NODE_ENV && process.env.NODE_ENV ===
+        'production')) {
+      t = t.pipe($.sourcemaps.write('./dist/scripts/'))
+    }
     return t
-      .pipe($.sourcemaps.write('./'))
       .pipe(gulp.dest('./dist/scripts/'))
       .pipe($.livereload());
   };
@@ -132,17 +144,17 @@ gulp.task('flow', function() {
   return gulp.src([
         'app/server/**/**.js',
         ])
-    // .pipe($.flowtype({
-    //   declarations: './app/interfaces'
-    // }))
-    .pipe($.react({
-      stripTypes: true,
-      harmony: true
+    .pipe($.flowtype({
+      declarations: './app/interfaces'
     }))
-    .pipe(gulp.dest('./app/server.compiled/'))
-    .on('error', function(error) {
-      console.error('' + error);
-    });
+    // .pipe($.react({
+    //   stripTypes: true,
+    //   harmony: true
+    // }))
+    // .pipe(gulp.dest('./app/server.compiled/'))
+    // .on('error', function(error) {
+    //   console.error('' + error);
+    // });
 });
 
 gulp.task('server:start', ['flow'], function() {
@@ -151,7 +163,7 @@ gulp.task('server:start', ['flow'], function() {
   }, $.livereload.listen);
 });
 
-// Bower helper
+// Bower helper TODO: get rid of this
 gulp.task('bower', function() {
   gulp.src('app/bower_components/**/*.js', {
       base: 'app/bower_components'

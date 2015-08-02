@@ -10,4 +10,4 @@ window.React = React;
 injectTapEventPlugin();
 
 var hash = window.location.hash || '0101751fa7c5741792c292e31fa8de32';
-React.render(<Main hash={hash}/>, document.body);
+React.render(<Main hash={hash}/>, document.querySelector('.body'));

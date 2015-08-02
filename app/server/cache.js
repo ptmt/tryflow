@@ -1,3 +1,4 @@
+/* @flow */
 var crypto = require('crypto');
 var MongoClient = require('mongodb').MongoClient
 var cache = module.exports;
@@ -16,7 +17,9 @@ cache.init = function(cb) {
     try {
       connectionString = require('../config').mongo
     }
-    catch(e) {};
+    catch(e) {
+      console.error('Please set MONGOLAB_URI')
+    };
   }
   MongoClient.connect(connectionString, function(err, db) {
     if (err) {
@@ -39,7 +42,7 @@ cache.get = function (db: any, key: string, funcToBeCached: Function) {
         console.log('foundResult for:', key, (foundResult && foundResult.version ? foundResult.version : 'without version'));
         if(foundResult &&
             (
-              (funcToBeCached && foundResult.version && moment(foundResult.version).isBetween(moment().subtract('1', 'weeks'), moment()))
+              (funcToBeCached && foundResult.version && moment(foundResult.version, "YYYY MM DD HH:MM:SS").isBetween(moment().subtract('1', 'weeks'), moment()))
               || !funcToBeCached
             )
           ) {

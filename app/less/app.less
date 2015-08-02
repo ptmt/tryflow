@@ -1,5 +1,5 @@
-@import "node_modules/material-ui/src/less/scaffolding.less";
-@import "node_modules/material-ui/src/less/components.less";
+//@import "node_modules/material-ui/src/less/scaffolding.less";
+//@import "node_modules/material-ui/src/less/components.less";
 @import "node_modules/font-awesome/less/font-awesome.less";
 // @import "node_modules/font-awesome/less/variables.less";
 // @import "node_modules/font-awesome/less/core.less";
@@ -7,7 +7,7 @@
 
 
 @import 'app/less/spinner.less';
-@import 'app/less/code.less';
+// @import 'app/less/code.less';
 
 .raw-code-area {
   height: 80%;
@@ -16,6 +16,12 @@
   left:0;
   position:absolute;
   padding: 0;
+}
+
+::-webkit-input-placeholder {
+  //color: red !important;
+  position: absolute !important;
+  top: -20px !important;
 }
 
 .mui-menu.mui-menu-hideable {

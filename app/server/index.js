@@ -1,23 +1,23 @@
+/* @flow */
 var express = require('express');
+var morgan = require('morgan');
 var app = express();
 var flowCheck = require('./flow_check');
 var cache = require('./cache');
 var bodyParser = require('body-parser');
 var beautify = require('js-beautify').js_beautify;
-var reactTools = require('react-tools');
+var babel = require("babel-core");
+//var reactTools = require('react-tools');
 
 function errorHandler(err, req, res, next) {
-  console.log(err);
   res.status(500).json('Unexpected error, please try again');
 }
 
-function flowES6toES5(code) {
+function flowES6toES5(code: string) {
   try {
     return beautify(
-      reactTools.transform(code, {
-        harmony: true,
-        stripTypes: true
-      }), {
+      babel.transform(code, {
+      }).code, {
         indent_size: 4
     });
   } catch (e) {
@@ -26,7 +26,7 @@ function flowES6toES5(code) {
   }
 }
 
-function fillCache(code) {
+function fillCache(code: string) {
   return flowCheck(code)
     .then((gotErrors) => {
       return {
@@ -41,7 +41,26 @@ function fillCache(code) {
   });
 }
 
+app.use(morgan('dev'));
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  var devServer = require('./webpack');
+  // use webpack dev server for serving js files
+  app.use('/scripts', function (req, res) {
+    res.redirect = function(to) {
+      res.writeHead(302, {
+        'Location': to,
+        'Content-Length': '0'
+      });
+      res.end();
+    }
+    res.redirect('http://localhost:3001' + req._parsedUrl.path);
+  });
+}
 app.use(express.static('./dist', {}));
+
+
+
 app.use(bodyParser.json());
 
 app.post('/load_code', function (req, res) {
@@ -84,7 +103,7 @@ app.get('/flow_version', function (req, res) {
     })
   }).catch((err) => {
     res.json({err: err});
-  });;
+  });
 
 });
 
