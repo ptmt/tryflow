@@ -44,7 +44,6 @@ module.exports.autocompleteFor = function(sourceCode, row, column) {
 		});
 
 		child.on('close', function(code) {
-			console.log(output, code)
 			try {
 				resolve(JSON.parse(output));
 			} catch (e) {

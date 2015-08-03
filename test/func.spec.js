@@ -1,5 +1,5 @@
 var assert = require('assert');
-var check = require('../app/server.compiled/flow_check');
+var check = require('../app/server/flow_check');
 
 describe('Version', function(){
   it('should return version', function(done){

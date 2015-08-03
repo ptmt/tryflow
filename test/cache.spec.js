@@ -1,5 +1,5 @@
 var assert = require('assert');
-var cache = require('../app/server.compiled/cache');
+var cache = require('../app/server/cache');
 
 describe('Cache', function(){
   it('should be able to hash text', function(){
