@@ -1,14 +1,14 @@
 var ace = require('brace');
 var React = require('react');
 var service = require('../service');
-require('brace/theme/github');
-require('brace/mode/typescript');
+require('brace/theme/xcode');
+require('brace/mode/jsx');
 
 module.exports = React.createClass({
   componentDidMount() {
     this.editor = ace.edit(this.props.name);
-    this.editor.getSession().setMode('ace/mode/typescript');
-    this.editor.setTheme('ace/theme/github');
+    this.editor.getSession().setMode('ace/mode/jsx');
+    this.editor.setTheme('ace/theme/xcode');
     this.editor.setValue(this.props.source);
     this.editor.blur()
     this.editor.clearSelection();

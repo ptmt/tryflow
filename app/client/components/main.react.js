@@ -40,11 +40,14 @@ var Main = React.createClass({
   },
 
   loadByHash(hash: string) {
+    this.refs.snackbar.show();
+    this.setState ({ loading: true});
     service.loadByHash(hash, (err, res) => {
       if (err) {
         this.setState ({ loading: false, error: err});
         this.refs.snackbar.show();
       } else {
+        this.refs.snackbar.dismiss();
         this.setState ({ loading: false, source: res.source, errors: res.errors, target: res.target});
       }
     });
@@ -82,7 +85,6 @@ var Main = React.createClass({
     // <mui.DropDownMenu menuItems={examples} onChange={this._handleExamples} />
     return (
       <div>
-
         <mui.Card initiallyExpanded={true}>
           <mui.CardActions showExpandableButton={true} >
               <mui.RaisedButton label="FLOW CHECK" linkButton={true} primary={true} labelStyle={styles.buttonLabel} onClick={this._handleTouchTap}/>
@@ -93,15 +95,16 @@ var Main = React.createClass({
               <mui.RaisedButton linkButton={true} href="https://github.com/unknownexception/tryflow" label="github" labelStyle={styles.buttonLabel}>
                 <mui.FontIcon style={styles.exampleFlatButtonIcon} className="fa fa-2x fa-github" />
               </mui.RaisedButton>
-
+              <Footer />
           </mui.CardActions>
            <mui.CardText expandable={true}>
+             <a href="#0101751fa7c5741792c292e31fa8de32" style={styles.link}>Hello, world!</a>.
              If you would like to write plain Javascript check out <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>Dynamic</a>
-             and <a href="#088c0e5b336e2941f081fd7387e2b048" style={styles.link}>Flow comments</a> example.
-             React fans might find interesting <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>React.js</a>
-             and <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>Redux</a> gists.
-             Flow is also useful if you are working with Node (io.js) <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>Modules</a>
-             <Footer />
+             &nbsp;and <a href="#088c0e5b336e2941f081fd7387e2b048" style={styles.link}>Flow comments</a> examples.
+             React fans might find interesting <a href="#bc1f559bbf4cf06ad317673e3f39dea1" style={styles.link}>React.js</a>
+             &nbsp;and <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>Redux</a> gists.
+             Flow is also useful if you are working with Node (io.js) <a href="#524323e2bf98148b667b0f8e72e28f2c" style={styles.link}>Modules</a>
+
            </mui.CardText>
         </mui.Card>
 

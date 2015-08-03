@@ -1,6 +1,7 @@
 /* @flow */
 var React = require('react');
 var service = require('../service');
+var mui = require('material-ui');
 
 var Footer: React.Class<any, any, {version:string}> = React.createClass({
   getInitialState() {
@@ -16,10 +17,7 @@ var Footer: React.Class<any, any, {version:string}> = React.createClass({
   },
   render(): any {
     return(
-      <div className="footer">
-        Flow v{this.state.version}, 
-        React v{this.state.react}
-      </div>
+      <mui.FlatButton linkButton={true} label={this.state.version} disabled={true} />
     );
   }
 });

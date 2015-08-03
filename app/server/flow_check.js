@@ -31,7 +31,6 @@ module.exports = function(sourceCode) {
 }
 
 module.exports.autocompleteFor = function(sourceCode, row, column) {
-	console.log(sourceCode, row, column);
 	return new Promise(function(resolve, reject) {
 		process.env.USER = 'user';
 		var child = spawn('flow', ['autocomplete', row, column, '--json']); //'--no-auto-start'
@@ -98,7 +97,7 @@ module.exports.version = function() {
 
 module.exports.availableVersion = function() {
 	return new Promise(function(resolve, reject) {
-		child = exec('npm show flow-bin version',
+		var child = exec('npm show flow-bin version',
 			function(error, stdout, stderr) {
 				if (error || stderr) {
 					reject(error || stderr);
@@ -111,7 +110,7 @@ module.exports.availableVersion = function() {
 
 module.exports.reactVersion = function(version) {
 	return new Promise(function(resolve, reject) {
-		child = exec('npm view react-tools version',
+		var child = exec('npm view react-tools version',
 			function(error, stdout, stderr) {
 				if (error || stderr) {
 					reject(error || stderr);
@@ -124,7 +123,7 @@ module.exports.reactVersion = function(version) {
 
 module.exports.installNewVersion = function() {
 	console.log('install new version of flow-bin');
-	child = spawn('npm', ['install', 'flow-bin', '-g']);
+	var child = spawn('npm', ['install', 'flow-bin', '-g']);
   var output = '';
 	child.stdout.on('data', function(data) {
 		output+= data;

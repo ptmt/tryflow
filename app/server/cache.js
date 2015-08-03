@@ -64,7 +64,7 @@ cache.get = function (db: any, key: string, funcToBeCached: Function) {
 
 cache.put = function(db, key, toCache) {
   return new Promise(function (resolve, reject) {
-    console.log('cache.put', toCache);
+    //console.log('cache.put', toCache);
     toCache.hash = key;
     db.checks.update(
       { hash: key },
