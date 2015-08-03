@@ -31,10 +31,10 @@ module.exports = function(sourceCode) {
 }
 
 module.exports.autocompleteFor = function(sourceCode, row, column) {
-	//console.log(sourceCode, row, column);
+	console.log(sourceCode, row, column);
 	return new Promise(function(resolve, reject) {
 		process.env.USER = 'user';
-		child = spawn('flow', ['autocomplete', row, column, '--json']); //'--no-auto-start'
+		var child = spawn('flow', ['autocomplete', row, column, '--json']); //'--no-auto-start'
 		var output = '';
 		child.stdout.on('data', function(data) {
 			output += data;
@@ -45,6 +45,7 @@ module.exports.autocompleteFor = function(sourceCode, row, column) {
 		});
 
 		child.on('close', function(code) {
+			console.log(output, code)
 			try {
 				resolve(JSON.parse(output));
 			} catch (e) {
@@ -84,7 +85,7 @@ module.exports.transformErrors = function(errorsJson) {
 
 module.exports.version = function() {
 	return new Promise(function(resolve, reject) {
-		child = exec('flow --version',
+		var child = exec('flow --version',
 			function(error, stdout, stderr) {
 				if (error || stderr) {
 					reject(error || stderr);

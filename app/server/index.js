@@ -86,7 +86,7 @@ app.post('/autocomplete', function (req, res) {
   flowCheck
     .autocompleteFor(req.body.source, req.body.row, req.body.col)
     .then(suggestions => res.json(suggestions))
-    .catch(err => res.status(500).json('no result, error'));
+    .catch(err => res.status(500).json('no result, error' + JSON.stringify(err)));
 });
 
 app.get('/flow_version', function (req, res) {

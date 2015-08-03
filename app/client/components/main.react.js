@@ -35,8 +35,8 @@ var Main = React.createClass({
   },
 
   componentDidMount() {
-    console.log('mounted')
     this.loadByHash(this.props.hash);
+    window.addEventListener("hashchange", () => this.loadByHash(location.hash), false);
   },
 
   loadByHash(hash: string) {
@@ -84,18 +84,24 @@ var Main = React.createClass({
       <div>
 
         <mui.Card initiallyExpanded={true}>
-          <mui.CardHeader
-            title="Gradual typing in Javascript"
-            avatar={<mui.Avatar onClick={this._handleTouchTap}>F</mui.Avatar>} showExpandableButton={true}/>
-          <mui.CardActions >
-            <a href="http://flowtype.org/docs/getting-started.html"><i className="fa fa-2x fa-book mui-font-icon" /></a>
-            <a href="https://github.com/unknownexception/tryflow"><i className="fa fa-2x fa-github mui-font-icon" /></a>
+          <mui.CardActions showExpandableButton={true} >
+              <mui.RaisedButton label="FLOW CHECK" linkButton={true} primary={true} labelStyle={styles.buttonLabel} onClick={this._handleTouchTap}/>
+              <mui.RaisedButton linkButton={true} href="http://flowtype.org/docs/getting-started.html" label="Flowtype.org" labelStyle={styles.buttonLabel}>
+                <mui.FontIcon style={styles.exampleFlatButtonIcon} className="fa fa-2x fa-book" />
+              </mui.RaisedButton>
+
+              <mui.RaisedButton linkButton={true} href="https://github.com/unknownexception/tryflow" label="github" labelStyle={styles.buttonLabel}>
+                <mui.FontIcon style={styles.exampleFlatButtonIcon} className="fa fa-2x fa-github" />
+              </mui.RaisedButton>
+
           </mui.CardActions>
            <mui.CardText expandable={true}>
-             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-             Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-             Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-             Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+             If you would like to write plain Javascript check out <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>Dynamic</a>
+             and <a href="#088c0e5b336e2941f081fd7387e2b048" style={styles.link}>Flow comments</a> example.
+             React fans might find interesting <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>React.js</a>
+             and <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>Redux</a> gists.
+             Flow is also useful if you are working with Node (io.js) <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>Modules</a>
+             <Footer />
            </mui.CardText>
         </mui.Card>
 
@@ -109,8 +115,6 @@ var Main = React.createClass({
             <Code ref="target" source={this.state.target} name="target-editor" readOnly="true" />
           </mui.Paper>
         </div>
-
-        <Footer />
 
         <mui.Snackbar ref="snackbar" message={this.state.loading ? 'Loading.. ' : this.state.error} action={this.state.loading ? '' : 'Got it'}  onActionTouchTap={this._handleSnackbarAction} />
 
@@ -141,4 +145,23 @@ var Main = React.createClass({
 
 });
 
+var styles = {
+  container: {
+    // textAlign: 'center',
+    // marginBottom: '16px'
+  },
+  link: {paddingLeft: 0, color: Colors.cyanA700},
+  buttonLabel: {
+    //padding: '0px 16px 0px 8px'
+  },
+  exampleFlatButtonIcon: {
+     //height: '100%',
+     display: 'inline-block',
+     verticalAlign: 'middle',
+     float: 'left',
+     paddingLeft: '12px',
+     lineHeight: '36px',
+     color: Colors.cyan500
+   },
+}
 module.exports = Main;
