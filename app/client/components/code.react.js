@@ -35,11 +35,27 @@ module.exports = React.createClass({
       this.editor.blur();
     }
     this.setErrors(p.errors);
+
   },
 
   setErrors(errors) {
-    // types = info, warning, error
-    this.editor.getSession().setAnnotations(errors);
+    if (!errors) {
+      return false;
+    }
+    const session = this.editor.getSession();
+    session.setAnnotations(errors);
+    Object.keys(session.$backMarkers).forEach(r => session.removeMarker(r))
+    //console.log(this.editor.getSession().$backMarkers);
+    var Range =  ace.acequire("ace/range").Range
+    errors.forEach(error => {
+      session.addMarker(
+        new Range(error.row, error.column, error.row, error.columnEnd + 1), 'ace_highlight-marker', 'background'
+      );
+    })
+  },
+
+  hideErrors() {
+    this.editor.getSession().clearAnnotations();
   },
 
   autocompleteEnable() {

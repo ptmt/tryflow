@@ -16,7 +16,9 @@ module.exports = function(sourceCode) {
 		});
 
 		child.on('close', function(code) {
+
 			try {
+				//console.log('OUTPUT', JSON.parse(output).errors);
 				resolve(JSON.parse(output));
 			} catch (e) {
 				console.log(e);
@@ -66,19 +68,43 @@ module.exports.transformErrors = function(errorsJson) {
 	if (errorsJson.passed) {
 		return [];
 	}
-	return errorsJson.errors.map(function(error) {
-		var message1 = error.message[0];
-		var message2 = error.message[1];
-		var description = message2 ? message1.descr + '\n  ' + message2.descr + '' :
-			message1.descr;
+	return errorsJson.errors.reduce(function(errors, error) {
+		//error.message.filter(e => e.descr !== 'Error').
+	  const description = error.message.length >= 5 ?
+			error.message.slice(2, 5).map(e => e.descr).join('\n\t\t') :
+			error.message.map(e => e.descr).join('\n\t\t')
 
-		return {
-			row: message1.line - 1,
-			column: message1.start - 1,
-			text: description,
-			type: 'error'
-		}
-	});
+		// 	{
+		// 		row: error.message[2].line - 1,
+		// 		column: error.message[2].start - 1,
+		// 		columnEnd: error.message[2].end - 1,
+		// 		text: description,
+		// 		type: 'error'
+		// 	}
+		// } else {
+		// 	//console.error(error.message);
+		// 	var description = error.message.map(e => e.descr).join('\n\t\t')
+		//
+		// 	return {
+		// 		row: error.message[0].line - 1,
+		// 		column: error.message[0].start - 1,
+		// 		columnEnd: error.message[0].end - 1,
+		// 		text: description,
+		// 		type: 'error'
+		// 	}
+		// }
+		const messages = error.message.map(message => {
+			return {
+				row: message.line - 1,
+				column: message.start - 1,
+				columnEnd: message.end - 1,
+				text: description,
+				type: 'error'
+			}
+		});
+		return errors.concat(messages)
+
+	}, []);
 }
 
 module.exports.version = function() {
@@ -107,18 +133,6 @@ module.exports.availableVersion = function() {
 	});
 }
 
-module.exports.reactVersion = function(version) {
-	return new Promise(function(resolve, reject) {
-		var child = exec('npm view react-tools version',
-			function(error, stdout, stderr) {
-				if (error || stderr) {
-					reject(error || stderr);
-				} else {
-					resolve([stdout.trim(), version]);
-				}
-			});
-	});
-}
 
 module.exports.installNewVersion = function() {
 	console.log('install new version of flow-bin');

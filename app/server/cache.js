@@ -5,21 +5,16 @@ var cache = module.exports;
 var Promise = require("bluebird");
 var moment = require('moment');
 
-cache.hash = function(sourceCode) {
+cache.hash = function(sourceCode: string) {
   return crypto.createHash('md5').update(sourceCode).digest('hex');
 }
 
-cache.init = function(cb) {
+cache.init = function(cb: Function) {
   var connectionString;
   if (process.env.MONGOLAB_URI) {
     connectionString = process.env.MONGOLAB_URI;
   } else {
-    try {
-      connectionString = require('../config').mongo
-    }
-    catch(e) {
-      console.error('Please set MONGOLAB_URI')
-    };
+    throw new Error('Please set MONGOLAB_URI')
   }
   MongoClient.connect(connectionString, function(err, db) {
     if (err) {
@@ -62,7 +57,7 @@ cache.get = function (db: any, key: string, funcToBeCached: Function) {
   });
 }
 
-cache.put = function(db, key, toCache) {
+cache.put = function(db: any, key: string, toCache: any) {
   return new Promise(function (resolve, reject) {
     //console.log('cache.put', toCache);
     toCache.hash = key;
@@ -80,6 +75,6 @@ cache.put = function(db, key, toCache) {
   });
 }
 
-cache.addView = function(db, key) {
+cache.addView = function(db: any, key: string) {
   db.checks.update({ hash: key}, {$inc: {views: 1}}, function() {});
 }

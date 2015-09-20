@@ -10,3 +10,29 @@ describe('Version', function(){
     })
   })
 });
+
+
+describe('Flow check', function(){
+  it('should return json output for simple code', function(done) {
+    var sourceCode = [
+      'function test(a) {',
+      'return a.length',
+      '}',
+      'test(1)',
+      'test()'
+    ].join('\n');
+
+    check(sourceCode).then(res => {
+      var totalMessages = 0;
+
+      res.errors.forEach(error => {
+        console.log('ERROR', error);
+      })
+
+      const messages = res.errors.map(error => error.message.length);
+
+      assert.equal(JSON.stringify(messages), '[5, 5]');
+      done();
+    })
+  })
+});

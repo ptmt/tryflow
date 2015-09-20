@@ -9,5 +9,5 @@ window.React = React;
 // needed before React 1.0
 injectTapEventPlugin();
 
-var hash = window.location.hash || '0101751fa7c5741792c292e31fa8de32';
+var hash = window.location.hash || 'b4b8d8e1a254ebfc2bd5b5d7af4a8ac6';
 React.render(<Main hash={hash}/>, document.querySelector('.body'));

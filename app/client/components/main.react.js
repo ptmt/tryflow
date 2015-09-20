@@ -24,7 +24,7 @@ var Main = React.createClass({
     muiTheme: React.PropTypes.object
   },
 
-  getChildContext() {
+  getChildContext(): any {
     return {
       muiTheme: ThemeManager.getCurrentTheme()
     };
@@ -55,8 +55,8 @@ var Main = React.createClass({
 
   updateOutput(sourceCode: string) {
     if (sourceCode && sourceCode.length > 0) {
-      this.refs.snackbar.show();
       this.setState ({ loading: true});
+      this.refs.snackbar.show();
       service.flowCheck(sourceCode , (err, res) => {
         if (err) {
           this.setState ({ loading: false, error: 'Cannot perform flow check, please report'});
@@ -71,23 +71,11 @@ var Main = React.createClass({
   },
 
   render(): any {
-
-    //var examples = require('../examples.js');
-    var examples = [
-      {payload: '0101751fa7c5741792c292e31fa8de32', text: '01 - Hello world'},
-      {payload: '16703f86fe7507a5145d9e87006eeddd', text: '02 - Dynamic'},
-      {payload: '18393dfcb824119d4e35beb9bcc7a48b', text: '03 - Type annotations'},
-      {payload: '524323e2bf98148b667b0f8e72e28f2c', text: '04 - Modules'},
-      {payload: 'bc1f559bbf4cf06ad317673e3f39dea1', text: '05 - React.js'},
-      {payload: '088c0e5b336e2941f081fd7387e2b048', text: '06 - Flow comments'},
-      {payload: '9b415a58cae0f6b47b79fd2a28313724', text: '07 - Bounded polymorphism'},
-    ];
-    // <mui.DropDownMenu menuItems={examples} onChange={this._handleExamples} />
     return (
       <div>
         <mui.Card initiallyExpanded={true}>
           <mui.CardActions showExpandableButton={true} >
-              <mui.RaisedButton label="FLOW CHECK" linkButton={true} primary={true} labelStyle={styles.buttonLabel} onClick={this._handleTouchTap}/>
+              <mui.RaisedButton label="RUN FLOW!" linkButton={true} primary={true} labelStyle={styles.buttonLabel} onClick={this._handleTouchTap}/>
               <mui.RaisedButton linkButton={true} href="http://flowtype.org/docs/getting-started.html" label="Flowtype.org" labelStyle={styles.buttonLabel}>
                 <mui.FontIcon style={styles.exampleFlatButtonIcon} className="fa fa-2x fa-book" />
               </mui.RaisedButton>
@@ -98,12 +86,13 @@ var Main = React.createClass({
               <Footer />
           </mui.CardActions>
            <mui.CardText expandable={true}>
-             <a href="#0101751fa7c5741792c292e31fa8de32" style={styles.link}>Hello, world!</a>.
-             If you would like to write plain Javascript check out <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>Dynamic</a>
+             <a href="#c32a0a7568c3b9c3d9c731531b915b92" style={styles.link}>Hello, world!</a>.
+             Javascript without types annotations: <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>Dynamic</a>
              &nbsp;and <a href="#088c0e5b336e2941f081fd7387e2b048" style={styles.link}>Flow comments</a> examples.
-             React fans might find interesting <a href="#bc1f559bbf4cf06ad317673e3f39dea1" style={styles.link}>React.js</a>
-             &nbsp;and <a href="#16703f86fe7507a5145d9e87006eeddd" style={styles.link}>Redux</a> gists.
-             Flow is also useful if you are working with Node (io.js) <a href="#524323e2bf98148b667b0f8e72e28f2c" style={styles.link}>Modules</a>
+             &nbsp;<a href="#d4334b8777e12c83792502e1b70c25a6" style={styles.link}>React.js</a>
+             &nbsp;and <a href="#5c7ee1ad2409f22513e8829074409917" style={styles.link}>Redux</a> gists are in progress.
+             Also: <a href="#524323e2bf98148b667b0f8e72e28f2c" style={styles.link}>Node.js Modules declarations</a>,
+             <a href="#1c36beacd0fb6f72e3a0752e1d3e209d" style={styles.link}>Monads</a>
 
            </mui.CardText>
         </mui.Card>
@@ -127,10 +116,10 @@ var Main = React.createClass({
 
   _onSourceChange(value: string) {
     this.setState({source: value});
-    // clearTimeout(this.timeout);
-    // this.timeout = setTimeout(() => {
-    //   this.updateOutput(value);
-    // }, 2000);
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.updateOutput(value);
+    }, 2000);
   },
 
   _handleTouchTap() {

@@ -79,7 +79,10 @@ app.post('/load_code', function (req, res) {
 app.post('/flow_check', function (req, res) {
   cache
     .get(app.db, cache.hash(req.body.source), () => fillCache (req.body.source))
-    .then((fromCache) => res.json(fromCache));
+    .then((fromCache) => res.json(fromCache))
+    // fillCache (req.body.source)
+    // .then((fromCache) => res.json(fromCache))
+    .catch((e) => res.status(500).json(JSON.stringify(e) + 'Flow server is currently unresponsive'));
 });
 
 app.post('/autocomplete', function (req, res) {
@@ -91,12 +94,11 @@ app.post('/autocomplete', function (req, res) {
 
 app.get('/flow_version', function (req, res) {
   flowCheck.version()
-//  .then(version => flowCheck.reactVersion(version))
   .then((version) => {
     flowCheck.availableVersion().then((availableVersion) => {
       if (availableVersion !== version) {
         flowCheck.installNewVersion();
-        res.json({version: version + ' (installing ' + availableVersion + ' in background...)', react: versions[0]})
+        res.json({version: version + ' (installing ' + availableVersion + ' in background...)', react: version})
       } else {
         res.json({version: version})
       }
