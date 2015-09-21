@@ -44,7 +44,7 @@ var Main = React.createClass({
     this.setState ({ loading: true});
     service.loadByHash(hash, (err, res) => {
       if (err) {
-        this.setState ({ loading: false, error: err});
+        this.setState ({ loading: false, error: 'Error on the server has occured'});
         this.refs.snackbar.show();
       } else {
         this.refs.snackbar.dismiss();
