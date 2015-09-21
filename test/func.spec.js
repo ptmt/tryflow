@@ -31,7 +31,7 @@ describe('Flow check', function(){
 
       const messages = res.errors.map(error => error.message.length);
 
-      assert.equal(JSON.stringify(messages), '[5, 5]');
+      assert.equal(JSON.stringify(messages), '[5,5]');
       done();
     })
   })

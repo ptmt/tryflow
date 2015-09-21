@@ -58,6 +58,6 @@
     "webpack-dev-server": "^1.10.1"
   },
   "engines": {
-    "iojs": "2.3.x"
+    "node": "4.x.x"
   }
 }
