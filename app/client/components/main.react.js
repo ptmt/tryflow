@@ -80,7 +80,7 @@ var Main = React.createClass({
                 <mui.FontIcon style={styles.exampleFlatButtonIcon} className="fa fa-2x fa-book" />
               </mui.RaisedButton>
 
-              <mui.RaisedButton linkButton={true} href="https://github.com/unknownexception/tryflow" label="github" labelStyle={styles.buttonLabel}>
+              <mui.RaisedButton linkButton={true} href="https://github.com/ptmt/tryflow" label="github" labelStyle={styles.buttonLabel}>
                 <mui.FontIcon style={styles.exampleFlatButtonIcon} className="fa fa-2x fa-github" />
               </mui.RaisedButton>
               <Footer />
@@ -116,10 +116,10 @@ var Main = React.createClass({
 
   _onSourceChange(value: string) {
     this.setState({source: value});
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.updateOutput(value);
-    }, 2000);
+    // clearTimeout(this.timeout);
+    // this.timeout = setTimeout(() => {
+    //   this.updateOutput(value);
+    // }, 2000);
   },
 
   _handleTouchTap() {
