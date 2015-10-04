@@ -1,13 +1,14 @@
 /* @flow */
 var React = require('react');
 var mui = require('material-ui');
-
+// TODO: rewrite with ES
 var Spinner = require('./spinner.react');
 var Code = require('./code.react');
 var Footer = require('./footer.react');
 var utils = require('../utils');
-var ThemeManager = new mui.Styles.ThemeManager();
-var Colors = mui.Styles.Colors;
+const ThemeManager = require('material-ui/lib/styles/theme-manager');
+const LightRawTheme = require('material-ui/lib/styles/raw-themes/light-raw-theme');
+const Colors = require('material-ui/lib/styles/colors');
 var service = require('../service'); // REWRITE WITH FLUX
 
 type MainState = {
@@ -26,7 +27,7 @@ var Main = React.createClass({
 
   getChildContext(): any {
     return {
-      muiTheme: ThemeManager.getCurrentTheme()
+      muiTheme: ThemeManager.getMuiTheme(LightRawTheme)
     };
   },
 
