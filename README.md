@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/unknownexception/tryflow.svg)](https://travis-ci.org/unknownexception/tryflow)
+[![Build Status](https://travis-ci.org/ptmt/tryflow.svg)](https://travis-ci.org/ptmt/tryflow)
 
 Flow is a fantastic [static type checker for Javascript](http://flowtype.org/) written in [Ocaml by Facebook team](https://github.com/facebook/flow).
 
