@@ -10,6 +10,7 @@ describe('Error transformer', function(){
     assert.deepEqual(errors, []);
   })
   it('should wrap source code with 1 error', function(){
+    this.timeout(15000);
     var oneErrorJson = {errors: [{ message:
      [ { descr: 'property `length`',
          level: 'error',
@@ -88,7 +89,7 @@ describe('Error transformer', function(){
 });
 
 describe('autocomplete', function() {
-  this.timeout(10000);
+  this.timeout(15000);
   it('should return suggestions', function(done){
     var errors = check.autocompleteFor(fs.readFileSync(__dirname + '/mock/autocomplete.js'), 14, 3)
       .then(function(data) {
