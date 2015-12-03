@@ -8,7 +8,7 @@
   },
   "scripts": {
     "babel-node": "babel-node --stage 0 --ignore='app/client|node_modules'",
-    "start": "NODE_ENV=production npm run babel-node app/server/index.js",
+    "start": "NODE_ENV=production npm run babel-node --optimize_for_size --max_old_space_size=460 --gc_interval=100 app/server/index.js",
     "build": "mkdir -p ./dist && cp ./app/index.html ./dist/index.html && ./node_modules/.bin/webpack --config webpack.config.prod.js",
     "dev": "nodemon --watch app/server --exec npm run babel-node -- app/server/index.js",
     "test": "./node_modules/mocha/bin/mocha --compilers js:babel/register",
@@ -58,6 +58,7 @@
     "react-hot-loader": "^1.2.8"
   },
   "engines": {
-    "node": "4.x.x"
+    "node": "4.x.x",
+    "npm": "3.x.x"
   }
 }
