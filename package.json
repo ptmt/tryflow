@@ -40,7 +40,7 @@
     "moment": "^2.9.0",
     "mongodb": "^1.4.29",
     "morgan": "^1.6.1",
-    "react": "*",
+    "react": "0.13.x",
     "react-redux": "^2.1.2",
     "react-tap-event-plugin": "0.1.x",
     "redux": "^3.0.0",
