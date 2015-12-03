@@ -3,6 +3,7 @@ var cache = require('../app/server/cache');
 
 describe('Cache', function(){
   it('should be able to hash text', function(){
+    this.timeout(15000);
     var hash = cache.hash('test code')
     assert.equal(hash, '23c532e733119087de256a1e8b519853');
     var hash = cache.hash('function withNumber(a: number) {\n\
