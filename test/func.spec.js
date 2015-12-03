@@ -14,6 +14,7 @@ describe('Version', function(){
 
 describe('Flow check', function(){
   it('should return json output for simple code', function(done) {
+    this.timeout(15000);
     var sourceCode = [
       'function test(a) {',
       'return a.length',
