@@ -1,4 +1,4 @@
-Tryflow is now obsolete, since there is available in js runtime. See https://astexplorer.net/
+Tryflow is now obsolete, since it's available in the js runtime. See https://astexplorer.net/
 
 
 [![Build Status](https://travis-ci.org/ptmt/tryflow.svg)](https://travis-ci.org/ptmt/tryflow)
