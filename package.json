@@ -1,18 +1,13 @@
 {
   "name": "tryflow",
-  "version": "0.8.0",
-  "description": "try Flow online",
-  "main": "app/server.compiled/index.js",
+  "version": "1.0.0",
+  "description": "Try Flow online",
+  "main": "js/flow.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "babel-node": "babel-node --stage 0 --ignore='app/client|node_modules'",
-    "start": "NODE_ENV=production npm run babel-node --optimize_for_size --max_old_space_size=460 --gc_interval=100 app/server/index.js",
-    "build": "mkdir -p ./dist && cp ./app/index.html ./dist/index.html && ./node_modules/.bin/webpack --config webpack.config.prod.js",
-    "dev": "nodemon --watch app/server --exec npm run babel-node -- app/server/index.js",
-    "test": "./node_modules/mocha/bin/mocha --compilers js:babel/register",
-    "postinstall": "npm run build"
+    "start": "python -m SimpleHTTPServer"
   },
   "repository": {
     "type": "git",
@@ -28,35 +23,8 @@
   },
   "homepage": "http://tryflow.org",
   "dependencies": {
-    "bluebird": "^2.9.3",
-    "body-parser": "^1.10.1",
-    "brace": "^0.4.0",
-    "express": "^4.11.0",
-    "fbjs": "^0.2.1",
-    "flow-bin": "*",
-    "font-awesome": "^4.3.0",
-    "gulp-flowtype": "^0.4.7",
-    "js-beautify": "^1.5.4",
-    "material-ui": "^0.12.1",
-    "moment": "^2.9.0",
-    "mongodb": "^1.4.29",
-    "morgan": "^1.6.1",
-    "react": "0.13.x",
-    "react-redux": "^2.1.2",
-    "react-tap-event-plugin": "0.1.7",
-    "redux": "^3.0.0",
-    "redux-thunk": "^1.0.0",
-    "webpack": "^1.10.5",
-    "webpack-dev-server": "^1.12.0"
   },
   "devDependencies": {
-    "babel": "^5.8.20",
-    "babel-core": "^5.8.20",
-    "babel-loader": "^5.3.2",
-    "eslint": "^1.0.0",
-    "eslint-plugin-react": "^3.1.0",
-    "mocha": "*",
-    "react-hot-loader": "^1.2.8"
   },
   "engines": {
     "node": "4.x.x",
