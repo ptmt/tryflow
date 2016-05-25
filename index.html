@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Try Flow online :: gradual typing, static type checker for Javascript</title>
+<link rel='shortcut icon' href='favicon.png'>
+<style type="text/css" media="screen">
+    #editor {
+        position: absolute;
+        top: 0;
+        right: 30%;
+        bottom: 0;
+        left: 0;
+        margin:0;
+        height: 100%;
+        font-size: 15px;
+    }
+    .navigation {
+      position: absolute;
+      top: 0;
+      left: 70%;
+      padding: 20px;
+      height: 100%;
+    }
+    .navigation li {
+      font-size: 20px;
+      padding-bottom: 20px;
+      list-style-type: none;
+    }
+    .navigation a {
+      text-decoration: none;
+      color: #707966
+    }
+    .navigation textarea {
+      height: 100px;
+      width: 200px;
+    }
+    .navigation footer {
+      font-size: 15px;
+      position: absolute;
+      bottom: 50px;
+      width: 100%;
+    }
+    .marker-highlight-error {
+       position: absolute;
+       border-bottom: dashed 1px red;
+       z-index: 1000;
+    }
+</style>
+</head>
+<body>
+
+<div id="editor">
+</div>
+
+<div class="navigation">
+  <ul>
+    <li><a href="/#1">1: Untyped</a></li>
+    <li><a href="#2">2: Untyped (vs ESLint)</a></li>
+    <li><a href="#3">3: Basic typed</a></li>
+    <li><a href="#4">4: Dynamic object keys</a></li>
+    <li><a href="#5">5: Function types</a></li>
+    <li><a href="#6">6: Recap</a></li>
+    <li><a href="#7">7: Maybe and optionals</a></li>
+
+    <li><a href="https://github.com/ptmt/tryflow/">[Add more...]</a></li>
+    <li>Link to share:<br/>
+      <textarea id="link" onclick="this.select()"></textarea></li>
+
+  </ul>
+  <footer>&copy; <a href="http://flowtype.org">Flow 0.25.0</a> by Facebook, <a href="https://github.com/runtastic/flow-guide/">Examples</a> by Runtastic</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/mode-typescript.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/1.0.0/fetch.min.js" type="text/javascript" charset="utf-8"></script>
+
+
+<script src="/js/flow.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    function transformErrors(errors) {
+    	return errors.reduce(function(errors, error) {
+
+    	  var description = error.message.length >= 5 ?
+    			error.message.slice(2, 5).map(function(e) { return e.descr}).join('\n') :
+          error.message.map(function(e) { return e.descr }).join('\n')
+
+    		 messages = error.message.map(function(message) {
+    			return {
+    				row: message.line - 1,
+    				column: message.start - 1,
+    				columnEnd: message.end - 1,
+    				text: description,
+    				type: 'error'
+    			}
+    		});
+    		return errors.concat(messages)
+    	}, []);
+    }
+
+    function flowCheckContents() {
+      try {
+        var results = flow.checkContent('/example1.js', editor.getValue())
+        var session = editor.getSession();
+        Object.keys(session.$backMarkers).forEach(function(r) {  session.removeMarker(r) })
+        var annotations = transformErrors(results)
+        //console.log('annotations', annotations);
+        session.setAnnotations(annotations);
+          var Range =  ace.require("ace/range").Range
+          annotations.forEach(function(error) {
+            session.addMarker(
+              new Range(error.row, error.column, error.row, error.columnEnd + 1), 'marker-highlight-error', 'background'
+            );
+          })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/tomorrow_night");
+    editor.getSession().setMode("ace/mode/typescript");
+    editor.getSession().on('change', function(e) {
+        flowCheckContents();
+        document.querySelector('#link').innerHTML = 'http://localhost:8000?code=' + encodeURIComponent(editor.getValue());
+    });
+
+    function locationHashChanged() {
+      var number = location.hash ? parseInt(location.hash.replace('#',''), 10) : 1;
+      fetch('/examples/' + number + '.js')
+        .then(function(r) { return r.text()})
+        .then(function(r) {
+          editor.setValue(r);
+          editor.scrollToLine(0, true, false, function() {})
+        })
+    }
+
+    function parseQuery() {
+      if (document.location.href.indexOf('?code=') > -1) {
+        var code = decodeURIComponent(document.location.href.replace('?code=',''))
+        editor.setValue(code);
+      } else {
+        locationHashChanged()
+      }
+    }
+
+    parseQuery();
+
+    window.addEventListener("hashchange", locationHashChanged, false);
+</script>
+</body>
+</html>
