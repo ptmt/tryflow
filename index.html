@@ -5,21 +5,27 @@
 <link rel='shortcut icon' href='favicon.png'>
 <style type="text/css" media="screen">
     #editor {
-        position: absolute;
-        top: 0;
-        right: 30%;
-        bottom: 0;
-        left: 0;
-        margin:0;
-        height: 100%;
-        font-size: 15px;
+      position: absolute;
+      top: 0;
+      right: 30%;
+      bottom: 0;
+      left: 0;
+      margin:0;
+      height: 100%;
+      font-size: 15px;
     }
     .navigation {
       position: absolute;
+      font-family: Helvetica;
       top: 0;
       left: 70%;
-      padding: 20px;
+      padding: 10px;
       height: 100%;
+      width: 30%;
+    }
+    .navigation h1 {
+      color: #707966;
+      text-align: center;
     }
     .navigation li {
       font-size: 20px;
@@ -39,11 +45,12 @@
       position: absolute;
       bottom: 50px;
       width: 100%;
+      text-align: center;
     }
     .marker-highlight-error {
-       position: absolute;
-       border-bottom: dashed 1px red;
-       z-index: 1000;
+      position: absolute;
+      border-bottom: dashed 1px red;
+      z-index: 1000;
     }
 </style>
 </head>
@@ -53,6 +60,7 @@
 </div>
 
 <div class="navigation">
+  <h1>Examples</h1>
   <ul>
     <li><a href="/#1">1: Untyped</a></li>
     <li><a href="#2">2: Untyped (vs ESLint)</a></li>
@@ -63,11 +71,13 @@
     <li><a href="#7">7: Maybe and optionals</a></li>
 
     <li><a href="https://github.com/ptmt/tryflow/">[Add more...]</a></li>
-    <li>Link to share:<br/>
-      <textarea id="link" onclick="this.select()"></textarea></li>
-
   </ul>
-  <footer>&copy; <a href="http://flowtype.org">Flow 0.25.0</a> by Facebook, <a href="https://github.com/runtastic/flow-guide/">Examples</a> by Runtastic</footer>
+
+  <footer>
+    <p>Link to share:<br/>
+      <textarea id="link" onclick="this.select()"></textarea>
+    </p>
+      &copy; <a href="http://flowtype.org" class="version">Flow</a> by Facebook, <a href="https://github.com/runtastic/flow-guide/">Examples</a> by Runtastic</footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -84,7 +94,7 @@
     	  var description = error.message.length >= 5 ?
     			error.message.slice(2, 5).map(function(e) { return e.descr}).join('\n') :
           error.message.map(function(e) { return e.descr }).join('\n')
-
+         console.log(error.message)
     		 messages = error.message.map(function(message) {
     			return {
     				row: message.line - 1,
@@ -143,6 +153,8 @@
         locationHashChanged()
       }
     }
+
+    document.querySelector('.version').innerHTML = 'Flow v' + flow.flowVersion;
 
     parseQuery();
 
