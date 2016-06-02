@@ -38,7 +38,10 @@
     }
     .navigation textarea {
       height: 100px;
-      width: 200px;
+      width: 90%;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 10px;
     }
     .navigation footer {
       font-size: 15px;
@@ -94,7 +97,6 @@
     	  var description = error.message.length >= 5 ?
     			error.message.slice(2, 5).map(function(e) { return e.descr}).join('\n') :
           error.message.map(function(e) { return e.descr }).join('\n')
-         console.log(error.message)
     		 messages = error.message.map(function(message) {
     			return {
     				row: message.line - 1,
@@ -110,7 +112,7 @@
 
     function flowCheckContents() {
       try {
-        var results = flow.checkContent('/example1.js', editor.getValue())
+        var results = flow.checkContent('/example.js', editor.getValue())
         var session = editor.getSession();
         Object.keys(session.$backMarkers).forEach(function(r) {  session.removeMarker(r) })
         var annotations = transformErrors(results)
@@ -154,11 +156,37 @@
       }
     }
 
-    document.querySelector('.version').innerHTML = 'Flow v' + flow.flowVersion;
+    function flowGetType(line, column) {
+      try {
+        return flow.typeAtPos('/example.js', editor.getValue(), line, column)[1].c
+      } catch (e) {
+        // don't care
+        return null
+      }
+    }
 
+    editor.selection.on("changeCursor", function() {
+      var cursor = editor.getCursorPosition()
+      var type = flowGetType(parseInt(cursor.row) + 1, parseInt(cursor.column) + 1)
+      if (type) {
+        var line = editor.getSession().getLine(cursor.row).split(' ///')[0]
+        var Range = ace.require('ace/range').Range;
+        var range = new Range(cursor.row, 0, cursor.row, editor.getSession().getLine(cursor.row).length);
+        editor.getSession().replace(range, line + ' /// ' + type);
+      }
+    })
+
+    // editor.commands.addCommand({
+    //     name: "showKeyboardShortcuts",
+    //     bindKey: {win: "Ctrl-Shift-e", mac: "Command-Shift-e"},
+    //     exec: function(editor) {
+    //       console.log(editor)
+    //         //flowGetType()
+    //     }
+    // })
     parseQuery();
-
     window.addEventListener("hashchange", locationHashChanged, false);
+    document.querySelector('.version').innerHTML = 'Flow v' + flow.flowVersion;
 </script>
 </body>
 </html>
