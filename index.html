@@ -173,6 +173,7 @@
         var Range = ace.require('ace/range').Range;
         var range = new Range(cursor.row, 0, cursor.row, editor.getSession().getLine(cursor.row).length);
         editor.getSession().replace(range, line + ' /// ' + type);
+        editor.selection.moveCursorToPosition(cursor); //prevent selection
       }
     })
 
