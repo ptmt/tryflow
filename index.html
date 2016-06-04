@@ -16,25 +16,87 @@
     }
     .navigation {
       position: absolute;
-      font-family: Helvetica;
+      background: #d0d0d0;
+      font-family:'.SFNSText-Regular', 'SF UI Text', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
+      font-size: 15px;
       top: 0;
       left: 70%;
-      padding: 10px;
       height: 100%;
       width: 30%;
     }
-    .navigation h1 {
-      color: #707966;
-      text-align: center;
+    .pure-tree {
+      text-align: left;
+      display: block;
+    }
+    .pure-tree.main-tree {
+      display: inline-block;
+    }
+    .pure-tree:not(.main-tree) {
+      padding-left: 1.2em;
+      /*margin-top: 1em;*/
+    }
+    .pure-tree:not(.main-tree) li {
+      overflow: hidden;
+      height: 0;
+      display: block;
+    }
+    .pure-tree label {
+      display: block;
+      cursor: pointer;
+      color: #717780;
+      /*border-bottom: 1px dashed #B0B9C5;
+      padding: 1.125em 1.125em 1.125em 0;*/
+    }
+    .pure-tree label:before {
+      width: 1em;
+      height: 1em;
+      line-height: 2em;
+      display: inline-block;
+      font-family: 'Ionicons', sans-serif;
+      content: "\f434";
+      padding-right: 0.25em;
+    }
+    .pure-tree .pure-tree_link a:before{
+      width: 1em;
+      height: 1em;
+      line-height: 2em;
+      display: inline-block;
+      font-family: 'Ionicons', sans-serif;
+      content: "\f391";
+      padding-right: 0.2em;
+    }
+    .pure-tree .pure-tree_link a.active {
+      color: black;
+    }
+    .pure-tree label:hover {
+      color: #434a58;
+      border-bottom-color: #434a58;
+    }
+    .pure-tree .pure-tree_link a {
+      padding: 0.25em 1.125em 0.25em 0;
+      display: block;
+      border-radius: .2em;
+      color: #717780;
+      text-decoration: none;
+    }
+    .pure-tree .pure-tree_link a:hover {
+      color: #434a58;
+    }
+    .pure-tree.nested {
+      padding-left: 1.7em;
+    }
+    .pure-tree [type="checkbox"] {
+      display: none;
+    }
+    .pure-tree [type="checkbox"]:checked + label {
+      color: #434a58;
+      border-bottom-color: #434a58;
+    }
+    .pure-tree [type="checkbox"]:checked ~ ul > li {
+      height: auto;
     }
     .navigation li {
-      font-size: 20px;
-      padding-bottom: 20px;
       list-style-type: none;
-    }
-    .navigation a {
-      text-decoration: none;
-      color: #707966
     }
     .navigation textarea {
       height: 100px;
@@ -44,7 +106,8 @@
       margin-top: 10px;
     }
     .navigation footer {
-      font-size: 15px;
+      font-size: 12px;
+      color: #434a58;
       position: absolute;
       bottom: 50px;
       width: 100%;
@@ -56,6 +119,7 @@
       z-index: 1000;
     }
 </style>
+<link rel="stylesheet" type="text/css" media="screen" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 </head>
 <body>
 
@@ -63,18 +127,35 @@
 </div>
 
 <div class="navigation">
-  <h1>Examples</h1>
-  <ul>
-    <li><a href="/#1">1: Untyped</a></li>
-    <li><a href="#2">2: Untyped (vs ESLint)</a></li>
-    <li><a href="#3">3: Basic typed</a></li>
-    <li><a href="#4">4: Dynamic object keys</a></li>
-    <li><a href="#5">5: Function types</a></li>
-    <li><a href="#6">6: Recap</a></li>
-    <li><a href="#7">7: Maybe and optionals</a></li>
-
-    <li><a href="https://github.com/ptmt/tryflow/">[Add more...]</a></li>
-  </ul>
+  <ul id="compositions-list" class="pure-tree main-tree">
+  <li>
+    <input type="checkbox" id="trigger-views" checked="checked">
+    <label for="trigger-views">Basics</label>
+    <ul class="pure-tree">
+      <li class="pure-tree_link"><a href="/#1">01-Untyped.js</a></li>
+      <li class="pure-tree_link"><a href="/#2">02-Untyped-constants.js</a></li>
+      <li class="pure-tree_link"><a href="/#3">03-Basic-typed.js</a></li>
+      <li class="pure-tree_link"><a href="/#4">04-Dynamic-object-keys.js</a></li>
+      <li class="pure-tree_link"><a href="/#5">05-Function-types.js</a></li>
+      <li class="pure-tree_link"><a href="/#6">06-Recap.js</a></li>
+      <li class="pure-tree_link"><a href="/#7">07-Maybe-and-optionals.js</a></li>
+    </ul>
+  </li>
+  <li>
+    <input type="checkbox" id="trigger-node">
+    <label for="trigger-node">Node.js</label>
+    <ul class="pure-tree">
+      <li class="pure-tree_link"><a href="/#1">(Coming soon)></li>
+    </ul>
+  </li>
+  <li>
+    <input type="checkbox" id="trigger-react">
+    <label for="trigger-react">React</label>
+    <ul class="pure-tree">
+      <li class="pure-tree_link"><a href="/#1">(Coming soon)</a></li>
+    </ul>
+  </li>
+ </ul>
 
   <footer>
     <p>Link to share:<br/>
@@ -139,6 +220,10 @@
 
     function locationHashChanged() {
       var number = location.hash ? parseInt(location.hash.replace('#',''), 10) : 1;
+      [].forEach.call(document.querySelectorAll('.active'), function(div) {
+        div.className = '';
+      });
+      document.querySelectorAll('a[href="/#' + number + '"]')[0].className = 'active'
       fetch('/examples/' + number + '.js')
         .then(function(r) { return r.text()})
         .then(function(r) {
@@ -177,14 +262,6 @@
       }
     })
 
-    // editor.commands.addCommand({
-    //     name: "showKeyboardShortcuts",
-    //     bindKey: {win: "Ctrl-Shift-e", mac: "Command-Shift-e"},
-    //     exec: function(editor) {
-    //       console.log(editor)
-    //         //flowGetType()
-    //     }
-    // })
     parseQuery();
     window.addEventListener("hashchange", locationHashChanged, false);
     document.querySelector('.version').innerHTML = 'Flow v' + flow.flowVersion;
