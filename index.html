@@ -172,6 +172,8 @@
 
 <script src="/js/flow.js" type="text/javascript" charset="utf-8"></script>
 <script>
+  var isEmbedded = false;
+
   function ready(fn) {
     if (document.readyState != 'loading'){
       fn();
@@ -231,19 +233,22 @@
       [].forEach.call(document.querySelectorAll('.active'), function(div) {
         div.className = '';
       });
-      document.querySelectorAll('a[href="/#' + number + '"]')[0].className = 'active'
       fetch('/examples/' + number + '.js')
         .then(function(r) { return r.text()})
         .then(function(r) {
           editor.setValue(r);
           editor.scrollToLine(0, true, false, function() {})
         })
+      if (!isEmbedded) {
+        document.querySelectorAll('a[href="/#' + number + '"]')[0].className = 'active'
+      }
     }
 
     function parseQuery() {
       if (document.location.href.indexOf('?iframe=') > -1) {
         document.querySelector('.navigation').remove();
-        document.querySelector('#editor').style.right = 0
+        document.querySelector('#editor').style.right = 0;
+        isEmbedded = true;
       }
       if (document.location.href.indexOf('?code=') > -1) {
         var code = decodeURIComponent(document.location.href.replace('?code=',''))
