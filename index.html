@@ -119,9 +119,17 @@
       z-index: 1000;
     }
     .overlay {
+      background: #666;
+      opacity: 0.8;
+      padding: 4px 22px;
+      font-family: monospace;
       position: fixed;
-      display: none;
       bottom: 0;
+      right: 10%;
+      color: #ccc;
+    }
+    .overlay a {
+      color: white
     }
 </style>
 <link rel="stylesheet" type="text/css" media="screen" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
@@ -166,11 +174,10 @@
     <p>Link to share:<br/>
       <textarea id="link" onclick="this.select()"></textarea>
     </p>
-      &copy; <a href="http://flowtype.org" class="version">Flow</a> by Facebook, <a href="https://github.com/runtastic/flow-guide/">Examples</a> by Runtastic</footer>
 </div>
 
 <div class="overlay">
-  &copy; <a href="http://tryflow.org">tryflow.org</a> <span class="version">Flow</span>
+  &copy; <span class="version">Flow</span> <a href="http://tryflow.org">tryflow.org</a>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js" type="text/javascript" charset="utf-8"></script>
