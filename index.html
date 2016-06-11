@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Try Flow online :: Gradual Typing, static type checker for Javascript</title>
+<title>Try Flow online :: Gradual Typing for JavaScript in your browser</title>
 <link rel='shortcut icon' href='favicon.png'>
+<meta name="description" content="Learn Flow by examples, write and share your own code snippets using gradual typing in JavaScript." />
+<meta name="twitter:card" value="Learn Flow by examples, write and share your own code snippets using gradual typing in JavaScript.">
+<meta property="og:title" content="Try Flow" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tryflow.org/" />
+<meta property="og:description" content="Learn Flow by examples, write and share your own code snippets using gradual typing in JavaScript." />
 <style type="text/css" media="screen">
     #editor {
       position: absolute;
@@ -119,9 +125,9 @@
       z-index: 1000;
     }
     .overlay {
-      background: #666;
+      background: #444;
       opacity: 0.8;
-      padding: 4px 22px;
+      padding: 4px 12px;
       font-family: monospace;
       position: fixed;
       bottom: 0;
@@ -296,7 +302,8 @@
         editor.selection.moveCursorToPosition(cursor); //prevent selection
       }
     })
-
+    editor.$blockScrolling = Infinity;
+    editor.selection.moveCursorToPosition({row: 0, column: 0});
     parseQuery();
     window.addEventListener("hashchange", locationHashChanged, false);
     document.querySelector('.version').innerHTML = 'Flow v' + flow.flowVersion;
