@@ -118,6 +118,11 @@
       border-bottom: dashed 1px red;
       z-index: 1000;
     }
+    .overlay {
+      position: fixed;
+      display: none;
+      bottom: 0;
+    }
 </style>
 <link rel="stylesheet" type="text/css" media="screen" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 </head>
@@ -162,6 +167,10 @@
       <textarea id="link" onclick="this.select()"></textarea>
     </p>
       &copy; <a href="http://flowtype.org" class="version">Flow</a> by Facebook, <a href="https://github.com/runtastic/flow-guide/">Examples</a> by Runtastic</footer>
+</div>
+
+<div class="overlay">
+  &copy; <a href="http://tryflow.org">tryflow.org</a> <span class="version">Flow</span>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js" type="text/javascript" charset="utf-8"></script>
