@@ -132,7 +132,7 @@
       color: white
     }
 </style>
-<link rel="stylesheet" type="text/css" media="screen" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 </head>
 <body>
 
@@ -177,7 +177,7 @@
 </div>
 
 <div class="overlay">
-  &copy; <span class="version">Flow</span> <a href="http://tryflow.org">tryflow.org</a>
+  &copy; <span class="version">Flow</span> <a href="https://tryflow.org">tryflow.org</a>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -242,7 +242,7 @@
     editor.getSession().on('change', function(e) {
         flowCheckContents();
         if (!isEmbedded) {
-          document.querySelector('#link').innerHTML = 'http://tryflow.org?code=' + encodeURIComponent(editor.getValue());
+          document.querySelector('#link').innerHTML = 'https://tryflow.org?code=' + encodeURIComponent(editor.getValue());
         }
     });
 
