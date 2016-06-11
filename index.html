@@ -242,7 +242,7 @@
     editor.getSession().on('change', function(e) {
         flowCheckContents();
         if (!isEmbedded) {
-          document.querySelector('#link').innerHTML = 'http://localhost:8000?code=' + encodeURIComponent(editor.getValue());
+          document.querySelector('#link').innerHTML = 'http://tryflow.org?code=' + encodeURIComponent(editor.getValue());
         }
     });
 
