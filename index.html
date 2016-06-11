@@ -241,7 +241,9 @@
     editor.getSession().setMode("ace/mode/typescript");
     editor.getSession().on('change', function(e) {
         flowCheckContents();
-        document.querySelector('#link').innerHTML = 'http://localhost:8000?code=' + encodeURIComponent(editor.getValue());
+        if (!isEmbedded) {
+          document.querySelector('#link').innerHTML = 'http://localhost:8000?code=' + encodeURIComponent(editor.getValue());
+        }
     });
 
     function locationHashChanged() {
