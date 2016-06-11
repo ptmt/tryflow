@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Try Flow online :: Gradual Typing for JavaScript in your browser</title>
+<title>Try Flow: Gradual Typing for JavaScript in your browser</title>
 <link rel='shortcut icon' href='favicon.png'>
 <meta name="description" content="Learn Flow by examples, write and share your own code snippets using gradual typing in JavaScript." />
 <meta name="twitter:card" value="Learn Flow by examples, write and share your own code snippets using gradual typing in JavaScript.">
@@ -263,6 +263,7 @@
         .then(function(r) {
           editor.setValue(r);
           editor.scrollToLine(0, true, false, function() {})
+          editor.selection.moveCursorToPosition({row: 0, column: 0});
         })
       if (!isEmbedded) {
         document.querySelectorAll('a[href="/#' + number + '"]')[0].className = 'active'
@@ -278,6 +279,8 @@
       if (document.location.href.indexOf('?code=') > -1) {
         var code = decodeURIComponent(document.location.href.replace('?code=',''))
         editor.setValue(code);
+        editor.scrollToLine(0, true, false, function() {})
+        editor.selection.moveCursorToPosition({row: 0, column: 0});
       } else {
         locationHashChanged()
       }
@@ -304,7 +307,6 @@
       }
     })
     editor.$blockScrolling = Infinity;
-    editor.selection.moveCursorToPosition({row: 0, column: 0});
     parseQuery();
     window.addEventListener("hashchange", locationHashChanged, false);
     document.querySelector('.version').innerHTML = 'Flow v' + flow.flowVersion;
