@@ -233,6 +233,10 @@
     }
 
     function parseQuery() {
+      if (document.location.href.indexOf('?iframe=') > -1) {
+        document.querySelector('.navigation').remove();
+        document.querySelector('#editor').style.right = 0
+      }
       if (document.location.href.indexOf('?code=') > -1) {
         var code = decodeURIComponent(document.location.href.replace('?code=',''))
         editor.setValue(code);
