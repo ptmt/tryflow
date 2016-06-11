@@ -172,6 +172,14 @@
 
 <script src="/js/flow.js" type="text/javascript" charset="utf-8"></script>
 <script>
+  function ready(fn) {
+    if (document.readyState != 'loading'){
+      fn();
+    } else {
+      document.addEventListener('DOMContentLoaded', fn);
+    }
+  }
+  function init() {
     function transformErrors(errors) {
     	return errors.reduce(function(errors, error) {
 
@@ -269,6 +277,9 @@
     parseQuery();
     window.addEventListener("hashchange", locationHashChanged, false);
     document.querySelector('.version').innerHTML = 'Flow v' + flow.flowVersion;
+  }
+
+  ready(init)
 </script>
 </body>
 </html>
