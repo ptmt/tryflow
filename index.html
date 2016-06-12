@@ -227,15 +227,16 @@
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/tomorrow_night");
     editor.getSession().setMode("ace/mode/typescript");
-    editor.getSession().on('change', function(e) {
+
+    function runFlowCheck(e) {
         flowWorker.postMessage({
           flowCheck: true,
           text: editor.getValue()
         })
         if (!isEmbedded) {
-          document.querySelector('#link').innerHTML = 'https://tryflow.org?code=' + encodeURIComponent(editor.getValue());
+          document.querySelector('#link').innerHTML = 'https://tryflow.org?code=' + btoa(editor.getValue());
         }
-    });
+    }
 
     function locationHashChanged() {
       var number = location.hash ? parseInt(location.hash.replace('#',''), 10) : 1;
@@ -261,7 +262,7 @@
         isEmbedded = true;
       }
       if (document.location.href.indexOf('?code=') > -1) {
-        var code = decodeURIComponent(document.location.href.split('?code=')[1])
+        var code = atob(decodeURIComponent(document.location.href.split('?code=')[1]))
         editor.setValue(code);
         editor.scrollToLine(0, true, false, function() {})
         editor.selection.moveCursorToPosition({row: 0, column: 0});
@@ -285,6 +286,10 @@
     flowWorker.onmessage = function(e) {
       if (e.data.flowVersion) {
         document.querySelector('.version').innerHTML = 'Flow v' + e.data.flowVersion;
+      }
+      if (e.data.flowReady) {
+        runFlowCheck();
+        editor.getSession().on('change', runFlowCheck);
       }
       if (e.data.inferredType) {
         var cursor = editor.getCursorPosition()

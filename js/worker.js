@@ -2,13 +2,60 @@
 importScripts('flow.js');
 postMessage({ flowVersion: flow.flowVersion });
 
+function get(url) {
+    return new Promise(function (resolve, reject) {
+      var req = new XMLHttpRequest();
+      req.open('GET', url);
+      req.onload = function () {
+        if (req.status == 200) {
+          resolve([url, req.response]);
+        } else {
+          reject(Error(req.statusText));
+        }
+      };
+      req.onerror = function () {
+        reject(Error("Network Error"));
+      };
+      req.send();
+    });
+  }
+
+var libs = [
+  '/js/flowlib/core.js',
+  '/js/flowlib/bom.js',
+  '/js/flowlib/cssom.js',
+  '/js/flowlib/dom.js',
+  '/js/flowlib/node.js',
+  '/js/flowlib/react.js'
+];
+
+var libs1 = ['/static/flowlib/core.js'];
+
+
+Promise.all(libs.map(get)).then(function (contents) {
+   contents.forEach(function (nameAndContent) {
+     flow.registerFile(nameAndContent[0], nameAndContent[1]);
+   });
+   return libs;
+ }).then(function (libs) {
+   flow.setLibs(libs);
+   postMessage({
+     flowReady: true,
+   })
+ }).catch(function(e) {
+   console.log('Can\'t load libs', JSON.stringify(e[2]))
+ });
+
 function transformErrors(errors) {
   return errors.reduce(function(errors, error) {
 
     var description = error.message.length >= 5 ?
       error.message.slice(2, 5).map(function(e) { return e.descr}).join('\n') :
-      error.message.map(function(e) { return e.descr }).join('\n')
-     messages = error.message.map(function(message) {
+      error.message.map(function(e) {
+        return e.path && e.path !== '/example.js' ? e.descr + ': ' + e.path + ':' + e.line + '\n' + e.context: e.descr;
+      }).join('\n')
+
+    var messages = error.message.map(function(message) {
       return {
         row: message.line - 1,
         column: message.start - 1,
