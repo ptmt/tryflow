@@ -1,6 +1,6 @@
 {
   "name": "tryflow",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Try Flow online",
   "main": "js/flow.js",
   "directories": {
@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/unknownexception/tryflow/issues"
   },
-  "homepage": "http://tryflow.org",
+  "homepage": "https://tryflow.org",
   "dependencies": {
   },
   "devDependencies": {
