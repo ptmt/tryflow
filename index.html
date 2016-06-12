@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Try Flow: Gradual Typing for JavaScript in your browser</title>
+<title>Try Flow: Learn and share JavaScript snippets using type annotations</title>
 <link rel='shortcut icon' href='favicon.png'>
-<meta name="description" content="Learn Flow by examples, write and share your own code snippets using gradual typing in JavaScript." />
-<meta name="twitter:card" value="Learn Flow by examples, write and share your own code snippets using gradual typing in JavaScript.">
+<meta name="description" content="Learn Flow by examples, write and share your own code snippets with a static type checker in JavaScript." />
+<meta name="twitter:card" value="Learn Flow by examples, write and share your own code snippets with a static type checker in JavaScript.">
 <meta property="og:title" content="Try Flow" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://tryflow.org/" />
-<meta property="og:description" content="Learn Flow by examples, write and share your own code snippets using gradual typing in JavaScript." />
+<meta property="og:description" content="Learn Flow by examples, write and share your own code snippets with a static type checker in JavaScript." />
 <style type="text/css" media="screen">
     #editor {
       position: absolute;
@@ -197,7 +197,7 @@
 <script>
   var isEmbedded = false;
 
-  function ready(fn) {
+  function onReady(fn) {
     if (document.readyState != 'loading'){
       fn();
     } else {
@@ -205,34 +205,15 @@
     }
   }
   function init() {
-    function transformErrors(errors) {
-    	return errors.reduce(function(errors, error) {
 
-    	  var description = error.message.length >= 5 ?
-    			error.message.slice(2, 5).map(function(e) { return e.descr}).join('\n') :
-          error.message.map(function(e) { return e.descr }).join('\n')
-    		 messages = error.message.map(function(message) {
-    			return {
-    				row: message.line - 1,
-    				column: message.start - 1,
-    				columnEnd: message.end - 1,
-    				text: description,
-    				type: 'error'
-    			}
-    		});
-    		return errors.concat(messages)
-    	}, []);
-    }
+    var flowWorker = new Worker("js/worker.js");
 
-    function flowCheckContents() {
+    function flowCheckContents(annotations) {
       try {
-        var results = flow.checkContent('/example.js', editor.getValue())
         var session = editor.getSession();
         Object.keys(session.$backMarkers).forEach(function(r) {  session.removeMarker(r) })
-        var annotations = transformErrors(results)
-        //console.log('annotations', annotations);
         session.setAnnotations(annotations);
-          var Range =  ace.require("ace/range").Range
+          var Range = ace.require("ace/range").Range
           annotations.forEach(function(error) {
             session.addMarker(
               new Range(error.row, error.column, error.row, error.columnEnd + 1), 'marker-highlight-error', 'background'
@@ -247,7 +228,10 @@
     editor.setTheme("ace/theme/tomorrow_night");
     editor.getSession().setMode("ace/mode/typescript");
     editor.getSession().on('change', function(e) {
-        flowCheckContents();
+        flowWorker.postMessage({
+          flowCheck: true,
+          text: editor.getValue()
+        })
         if (!isEmbedded) {
           document.querySelector('#link').innerHTML = 'https://tryflow.org?code=' + encodeURIComponent(editor.getValue());
         }
@@ -277,7 +261,7 @@
         isEmbedded = true;
       }
       if (document.location.href.indexOf('?code=') > -1) {
-        var code = decodeURIComponent(document.location.href.replace('?code=',''))
+        var code = decodeURIComponent(document.location.href.split('?code=')[1])
         editor.setValue(code);
         editor.scrollToLine(0, true, false, function() {})
         editor.selection.moveCursorToPosition({row: 0, column: 0});
@@ -286,33 +270,41 @@
       }
     }
 
-    function flowGetType(line, column) {
-      try {
-        return flow.typeAtPos('/example.js', editor.getValue(), line, column)[1].c
-      } catch (e) {
-        // don't care
-        return null
-      }
-    }
-
     editor.selection.on("changeCursor", function() {
       var cursor = editor.getCursorPosition()
-      var type = flowGetType(parseInt(cursor.row) + 1, parseInt(cursor.column) + 1)
-      if (type) {
-        var line = editor.getSession().getLine(cursor.row).split(' ///')[0]
-        var Range = ace.require('ace/range').Range;
-        var range = new Range(cursor.row, 0, cursor.row, editor.getSession().getLine(cursor.row).length);
-        editor.getSession().replace(range, line + ' /// ' + type);
-        editor.selection.moveCursorToPosition(cursor); //prevent selection
-      }
+      flowWorker.postMessage({
+        inferTypeAt: cursor,
+        text: editor.getValue(),
+      })
     })
+
     editor.$blockScrolling = Infinity;
     parseQuery();
     window.addEventListener("hashchange", locationHashChanged, false);
-    document.querySelector('.version').innerHTML = 'Flow v' + flow.flowVersion;
+
+    flowWorker.onmessage = function(e) {
+      if (e.data.flowVersion) {
+        document.querySelector('.version').innerHTML = 'Flow v' + e.data.flowVersion;
+      }
+      if (e.data.inferredType) {
+        var cursor = editor.getCursorPosition()
+        var type = e.data.inferredType;
+        if (type) {
+          var line = editor.getSession().getLine(cursor.row).split(' ///')[0]
+          var Range = ace.require('ace/range').Range;
+          var range = new Range(cursor.row, 0, cursor.row, editor.getSession().getLine(cursor.row).length);
+          editor.getSession().replace(range, line + ' /// ' + type);
+          editor.selection.moveCursorToPosition(cursor); //prevent selection
+        }
+      }
+      if (e.data.flowCheck) {
+        flowCheckContents(e.data.flowResults);
+      }
+    }
+
   }
 
-  ready(init)
+  onReady(init)
 </script>
 </body>
 </html>
