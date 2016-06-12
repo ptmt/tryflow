@@ -22,11 +22,11 @@ function get(url) {
 
 var libs = [
   '/js/flowlib/core.js',
-  '/js/flowlib/bom.js',
-  '/js/flowlib/cssom.js',
-  '/js/flowlib/dom.js',
+  // '/js/flowlib/bom.js',
+  // '/js/flowlib/cssom.js',
+  // '/js/flowlib/dom.js',
   '/js/flowlib/node.js',
-  '/js/flowlib/react.js'
+  // '/js/flowlib/react.js'
 ];
 
 var libs1 = ['/static/flowlib/core.js'];

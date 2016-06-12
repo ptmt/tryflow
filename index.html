@@ -74,20 +74,21 @@
     }
     .pure-tree .pure-tree_link a.active {
       color: black;
+      font-weight: 700;
     }
     .pure-tree label:hover {
-      color: #434a58;
-      border-bottom-color: #434a58;
+      color: black;
+      border-bottom-color: black;
     }
     .pure-tree .pure-tree_link a {
       padding: 0.25em 1.125em 0.25em 0;
       display: block;
       border-radius: .2em;
-      color: #717780;
+      color: #3D4653;
       text-decoration: none;
     }
     .pure-tree .pure-tree_link a:hover {
-      color: #434a58;
+      color: black;
     }
     .pure-tree.nested {
       padding-left: 1.7em;
@@ -96,8 +97,8 @@
       display: none;
     }
     .pure-tree [type="checkbox"]:checked + label {
-      color: #434a58;
-      border-bottom-color: #434a58;
+      color: black;
+      border-bottom-color: black;
     }
     .pure-tree [type="checkbox"]:checked ~ ul > li {
       height: auto;
@@ -111,6 +112,9 @@
       border: 1px solid #ccc;
       padding: 10px;
       margin-top: 10px;
+      font-family:monospace;
+      font-size: 10px;
+      back
     }
     .navigation footer {
       font-size: 12px;
@@ -162,14 +166,14 @@
     </ul>
   </li>
   <li>
-    <input type="checkbox" id="trigger-node">
+    <input type="checkbox" id="trigger-node" checked="checked">
     <label for="trigger-node">Node.js</label>
     <ul class="pure-tree">
       <li class="pure-tree_link"><a href="/#1">(Coming soon)</a></li>
     </ul>
   </li>
   <li>
-    <input type="checkbox" id="trigger-react">
+    <input type="checkbox" id="trigger-react" checked="checked">
     <label for="trigger-react">React</label>
     <ul class="pure-tree">
       <li class="pure-tree_link"><a href="/#1">(Coming soon)</a></li>
@@ -178,7 +182,7 @@
  </ul>
 
   <footer>
-    <p>Link to share:<br/>
+    <p>Share this snippet:<br/>
       <textarea id="link" onclick="this.select()"></textarea>
     </p>
 </div>
