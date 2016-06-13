@@ -130,14 +130,27 @@
       z-index: 1000;
     }
     .overlay {
-      background: #444;
+      background: #333;
       opacity: 0.8;
-      padding: 4px 12px;
+      padding: 6px 12px;
       font-family: monospace;
       position: fixed;
       bottom: 0;
-      right: 10%;
+      left: 0;
+      z-index: 1000;
+      width: 100%;
       color: #ccc;
+      font-size: 14px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .overlay .info {
+      font-size: 12px;
+      font-style: italic;
+      color: white;
+    }
+    .overlay .right {
     }
     .overlay a {
       color: white
@@ -188,7 +201,11 @@
 </div>
 
 <div class="overlay">
-  &copy; <span class="version">Flow</span> <a href="https://tryflow.org">tryflow.org</a>
+  <span class="status">Loading...</span>
+  <span class="info"></span>
+  <span class="right">
+    &copy; <span class="version">Flow</span> <a href="https://tryflow.org">tryflow.org</a>
+  </span>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -196,10 +213,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/1.0.0/fetch.min.js" type="text/javascript" charset="utf-8"></script>
 
-
-<script src="/js/flow.js" type="text/javascript" charset="utf-8"></script>
 <script>
   var isEmbedded = false;
+  var flowWorker = new Worker("js/worker.js");
 
   function onReady(fn) {
     if (document.readyState != 'loading'){
@@ -208,10 +224,8 @@
       document.addEventListener('DOMContentLoaded', fn);
     }
   }
+
   function init() {
-
-    var flowWorker = new Worker("js/worker.js");
-
     function flowCheckContents(annotations) {
       try {
         var session = editor.getSession();
@@ -238,7 +252,7 @@
           text: editor.getValue()
         })
         if (!isEmbedded) {
-          document.querySelector('#link').innerHTML = 'https://tryflow.org?code=' + btoa(editor.getValue());
+          document.querySelector('#link').innerHTML = 'https://tryflow.org/?code=' + btoa(editor.getValue());
         }
     }
 
@@ -293,18 +307,13 @@
       }
       if (e.data.flowReady) {
         runFlowCheck();
+        document.querySelector('.status').innerHTML = 'Ready!';
         editor.getSession().on('change', runFlowCheck);
       }
       if (e.data.inferredType) {
         var cursor = editor.getCursorPosition()
         var type = e.data.inferredType;
-        if (type) {
-          var line = editor.getSession().getLine(cursor.row).split(' ///')[0]
-          var Range = ace.require('ace/range').Range;
-          var range = new Range(cursor.row, 0, cursor.row, editor.getSession().getLine(cursor.row).length);
-          editor.getSession().replace(range, line + ' /// ' + type);
-          editor.selection.moveCursorToPosition(cursor); //prevent selection
-        }
+        document.querySelector('.info').innerHTML = type;
       }
       if (e.data.flowCheck) {
         flowCheckContents(e.data.flowResults);

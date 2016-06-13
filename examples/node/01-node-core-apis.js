@@ -9,3 +9,11 @@ var watman = Array(16).join(1) + 'Batman!'
 
 var fs = require('fs');
 fs.readFileSync(1)
+
+declare module 'some' { /// any
+    declare function my(s: string):string; /// any
+} /// any
+ /// any
+var some = require('some')
+ /// any
+some.my(1)
