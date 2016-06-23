@@ -22,15 +22,12 @@ function get(url) {
 
 var libs = [
   '/js/flowlib/core.js',
-  // '/js/flowlib/bom.js',
-  // '/js/flowlib/cssom.js',
-  // '/js/flowlib/dom.js',
+  '/js/flowlib/bom.js',
+  '/js/flowlib/cssom.js',
+  '/js/flowlib/dom.js',
   '/js/flowlib/node.js',
-  // '/js/flowlib/react.js'
+  '/js/flowlib/react.js'
 ];
-
-var libs1 = ['/static/flowlib/core.js'];
-
 
 Promise.all(libs.map(get)).then(function (contents) {
    contents.forEach(function (nameAndContent) {
@@ -70,35 +67,39 @@ function transformErrors(errors) {
 
 onmessage = function(e) {
   if (e.data.inferTypeAt) {
-    try {
-      var line = parseInt(e.data.inferTypeAt.row, 10) + 1;
-      var column = parseInt(e.data.inferTypeAt.column, 10) + 1;
-      var res = flow.typeAtPos(
-        '/example.js',
-        e.data.text,
-        line,
-        column);
-      postMessage({
-        inferredType: res[1].c
-      });
-    } catch (e) {
-      // don't care
-      return null
-    }
+    // try {
+    //   var line = parseInt(e.data.inferTypeAt.row, 10) + 1;
+    //   var column = parseInt(e.data.inferTypeAt.column, 10) + 1;
+    //   var res = flow.typeAtPos(
+    //     '/example.js',
+    //     e.data.text,
+    //     line,
+    //     column);
+    //   postMessage({
+    //     inferredType: res[1].c
+    //   });
+    // } catch (e) {
+    //   // don't care
+    //   return null
+    // }
   }
   if (e.data.flowCheck) {
-    try {
+    //try {
+      //var filename = '/example.js'
+      //flow.registerFile(filename, e.data.text);
       var results = flow.checkContent('/example.js', e.data.text)
+      //var results = flow.check('/example.js')
+      console.log('results', results)
       var annotations = transformErrors(results)
       postMessage({
         flowResults: annotations,
         flowCheck: true,
       });
-    } catch (e) {
-      // don't care
-      console.log(JSON.stringify(e))
-      return null
-    }
+    // } catch (e) {
+    //   // don't care
+    //   console.log(JSON.stringify(e))
+    //   return null
+    // }
 
   }
 

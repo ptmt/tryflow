@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "python -m SimpleHTTPServer",
-    "copy": "cp ../flow/bin/flow.js ./js/flow.js"
+    "copy": "cp ../flow/bin/flow* ./js"
   },
   "repository": {
     "type": "git",

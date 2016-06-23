@@ -23,9 +23,10 @@
     }
     .navigation {
       position: absolute;
-      background: #d0d0d0;
+      background: #fff;
+      border-left: solid 8px #bde2b1;
       font-family: 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-      font-size: 15px;
+      font-size: 13px;
       top: 0;
       left: 70%;
       height: 100%;
@@ -37,6 +38,7 @@
     }
     .pure-tree.main-tree {
       display: inline-block;
+      padding-left: 1.5em;
     }
     .pure-tree:not(.main-tree) {
       padding-left: 1.2em;
@@ -51,8 +53,6 @@
       display: block;
       cursor: pointer;
       color: #717780;
-      /*border-bottom: 1px dashed #B0B9C5;
-      padding: 1.125em 1.125em 1.125em 0;*/
     }
     .pure-tree label:before {
       width: 1em;
@@ -91,7 +91,7 @@
       color: black;
     }
     .pure-tree.nested {
-      padding-left: 1.7em;
+      padding-left: 1em;
     }
     .pure-tree [type="checkbox"] {
       display: none;
@@ -106,24 +106,6 @@
     .navigation li {
       list-style-type: none;
     }
-    .navigation textarea {
-      height: 100px;
-      width: 90%;
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-top: 10px;
-      font-family:monospace;
-      font-size: 10px;
-      back
-    }
-    .navigation footer {
-      font-size: 12px;
-      color: #434a58;
-      position: absolute;
-      bottom: 50px;
-      width: 100%;
-      text-align: center;
-    }
     .marker-highlight-error {
       position: absolute;
       border-bottom: dashed 1px red;
@@ -133,7 +115,7 @@
       background: #333;
       opacity: 0.8;
       padding: 6px 12px;
-      font-family: monospace;
+      font-family: 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;;
       position: fixed;
       bottom: 0;
       left: 0;
@@ -193,11 +175,6 @@
     </ul>
   </li>
  </ul>
-
-  <footer>
-    <p>Share this snippet:<br/>
-      <textarea id="link" onclick="this.select()"></textarea>
-    </p>
 </div>
 
 <div class="overlay">
@@ -252,7 +229,7 @@
           text: editor.getValue()
         })
         if (!isEmbedded) {
-          document.querySelector('#link').innerHTML = 'https://tryflow.org/?code=' + btoa(editor.getValue());
+          history.pushState({}, "Tryflow", '/?code=' + btoa(editor.getValue()));
         }
     }
 

@@ -1,5 +1,6 @@
 [ignore]
-
+.*/js/flow.js
+.*/js/flow.min.js
 [include]
 [libs]
 [options]
