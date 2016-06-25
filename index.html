@@ -179,7 +179,7 @@
 </div>
 
 <div class="overlay">
-  <span class="status">Loading...</span>
+  <span class="status">Loading core libs...</span>
   <span class="info"></span>
   <span class="right">
     &copy; <span class="version">Flow</span> <a id="footer-link" href="https://tryflow.org/">tryflow.org</a>
@@ -232,7 +232,7 @@
         if (!isEmbedded) {
           var linkEnding = '/?code=' + btoa(editor.getValue());
           history.pushState({}, "Tryflow", linkEnding);
-          document.querySelector('.footer-link').innerHTML = 'https://tryflow.org' + linkEnding;
+          document.querySelector('#footer-link').href = 'https://tryflow.org' + linkEnding;
         }
     }
 
