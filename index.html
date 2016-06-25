@@ -133,6 +133,7 @@
       color: white;
     }
     .overlay .right {
+      margin-right: 20px;
     }
     .overlay a {
       color: white
@@ -181,7 +182,7 @@
   <span class="status">Loading...</span>
   <span class="info"></span>
   <span class="right">
-    &copy; <span class="version">Flow</span> <a href="https://tryflow.org">tryflow.org</a>
+    &copy; <span class="version">Flow</span> <a id="footer-link" href="https://tryflow.org/">tryflow.org</a>
   </span>
 </div>
 
@@ -229,7 +230,9 @@
           text: editor.getValue()
         })
         if (!isEmbedded) {
-          history.pushState({}, "Tryflow", '/?code=' + btoa(editor.getValue()));
+          var linkEnding = '/?code=' + btoa(editor.getValue());
+          history.pushState({}, "Tryflow", linkEnding);
+          document.querySelector('.footer-link').innerHTML = 'https://tryflow.org' + linkEnding;
         }
     }
 
