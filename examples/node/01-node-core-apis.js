@@ -1,19 +1,17 @@
 /* @flow */
-var a = parseInt("100", "10")
-setTimeout(() => {}, "100") /// number
+const a = parseInt("100", "10")
+setTimeout(() => {}, "100")
 
-var date = new Date();
-var str = date.getDate() + "string"
+const date = new Date()
+const str = date + "string"
 
-var watman = Array(16).join(1) + 'Batman!'
+const watman = Array(16).join(1) + 'Batman!'
 
-var fs = require('fs');
-fs.readFileSync(1)
+import fs from 'fs'
+const filename = 1
+fs.readFileSync(filename)
 
-declare module 'some' { /// any
-    declare function my(s: string):string; /// any
-} /// any
- /// any
-var some = require('some')
- /// any
-some.my(1)
+import { resolve4 } from 'dns'
+resolve4('139.130.4.5', (err, resolved) => {
+  console.log(resolved[0])
+})

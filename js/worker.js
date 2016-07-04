@@ -79,7 +79,10 @@ onmessage = function(e) {
         inferredType: res[1].c
       });
     } catch (e) {
-      // don't care
+      // can't infer
+      postMessage({
+        inferredType: ''
+      });
       return null
     }
   }
