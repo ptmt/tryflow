@@ -229,11 +229,11 @@
           flowCheck: true,
           text: editor.getValue()
         })
+        var linkEnding = '/?code=' + btoa(editor.getValue());
         if (!isEmbedded) {
-          var linkEnding = '/?code=' + btoa(editor.getValue());
           history.pushState({}, "Tryflow", linkEnding);
-          document.querySelector('#footer-link').href = 'https://tryflow.org' + linkEnding;
         }
+        document.querySelector('#footer-link').href = 'https://tryflow.org' + linkEnding;
     }
 
     function locationHashChanged() {
