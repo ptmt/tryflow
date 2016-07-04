@@ -85,11 +85,7 @@ onmessage = function(e) {
   }
   if (e.data.flowCheck) {
     try {
-      //var filename = '/example.js'
-      //flow.registerFile(filename, e.data.text);
       var results = flow.checkContent('/example.js', e.data.text)
-      //var results = flow.check('/example.js')
-      console.log('results', results)
       var annotations = transformErrors(results)
       postMessage({
         flowResults: annotations,

@@ -259,8 +259,8 @@
         document.querySelector('#editor').style.right = 0;
         isEmbedded = true;
       }
-      if (document.location.href.indexOf('?code=') > -1) {
-        var code = atob(decodeURIComponent(document.location.href.split('?code=')[1]))
+      if (document.location.href.indexOf('code=') > -1) {
+        var code = atob(decodeURIComponent(document.location.href.split('code=')[1]))
         editor.setValue(code);
         editor.scrollToLine(0, true, false, function() {})
         editor.selection.moveCursorToPosition({row: 0, column: 0});
