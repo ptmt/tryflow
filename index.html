@@ -264,6 +264,7 @@
       }
       if (document.location.href.indexOf('code=') > -1) {
         var code = atob(decodeURIComponent(document.location.href.split('code=')[1]))
+        code + '\n\n\n'
         editor.setValue(code);
         editor.scrollToLine(0, true, false, function() {})
         editor.selection.moveCursorToPosition({row: 0, column: 0});
