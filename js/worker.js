@@ -67,7 +67,6 @@ function transformErrors(errors) {
 
 onmessage = function(e) {
   if (e.data.inferTypeAt) {
-    console.log('inferTypeAt')
     try {
       var line = parseInt(e.data.inferTypeAt.row, 10) + 1;
       var column = parseInt(e.data.inferTypeAt.column, 10) + 1;

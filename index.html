@@ -14,7 +14,8 @@
       position: absolute;
       top: 0;
       right: 30%;
-      bottom: 0;
+      bottom: 30px;
+      padding-bottom: 30px;
       left: 0;
       margin:0;
       height: 100%;
@@ -114,6 +115,7 @@
     .overlay {
       background: #333;
       opacity: 0.8;
+      border-top: 1px solid #444;
       padding: 6px 12px;
       font-family: 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;;
       position: fixed;
@@ -122,7 +124,7 @@
       z-index: 1000;
       width: 100%;
       color: #ccc;
-      font-size: 14px;
+      font-size: 12px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -193,6 +195,7 @@
 
 <script>
   var isEmbedded = false;
+  var flowReady = false;
   var flowWorker = new Worker("js/worker.js");
 
   function onReady(fn) {
@@ -270,11 +273,13 @@
     }
 
     editor.selection.on("changeCursor", function() {
-      var cursor = editor.getCursorPosition()
-      flowWorker.postMessage({
-        inferTypeAt: cursor,
-        text: editor.getValue(),
-      })
+      if (flowReady) {
+        var cursor = editor.getCursorPosition()
+        flowWorker.postMessage({
+          inferTypeAt: cursor,
+          text: editor.getValue(),
+        })
+      }
     })
 
     editor.$blockScrolling = Infinity;
@@ -286,6 +291,7 @@
         document.querySelector('.version').innerHTML = 'Flow v' + e.data.flowVersion;
       }
       if (e.data.flowReady) {
+        flowReady = true;
         runFlowCheck();
         document.querySelector('.status').innerHTML = 'Ready!';
         editor.getSession().on('change', runFlowCheck);
